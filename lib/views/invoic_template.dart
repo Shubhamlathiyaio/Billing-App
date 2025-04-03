@@ -1,3 +1,4 @@
+import 'package:billing/commons/common_container.dart';
 import 'package:billing/commons/common_spacing.dart';
 import 'package:billing/commons/common_text.dart';
 import 'package:billing/controllers/config_controller.dart';
@@ -5,16 +6,20 @@ import 'package:billing/controllers/invoice_controller.dart';
 import 'package:billing/resources/media_query_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
+
+const double LARGE = 2;
+const double MEDIUM = 1.5;
+const double SMALL = 1.2;
 
 class InvoiceTemplate extends StatelessWidget {
   final configController = Get.find<ConfigController>();
   final invoiceController = Get.find<InvoiceController>();
 
+
   @override
   Widget build(BuildContext context) {
     final media = MediaQueryHelper(context);
-    double baseFontSize = media.screenWidth * 0.02; // Scales text proportionally
+    double baseFontSize = media.screenWidth * 0.02; // Updated base font size
 
     return Scaffold(
       appBar: AppBar(
@@ -24,68 +29,91 @@ class InvoiceTemplate extends StatelessWidget {
             onPressed: () {
               Get.toNamed('/config');
             },
-            icon: Icon(Icons.deblur),
+            icon: Icon(Icons.settings), // Updated icon
           ),
         ],
       ),
-      body: Center(
-        child: Container(
-          padding: EdgeInsets.all(10),
-          width: media.screenWidth - 20,
-          height: (media.screenWidth - 20) * 1.414, // Maintain A4 ratio
-          decoration: BoxDecoration(border: Border.all(width: 2)),
-          child: SingleChildScrollView(
-            child: Obx(() => Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Center(
-                      child: CommonText(
-                        data: configController.companyName.value,
-                        fontSize: baseFontSize * 2,
-                        fontWeight: FontWeight.bold,
-                      ),
+      body: invoiceBody(context),
+      floatingActionButton: FloatingActionButton(
+          onPressed: () => invoiceController.exportToPDF(),
+          child: Icon(Icons.preview)),
+    );
+  }
+
+  Widget invoiceBody(BuildContext context) {
+    final media = MediaQueryHelper(context);
+    double baseFontSize = media.screenWidth * 0.02; // Updated base font size
+    return Center(
+      child: Container(
+        width: media.screenWidth - 20,
+        height: (media.screenWidth - 20) * 1.414,
+        decoration: BoxDecoration(border: Border.all(width: 2)),
+        child: SingleChildScrollView(
+          child: Obx(() => Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Center(
+                    child: CommonText(
+                      data: configController.companyName.value,
+                      fontSize: baseFontSize * LARGE,
+                      fontWeight: FontWeight.bold,
                     ),
-                    Center(
-                      child: CommonText(
-                        data: configController.address.value,
-                        fontSize: baseFontSize * 1.2,
-                      ),
+                  ),
+                  Center(
+                    child: CommonText(
+                      data: configController.address.value,
+                      fontSize: baseFontSize * SMALL,
+                      maxLines: 2,
                     ),
-                    Divider(),
-                    Center(
+                  ),
+                  Center(
+                    child: CommonContainer(
+                      centerAlign: true,
+                      width: media.screenWidth,
+                      verticalBorderWidth: 2,
                       child: CommonText(
                         data: "Invoice",
-                        fontSize: baseFontSize * 1.5,
+                        fontSize: baseFontSize * MEDIUM,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    Divider(),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
+                  ),
+                  Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 5),
+                        child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             CommonText(
-                              data: "GST No: ${configController.gstNumber.value}",
+                              data:
+                                  "GST No: ${configController.gstNumber.value}",
                               fontSize: baseFontSize,
                             ),
                             CommonText(
-                              data: "PAN No: ${configController.panNumber.value}",
+                              data:
+                                  "PAN No: ${configController.panNumber.value}",
                               fontSize: baseFontSize,
                             ),
                             CommonText(
-                              data: "State Code: ${configController.stateCode.value}",
+                              data:
+                                  "State Code: ${configController.stateCode.value}",
                               fontSize: baseFontSize,
                             ),
                           ],
                         ),
-                        VerticalDivider(thickness: 2, width: 20),
-                        Column(
+                      ),
+                      Spacer(),
+                      Spacer(),
+                      CommonContainer(
+                        leftBorderWidth: 2,
+                        padding: EdgeInsets.symmetric(horizontal: 5),
+                        child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             CommonText(
-                              data: "Invoice No: ${invoiceController.invoiceNo.value}",
+                              data:
+                                  "Invoice No: ${invoiceController.invoiceNo.value}",
                               fontSize: baseFontSize,
                             ),
                             CommonText(
@@ -93,137 +121,172 @@ class InvoiceTemplate extends StatelessWidget {
                               fontSize: baseFontSize,
                             ),
                             CommonText(
-                              data: "Challan No: ${invoiceController.challanNo.value}",
+                              data:
+                                  "Challan No: ${invoiceController.challanNo.value}",
                               fontSize: baseFontSize,
                             ),
                           ],
                         ),
-                      ],
-                    ),
-                    h16,
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            CommonText(
-                              data: "Billing Details",
-                              fontSize: baseFontSize * 1.2,
-                            ),
-                            CommonText(
-                              data: invoiceController.billTaker.value,
-                              fontSize: baseFontSize,
-                            ),
-                            CommonText(
-                              data: invoiceController.billTakerAddress.value,
-                              fontSize: baseFontSize,
-                            ),
-                          ],
+                      ),
+                      Spacer(),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: CommonContainer(verticalBorderWidth: 2,rightBorderWidth: 1,padding: EdgeInsets.symmetric(horizontal: 5),
+                          child: CommonText(
+                            data: "Billing Details",
+                            fontSize: baseFontSize * SMALL,
+                          ),
                         ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            CommonText(
-                              data: "Delivery Address",
-                              fontSize: baseFontSize * 1.2,
-                            ),
-                            CommonText(
-                              data: invoiceController.userFirm.value,
-                              fontSize: baseFontSize,
-                            ),
-                            CommonText(
-                              data: invoiceController.userFirmAddress.value,
-                              fontSize: baseFontSize,
-                            ),
-                          ],
+                      ),
+                      Expanded(
+                        child: CommonContainer(verticalBorderWidth: 2,leftBorderWidth: 1,padding: EdgeInsets.symmetric(horizontal: 5),
+                          child: CommonText(
+                            data: "Delivery Address",
+                            fontSize: baseFontSize * SMALL,
+                          ),
                         ),
-                      ],
-                    ),
-                    Divider(),
-                    CommonText(
-                      data: "Broker: ${invoiceController.broker.value}",
-                      fontSize: baseFontSize,
-                    ),
-                    Divider(),
-                    Table(
-                      border: TableBorder.all(),
-                      children: [
-                        TableRow(
-                          children: [
-                            CommonText(data: "Sr No", fontSize: baseFontSize),
-                            CommonText(data: "Description", fontSize: baseFontSize),
-                            CommonText(data: "HSN Code", fontSize: baseFontSize),
-                            CommonText(data: "Qty", fontSize: baseFontSize),
-                            CommonText(data: "Rate", fontSize: baseFontSize),
-                            CommonText(data: "Amount", fontSize: baseFontSize),
-                          ],
-                        ),
-                        ...invoiceController.items.map(
-                          (item) => TableRow(
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: CommonContainer(
+                          padding: EdgeInsets.symmetric(horizontal: 5),
+                          rightBorderWidth: 1,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              CommonText(data: item.srNo, fontSize: baseFontSize * 0.9),
-                              CommonText(data: item.description, fontSize: baseFontSize * 0.9),
-                              CommonText(data: item.hsnCode, fontSize: baseFontSize * 0.9),
-                              CommonText(data: item.qty, fontSize: baseFontSize * 0.9),
-                              CommonText(data: item.rate, fontSize: baseFontSize * 0.9),
-                              CommonText(data: item.amount, fontSize: baseFontSize * 0.9),
+                              CommonText(
+                                data: "M/S.: ${configController.billTaker.value}",
+                                fontSize: baseFontSize,
+                              ),
+                              CommonText(
+                                data: configController.billTakerAddress.value,
+                                fontSize: baseFontSize,
+                              ),
+                              CommonText(
+                                data: "GST PIN: ${configController.billTakerGSTPin.value}",
+                                fontSize: baseFontSize,
+                              ),
                             ],
                           ),
                         ),
-                      ],
-                    ),
-                    Divider(),
-                    CommonText(
-                      data: "Subtotal: ${invoiceController.netAmount.value}",
-                      fontSize: baseFontSize,
-                    ),
-                    Divider(),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            CommonText(data: "Bank: ${invoiceController.bank.value}", fontSize: baseFontSize),
-                            CommonText(data: "A/C: ${invoiceController.accountNo.value}", fontSize: baseFontSize),
-                            CommonText(data: "IFSC: ${invoiceController.ifsc.value}", fontSize: baseFontSize),
-                          ],
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            CommonText(data: "Discount: ${invoiceController.discount.value}", fontSize: baseFontSize),
-                            CommonText(data: "Taxable Value: ${invoiceController.taxableValue.value}", fontSize: baseFontSize),
-                            CommonText(data: "Final Total: ${invoiceController.finalTotal.value}", fontSize: baseFontSize * 1.2, fontWeight: FontWeight.bold),
-                          ],
-                        ),
-                      ],
-                    ),
-                    Divider(),
-                    CommonText(
-                      data: "Amount in Words: ${invoiceController.amountInWords.value}",
-                      fontSize: baseFontSize,
-                    ),
-                    Divider(),
-                    CommonText(
-                      data: "Terms & Conditions:",
-                      fontSize: baseFontSize * 1.1,
-                    ),
-                    CommonText(
-                      data: invoiceController.terms.value,
-                      fontSize: baseFontSize,
-                    ),
-                  ],
-                )),
-          ),
+                      ),
+                      Expanded(
+                        child: CommonContainer(
+                           padding: EdgeInsets.symmetric(horizontal: 5),
+                           leftBorderWidth: 1,
+                           child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                CommonText(
+                                  data: configController.userFirm.value,
+                                  fontSize: baseFontSize,
+                                ),
+                                CommonText(
+                                  data: configController.userFirmAddress.value,
+                                  fontSize: baseFontSize,
+                                ),
+                                CommonText(
+                                  data: "GST PIN: $configController.userFirmGSTPin.value}",
+                                  fontSize: baseFontSize,
+                                ),
+                              ],
+                            ),
+                            ),
+                      ),
+                    ],
+                  ),
+                  CommonText(
+                    data: "Broker: ${invoiceController.broker.value}",
+                    fontSize: baseFontSize,
+                  ),
+                  h8,
+                  Table(
+                    border: TableBorder(
+                        verticalInside:
+                            BorderSide(width: 1, color: Colors.black)),
+                    children: [
+                      TableRow(
+                        decoration: BoxDecoration(
+                            border: Border.symmetric(
+                                horizontal: BorderSide(width: 2))),
+                        children: [
+                          for (var header in [
+                            "Sr No",
+                            "Description",
+                            "HSN Code",
+                            "Qty",
+                            "Rate",
+                            "Amount"
+                          ])
+                            Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: CommonText(
+                                data: header,
+                                fontSize: baseFontSize,
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                        ],
+                      ),
+                      ...List.generate(
+                          5,
+                          (index) => TableRow(
+                                children: List.generate(
+                                    6,
+                                    (i) => Padding(
+                                          padding: EdgeInsets.all(8.0),
+                                          child: CommonText(
+                                              data: " ",
+                                              fontSize: baseFontSize * 0.9),
+                                        )),
+                              )),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          CommonText(
+                              data: "Bank: ${invoiceController.bank.value}",
+                              fontSize: baseFontSize),
+                          CommonText(
+                              data: "A/C: ${invoiceController.accountNo.value}",
+                              fontSize: baseFontSize),
+                          CommonText(
+                              data: "IFSC: ${invoiceController.ifsc.value}",
+                              fontSize: baseFontSize),
+                        ],
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          CommonText(
+                              data:
+                                  "Discount: ${invoiceController.discount.value}",
+                              fontSize: baseFontSize),
+                          CommonText(
+                              data:
+                                  "Taxable Value: ${invoiceController.taxableValue.value}",
+                              fontSize: baseFontSize),
+                          CommonText(
+                              data:
+                                  "Final Total: ${invoiceController.finalTotal.value}",
+                              fontSize: baseFontSize * SMALL,
+                              fontWeight: FontWeight.bold),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
+              )),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          invoiceController.exportToPDF();
-        },
-        child: Icon(Icons.preview),
       ),
     );
   }
