@@ -41,6 +41,8 @@ dependencies:
   get: ^4.7.2
   flutter_pdfview: ^1.4.0
   pdfx: ^2.8.0
+  get_storage: ^2.1.1
+  share_plus: ^10.1.4
 
 dev_dependencies:
   flutter_test:

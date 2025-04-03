@@ -12,6 +12,7 @@ class CommonTextField extends StatelessWidget {
   final TextEditingController? controller;
   final double? horizontalPadding;
   final double? verticalPadding;
+  final ValueChanged<String>? onChanged; // Added onChanged callback
 
   const CommonTextField({
     Key? key,
@@ -26,6 +27,7 @@ class CommonTextField extends StatelessWidget {
     this.controller,
     this.horizontalPadding,
     this.verticalPadding,
+    this.onChanged, // Constructor parameter
   }) : super(key: key);
 
   @override
@@ -39,6 +41,8 @@ class CommonTextField extends StatelessWidget {
         controller: controller,
         obscureText: isPassword,
         style: TextStyle(color: textColor),
+        keyboardType: keyboardType,
+        onChanged: onChanged, // Pass the callback to TextField
         decoration: InputDecoration(
           labelText: label is String ? label : null,
           label: label is Widget ? label : null, // Allow custom widget as label
@@ -56,7 +60,6 @@ class CommonTextField extends StatelessWidget {
             borderSide: BorderSide(color: borderColor, width: borderWidth + 0.5),
           ),
         ),
-        keyboardType: keyboardType,
       ),
     );
   }
