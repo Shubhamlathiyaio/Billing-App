@@ -1,12 +1,8 @@
-import 'dart:io';
-
 import 'package:billing/commons/common_button.dart';
-import 'package:billing/services/pdf_services.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pdfx/pdfx.dart';
 import 'package:billing/controllers/bill_controller.dart';
-import 'package:printing/printing.dart';
 
 class PreviewScreen extends StatefulWidget {
   @override
