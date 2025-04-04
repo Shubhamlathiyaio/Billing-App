@@ -16,10 +16,6 @@ class InvoiceController extends GetxController {
   var userFirmGstNo = "".obs;
   var broker = "".obs;
   var items = <InvoiceItem>[].obs;
-  var bank = "".obs;
-  var branch = "".obs;
-  var accountNo = "".obs;
-  var ifsc = "".obs;
   var remarks = "".obs;
   var discount = "".obs;
   var otherLess = "".obs;

@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 class CommonContainer extends StatelessWidget {
   final Widget child;
   final Color borderColor;
-  final double allBorderWidth;
-  final double horizontalBorderWidth;
-  final double verticalBorderWidth;
-  final double topBorderWidth;
-  final double bottomBorderWidth;
-  final double leftBorderWidth;
-  final double rightBorderWidth;
+  final double allBorder;
+  final double verticalBorder;
+  final double horizontalBorder;
+  final double topBorder;
+  final double bottomBorder;
+  final double leftBorder;
+  final double rightBorder;
   final double borderRadius;
   final Color backgroundColor;
   final EdgeInsetsGeometry? padding;
@@ -17,18 +17,19 @@ class CommonContainer extends StatelessWidget {
   final bool centerAlign;
   final double? height;
   final double? width;
+  final AlignmentGeometry alignment; // New property
 
   const CommonContainer({
-    Key? key,
+    super.key,
     required this.child,
     this.borderColor = Colors.black,
-    this.allBorderWidth = 0, // New parameter for all borders
-    this.horizontalBorderWidth = 0,
-    this.verticalBorderWidth = 0,
-    this.topBorderWidth = 0,
-    this.bottomBorderWidth = 0,
-    this.leftBorderWidth = 0,
-    this.rightBorderWidth = 0,
+    this.allBorder = 0,
+    this.verticalBorder = 0,
+    this.horizontalBorder = 0,
+    this.topBorder = 0,
+    this.bottomBorder = 0,
+    this.leftBorder = 0,
+    this.rightBorder = 0,
     this.borderRadius = 0,
     this.backgroundColor = Colors.transparent,
     this.padding,
@@ -36,7 +37,8 @@ class CommonContainer extends StatelessWidget {
     this.centerAlign = false,
     this.height,
     this.width,
-  }) : super(key: key);
+    this.alignment = Alignment.centerLeft, // Default alignment
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -49,21 +51,39 @@ class CommonContainer extends StatelessWidget {
         color: backgroundColor,
         borderRadius: BorderRadius.circular(borderRadius),
         border: Border(
-          top: allBorderWidth > 0 || topBorderWidth > 0 || verticalBorderWidth > 0
-              ? BorderSide(color: borderColor, width: allBorderWidth > 0 ? allBorderWidth : (topBorderWidth > 0 ? topBorderWidth : verticalBorderWidth))
+          top: allBorder > 0 || topBorder > 0 || horizontalBorder > 0
+              ? BorderSide(
+                  color: borderColor,
+                  width: allBorder > 0
+                      ? allBorder
+                      : (topBorder > 0 ? topBorder : horizontalBorder))
               : BorderSide.none,
-          bottom: allBorderWidth > 0 || bottomBorderWidth > 0 || verticalBorderWidth > 0
-              ? BorderSide(color: borderColor, width: allBorderWidth > 0 ? allBorderWidth : (bottomBorderWidth > 0 ? bottomBorderWidth : verticalBorderWidth))
+          bottom: allBorder > 0 || bottomBorder > 0 || horizontalBorder > 0
+              ? BorderSide(
+                  color: borderColor,
+                  width: allBorder > 0
+                      ? allBorder
+                      : (bottomBorder > 0 ? bottomBorder : horizontalBorder))
               : BorderSide.none,
-          left: allBorderWidth > 0 || leftBorderWidth > 0 || horizontalBorderWidth > 0
-              ? BorderSide(color: borderColor, width: allBorderWidth > 0 ? allBorderWidth : (leftBorderWidth > 0 ? leftBorderWidth : horizontalBorderWidth))
+          left: allBorder > 0 || leftBorder > 0 || verticalBorder > 0
+              ? BorderSide(
+                  color: borderColor,
+                  width: allBorder > 0
+                      ? allBorder
+                      : (leftBorder > 0 ? leftBorder : verticalBorder))
               : BorderSide.none,
-          right: allBorderWidth > 0 || rightBorderWidth > 0 || horizontalBorderWidth > 0
-              ? BorderSide(color: borderColor, width: allBorderWidth > 0 ? allBorderWidth : (rightBorderWidth > 0 ? rightBorderWidth : horizontalBorderWidth))
+          right: allBorder > 0 || rightBorder > 0 || verticalBorder > 0
+              ? BorderSide(
+                  color: borderColor,
+                  width: allBorder > 0
+                      ? allBorder
+                      : (rightBorder > 0 ? rightBorder : verticalBorder))
               : BorderSide.none,
         ),
       ),
-      child: centerAlign ? Center(child: child) : child,
+      child: centerAlign
+          ? Center(child: child)
+          : Align(alignment: alignment, child: child),
     );
   }
 }
