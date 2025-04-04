@@ -3,11 +3,11 @@ import 'package:billing/controllers/config_controller.dart';
 import 'package:billing/controllers/invoice_controller.dart';
 import 'package:billing/resources/constens.dart';
 import 'package:billing/resources/media_query_helper.dart';
-import 'package:billing/resources/widgets/billing_and_delivery_details.dart';
-import 'package:billing/resources/widgets/company_header.dart';
-import 'package:billing/resources/widgets/invoice_details.dart';
-import 'package:billing/resources/widgets/invoice_items_table.dart';
-import 'package:billing/resources/widgets/payment_summary.dart';
+import 'package:billing/resources/widgets/invoice_body_part/billing_and_delivery_details.dart';
+import 'package:billing/resources/widgets/invoice_body_part/company_header.dart';
+import 'package:billing/resources/widgets/invoice_body_part/invoice_details.dart';
+import 'package:billing/resources/widgets/invoice_body_part/invoice_items_table.dart';
+import 'package:billing/resources/widgets/invoice_body_part/payment_summary.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

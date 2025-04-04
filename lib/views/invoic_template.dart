@@ -31,7 +31,7 @@ class InvoiceTemplate extends StatelessWidget {
       ),
       body: invoiceBody(context,),
       floatingActionButton: FloatingActionButton(
-          onPressed: () => invoiceController.exportToPDF(),
+          onPressed: () => invoiceController.exportToPDF(context),
           child: Icon(Icons.preview)),
     );
   }

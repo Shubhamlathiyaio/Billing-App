@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:billing/services/pdf_services.dart';
+import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 
 class InvoiceController extends GetxController {
@@ -33,8 +34,8 @@ class InvoiceController extends GetxController {
   var pdfPath = "".obs; // Stores the generated PDF path
 
   /// Generates and stores PDF for preview
-  Future<void> exportToPDF() async {
-  final pdfFile = await PDFServices.generatePDF();
+  Future<void> exportToPDF(BuildContext context) async {
+  final pdfFile = await PDFServices.generatePDF(context);
   pdfPath.value = pdfFile.path; // Save for preview
   goToPreview();
 }
