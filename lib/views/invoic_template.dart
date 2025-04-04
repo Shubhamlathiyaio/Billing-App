@@ -434,25 +434,17 @@ class InvoiceTemplate extends StatelessWidget {
                   fontSize: baseFontSize * MEDIUM,
                   fontWeight: FontWeight.bold,
                 ),
-                for (var (i, term) in [
-                  "Complaint, if any, regarding this Invoice must be settled immediately.",
-                  "Goods once sold will not be taken back or exchanged.",
-                  "Goods are dispatched to the account and risk of the buyer.",
-                  "Interest @2% per month will be charged on the amount remaining unpaid from the due date.",
-                  "Subject to SURAT Jurisdiction."
-                ].indexed)
+                for (var term in [
+                  "1)\tComplaint, if any, regarding this Invoice must be settled immediately.",
+                  "2)\tGoods once sold will not be taken back or exchanged.",
+                  "3)\tGoods are dispatched to the account and risk of the buyer.",
+                  "4)\tInterest @2% per month will be charged on the amount remaining unpaid from the due date.",
+                  "5)\tSubject to SURAT Jurisdiction."
+                ])
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 10),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        CommonText(
-                            data: "${i + 1})",
-                            fontSize: baseFontSize), // Bullet point
-                        Expanded(
-                          child: CommonText(data: term, fontSize: baseFontSize - (baseFontSize/.5)),
-                        ),
-                      ],
+                    child: Expanded(
+                      child: CommonText(data: term, fontSize: baseFontSize*.8),
                     ),
                   ),
               ],
@@ -470,7 +462,7 @@ class InvoiceTemplate extends StatelessWidget {
               SizedBox(height: media.screenWidth*A4RATIO*.1),
               CommonText(
                   data: "Auth. Sign.",
-                  fontSize: baseFontSize)
+                  fontSize: baseFontSize )
             ],
           )))
         ],
