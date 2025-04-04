@@ -9,6 +9,7 @@ class CommonTextField extends StatelessWidget {
   final double borderWidth;
   final double borderRadius;
   final TextInputType keyboardType;
+  final TextCapitalization textCapitalization;
   final TextEditingController? controller;
   final double? horizontalPadding;
   final double? verticalPadding;
@@ -24,6 +25,7 @@ class CommonTextField extends StatelessWidget {
     this.borderWidth = 1.5,
     this.borderRadius = 5,
     this.keyboardType = TextInputType.text,
+    this.textCapitalization = TextCapitalization.words,
     this.controller,
     this.horizontalPadding,
     this.verticalPadding,
@@ -46,7 +48,8 @@ class CommonTextField extends StatelessWidget {
         decoration: InputDecoration(
           labelText: label is String ? label : null,
           label: label is Widget ? label : null, // Allow custom widget as label
-          prefixIcon: prefixIcon != null ? Icon(prefixIcon, color: textColor) : null,
+          prefixIcon:
+              prefixIcon != null ? Icon(prefixIcon, color: textColor) : null,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(borderRadius),
             borderSide: BorderSide(color: borderColor, width: borderWidth),
@@ -57,7 +60,8 @@ class CommonTextField extends StatelessWidget {
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(borderRadius),
-            borderSide: BorderSide(color: borderColor, width: borderWidth + 0.5),
+            borderSide:
+                BorderSide(color: borderColor, width: borderWidth + 0.5),
           ),
         ),
       ),

@@ -13,10 +13,14 @@ enum ConfigKeys {
   billTakerGSTPin,
   userFirm,
   userFirmAddress,
-  userFirmGSTPin
-  //#
-  //*
+  userFirmGSTPin,
+  invoiceNo,     // ✅ New
+  discount,      // ✅ New
+  iGst,          // ✅ New
+  sGst,          // ✅ New
+  cGst           // ✅ New
 }
+
 
 class ConfigController extends GetxController {
   final box = GetStorage();
@@ -33,6 +37,11 @@ class ConfigController extends GetxController {
   final userFirmController = TextEditingController();
   final userFirmAddressController = TextEditingController();
   final userFirmGSTPinController = TextEditingController();
+  final invoiceNoController = TextEditingController();
+final discountController = TextEditingController();
+final iGstController = TextEditingController();
+final sGstController = TextEditingController();
+final cGstController = TextEditingController();
   // final #Controller = TextEditingController();
   //*
 
@@ -48,6 +57,11 @@ class ConfigController extends GetxController {
   final userFirm = ''.obs;
   final userFirmAddress = ''.obs;
   final userFirmGSTPin = ''.obs;
+  final invoiceNo = ''.obs;
+final discount = ''.obs;
+final iGst = ''.obs;
+final sGst = ''.obs;
+final cGst = ''.obs;
   // final # = ''.obs;
   //*
 
@@ -70,6 +84,11 @@ class ConfigController extends GetxController {
     userFirm.value = userFirmController.text =box.read(ConfigKeys.userFirm.name) ?? 'LIFESTYLE';
     userFirmAddress.value = userFirmAddressController.text =box.read(ConfigKeys.userFirmAddress.name) ?? 'LIFESTYLE';
     userFirmGSTPin.value = userFirmGSTPinController.text =box.read(ConfigKeys.userFirmGSTPin.name) ?? 'LIFESTYLE';
+      invoiceNo.value = invoiceNoController.text = box.read(ConfigKeys.invoiceNo.name) ?? '0001';
+  discount.value = discountController.text = box.read(ConfigKeys.discount.name) ?? '0';
+  iGst.value = iGstController.text = box.read(ConfigKeys.iGst.name) ?? '0';
+  sGst.value = sGstController.text = box.read(ConfigKeys.sGst.name) ?? '0';
+  cGst.value = cGstController.text = box.read(ConfigKeys.cGst.name) ?? '0';
   // #.value = #Controller.text = box.read(ConfigKeys.#.name) ?? 'LIFESTYLE';
     //*
   }
@@ -88,6 +107,13 @@ class ConfigController extends GetxController {
     box.write(ConfigKeys.userFirm.name, userFirmController.text);
     box.write(ConfigKeys.userFirmAddress.name, userFirmAddressController.text);
     box.write(ConfigKeys.userFirmGSTPin.name, userFirmGSTPinController.text);
+
+    
+  box.write(ConfigKeys.invoiceNo.name, invoiceNoController.text);
+  box.write(ConfigKeys.discount.name, discountController.text);
+  box.write(ConfigKeys.iGst.name, iGstController.text);
+  box.write(ConfigKeys.sGst.name, sGstController.text);
+  box.write(ConfigKeys.cGst.name, cGstController.text);
   // box.write(ConfigKeys.#.name,#Controller.text);
     //*
 
@@ -102,6 +128,12 @@ class ConfigController extends GetxController {
     userFirm.value = userFirmController.text;
     userFirmAddress.value = userFirmAddressController.text;
     userFirmGSTPin.value = userFirmGSTPinController.text;
+
+      invoiceNo.value = invoiceNoController.text;
+  discount.value = discountController.text;
+  iGst.value = iGstController.text;
+  sGst.value = sGstController.text;
+  cGst.value = cGstController.text;
 // #.value = #Controller.text;
     //*
     Get.back();
