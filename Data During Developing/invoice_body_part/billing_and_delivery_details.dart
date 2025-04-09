@@ -1,7 +1,7 @@
 import 'package:billing/commons/common_container.dart';
 import 'package:billing/commons/common_text.dart';
 import 'package:billing/controllers/config_controller.dart';
-import 'package:billing/controllers/invoice_controller.dart';
+import '../invoice_controller.dart';
 import 'package:billing/resources/constens.dart';
 import 'package:billing/resources/media_query_helper.dart';
 import 'package:flutter/material.dart';
@@ -22,13 +22,16 @@ Widget billingAndDeliveryDetails(double baseFontSize, MediaQueryHelper media) {
 Widget _headerRow(double baseFontSize) {
   return Row(
     children: [
-      _headerContainer("Billing Details", baseFontSize, rightBorder: LINEWIDTH / 2),
-      _headerContainer("Delivery Address", baseFontSize, leftBorder: LINEWIDTH / 2),
+      _headerContainer("Billing Details", baseFontSize,
+          rightBorder: LINEWIDTH / 2),
+      _headerContainer("Delivery Address", baseFontSize,
+          leftBorder: LINEWIDTH / 2),
     ],
   );
 }
 
-Widget _headerContainer(String title, double baseFontSize, {double leftBorder = 0, double rightBorder = 0}) {
+Widget _headerContainer(String title, double baseFontSize,
+    {double leftBorder = 0, double rightBorder = 0}) {
   return Expanded(
     child: CommonContainer(
       horizontalBorder: LINEWIDTH,
@@ -44,7 +47,7 @@ Widget _headerContainer(String title, double baseFontSize, {double leftBorder = 
 }
 
 Widget _detailsRow(double baseFontSize) {
-    final configController = Get.find<ConfigController>();
+  final configController = Get.find<ConfigController>();
 
   return Row(
     children: [

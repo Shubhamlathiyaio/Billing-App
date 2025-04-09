@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:get/get.dart';
-import '../controllers/invoice_controller.dart';
+import 'invoice_controller.dart';
 
 class PreviewPage extends StatelessWidget {
   final InvoiceController invoiceController = Get.find();

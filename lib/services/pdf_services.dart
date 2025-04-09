@@ -1,8 +1,6 @@
 import 'dart:io';
 import 'package:billing/controllers/config_controller.dart';
-import 'package:billing/controllers/invoice_controller.dart';
-import 'package:billing/resources/widgets/pdf_invoice_body.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
@@ -11,17 +9,18 @@ import 'package:share_plus/share_plus.dart';
 
 class PDFServices {
   /// Generates the PDF and returns the file path
-   static Future<File> generatePDF(BuildContext context) async {
+  static Future<File> generatePDF(BuildContext context) async {
     final configController = Get.find<ConfigController>();
-    final invoiceController = Get.find<InvoiceController>();
-    
+
     final pdf = pw.Document();
 
     pdf.addPage(
       pw.Page(
         pageFormat: PdfPageFormat.a4,
         build: (pw.Context contex) {
-          return pdfInvoiceBody(context); },
+          return pw.Container();
+          // return pdfInvoiceBody(context);
+        },
       ),
     );
 

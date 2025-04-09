@@ -1,8 +1,11 @@
+import 'package:billing/commons/common_button.dart';
 import 'package:billing/commons/common_text.dart';
 import 'package:billing/controllers/config_controller.dart';
-import 'package:billing/controllers/invoice_controller.dart';
+import 'invoice_controller.dart';
 import 'package:billing/resources/media_query_helper.dart';
-import 'package:billing/resources/widgets/invoice_body.dart';
+import 'invoice_body.dart';
+import 'package:billing/resources/widgets/show_item_input_dialog.dart';
+import 'package:billing/services/save_and_open.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -29,9 +32,31 @@ class InvoiceTemplate extends StatelessWidget {
           ),
         ],
       ),
-      body: invoiceBody(context,),
+      body: SingleChildScrollView(
+        child: Column(
+          
+          children: [
+            invoiceBody(
+              context,
+            ),
+            CommonButton(
+              text: "Preview",
+              onPressed: () async {
+                final simplePdfFile = await SimplePdfApi.generateSimpleTextPdf();
+                SaveAndOpenDocument.openPdf(simplePdfFile);
+              },
+            )
+          ],
+        ),
+      ),
       floatingActionButton: FloatingActionButton(
-          onPressed: () => invoiceController.exportToPDF(context),
+          onPressed: () async {
+            showItemInputDialog();
+
+  final simplePdfFile = await SimplePdfApi.generateSimpleTextPdf();
+                SaveAndOpenDocument.openPdf(simplePdfFile);
+
+          },
           child: Icon(Icons.preview)),
     );
   }

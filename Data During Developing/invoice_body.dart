@@ -1,13 +1,13 @@
 import 'package:billing/commons/common_container.dart';
 import 'package:billing/controllers/config_controller.dart';
-import 'package:billing/controllers/invoice_controller.dart';
+import 'invoice_controller.dart';
 import 'package:billing/resources/constens.dart';
 import 'package:billing/resources/media_query_helper.dart';
-import 'package:billing/resources/widgets/invoice_body_part/billing_and_delivery_details.dart';
-import 'package:billing/resources/widgets/invoice_body_part/company_header.dart';
-import 'package:billing/resources/widgets/invoice_body_part/invoice_details.dart';
-import 'package:billing/resources/widgets/invoice_body_part/invoice_items_table.dart';
-import 'package:billing/resources/widgets/invoice_body_part/payment_summary.dart';
+import 'invoice_body_part/billing_and_delivery_details.dart';
+import 'invoice_body_part/company_header.dart';
+import 'invoice_body_part/invoice_details.dart';
+import 'invoice_body_part/invoice_items_table.dart';
+import 'invoice_body_part/payment_summary.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

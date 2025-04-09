@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class CommonTextField extends StatelessWidget {
   final dynamic label; // Accepts String or Widget
+  final String? hintText; // 🔹 Added hintText
   final IconData? prefixIcon;
   final bool isPassword;
   final Color borderColor;
@@ -13,11 +14,12 @@ class CommonTextField extends StatelessWidget {
   final TextEditingController? controller;
   final double? horizontalPadding;
   final double? verticalPadding;
-  final ValueChanged<String>? onChanged; // Added onChanged callback
+  final ValueChanged<String>? onChanged;
 
   const CommonTextField({
     Key? key,
     this.label,
+    this.hintText, // 🔹 Constructor
     this.prefixIcon,
     this.isPassword = false,
     this.borderColor = Colors.black26,
@@ -29,7 +31,7 @@ class CommonTextField extends StatelessWidget {
     this.controller,
     this.horizontalPadding,
     this.verticalPadding,
-    this.onChanged, // Constructor parameter
+    this.onChanged,
   }) : super(key: key);
 
   @override
@@ -44,10 +46,12 @@ class CommonTextField extends StatelessWidget {
         obscureText: isPassword,
         style: TextStyle(color: textColor),
         keyboardType: keyboardType,
-        onChanged: onChanged, // Pass the callback to TextField
+        textCapitalization: textCapitalization,
+        onChanged: onChanged,
         decoration: InputDecoration(
           labelText: label is String ? label : null,
-          label: label is Widget ? label : null, // Allow custom widget as label
+          label: label is Widget ? label : null,
+          hintText: hintText, // 🔹 Set hintText here
           prefixIcon:
               prefixIcon != null ? Icon(prefixIcon, color: textColor) : null,
           border: OutlineInputBorder(
