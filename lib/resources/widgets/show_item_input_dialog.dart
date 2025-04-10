@@ -1,17 +1,17 @@
 import 'dart:async';
 
-import 'package:billing/commons/common_spacing.dart';
-import 'package:billing/commons/common_text.dart';
-import 'package:billing/commons/common_text_field.dart';
-import 'package:billing/models/item.dart';
+import 'package:billing/resources/commons/common_spacing.dart';
+import 'package:billing/resources/commons/common_text.dart';
+import 'package:billing/resources/commons/common_text_field.dart';
+import 'package:billing/models/table_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 
 Future<TableItem?> showItemInputDialog({TableItem? item}) {
-  final descCtrl = TextEditingController(text: item?.description ?? '');
-  final qualityCtrl = TextEditingController(text: item?.quality ?? '');
-  final hsnCtrl = TextEditingController(text: item?.hsnCode ?? '');
-  final qtyCtrl = TextEditingController(text: item?.qty.toString() ?? '');
+  final chalNo = TextEditingController(text: item?.chalanNo.toString());
+  final itemNameCtrl = TextEditingController(text: item?.itemName ?? '');
+  final qualityCtrl = TextEditingController(text: item?.quality.toString());
+  final qtyCtrl = TextEditingController(text: item?.quantity.toString() ?? '');
   final rateCtrl = TextEditingController(text: item?.rate.toString() ?? '');
 
   final completer = Completer<TableItem?>();
@@ -30,13 +30,13 @@ Future<TableItem?> showItemInputDialog({TableItem? item}) {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              CommonTextField(controller: descCtrl, label: 'Description'),
-              CommonTextField(controller: qualityCtrl, label: 'Quality'),
               CommonTextField(
-                controller: hsnCtrl,
-                label: 'HSN Code',
+                controller: chalNo,
+                label: 'Chalan No',
                 keyboardType: TextInputType.numberWithOptions(),
               ),
+              CommonTextField(controller: itemNameCtrl, label: 'Description'),
+              CommonTextField(controller: qualityCtrl, label: 'Quality'),
               CommonTextField(
                   controller: qtyCtrl,
                   label: 'Qty',
@@ -49,10 +49,10 @@ Future<TableItem?> showItemInputDialog({TableItem? item}) {
               ElevatedButton(
                 onPressed: () {
                   final newItem = TableItem(
-                    description: descCtrl.text,
-                    quality: qualityCtrl.text,
-                    hsnCode: hsnCtrl.text,
-                    qty: double.tryParse(qtyCtrl.text) ?? 0,
+                    chalanNo: int.tryParse(chalNo.text)??0,
+                    itemName: itemNameCtrl.text,
+                    quality: double.tryParse(qualityCtrl.text) ?? 0,
+                    quantity: double.tryParse(qtyCtrl.text) ?? 0,
                     rate: double.tryParse(rateCtrl.text) ?? 0,
                   );
                   SmartDialog.dismiss();

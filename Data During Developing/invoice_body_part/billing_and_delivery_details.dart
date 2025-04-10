@@ -1,12 +1,11 @@
-import 'package:billing/commons/common_container.dart';
-import 'package:billing/commons/common_text.dart';
+import 'package:billing/resources/commons/common_container.dart';
+import 'package:billing/resources/commons/common_text.dart';
 import 'package:billing/controllers/config_controller.dart';
 import '../invoice_controller.dart';
 import 'package:billing/resources/constens.dart';
 import 'package:billing/resources/media_query_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 
 Widget billingAndDeliveryDetails(double baseFontSize, MediaQueryHelper media) {
   return Column(

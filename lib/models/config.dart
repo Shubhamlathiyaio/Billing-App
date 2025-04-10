@@ -15,7 +15,6 @@ class ConfigField {
   });
 }
 
-
 class ConfigGroup {
   final String title;
   final List<ConfigField> fields;

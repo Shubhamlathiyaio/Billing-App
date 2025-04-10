@@ -3,7 +3,8 @@ import 'package:billing/resources/widgets/common_pdfs/pdf_conatiner.dart';
 import 'package:billing/resources/widgets/common_pdfs/pdf_text.dart';
 import 'package:pdf/widgets.dart' as pw;
 
-pw.Widget billingAndDeliveryDetailsPdf(double baseFontSize, double pageWidth, ConfigController config) {
+pw.Widget billingAndDeliveryDetailsPdf(
+    double baseFontSize, double pageWidth, ConfigController config) {
   return pw.Column(
     crossAxisAlignment: pw.CrossAxisAlignment.start,
     children: [
@@ -23,7 +24,8 @@ pw.Widget _headerRow(double baseFontSize) {
   );
 }
 
-pw.Widget _headerContainer(String title, double baseFontSize, {double leftBorder = 0, double rightBorder = 0}) {
+pw.Widget _headerContainer(String title, double baseFontSize,
+    {double leftBorder = 0, double rightBorder = 0}) {
   return pw.Expanded(
     child: PDFContainer(
       horizontalBorder: 1,
@@ -42,16 +44,16 @@ pw.Widget _detailsRow(double baseFontSize, ConfigController config) {
   return pw.Row(
     children: [
       _detailsContainer(
-        title: "M/S.: ${config.billTaker.value}",
-        address: config.billTakerAddress.value,
-        gstPin: config.billTakerGSTPin.value,
+        title: "M/S.: ${config.billTaker}",
+        address: config.billTakerAddress,
+        gstPin: config.billTakerGSTPin,
         baseFontSize: baseFontSize,
         rightBorder: 0.5,
       ),
       _detailsContainer(
-        title: config.userFirm.value,
-        address: config.userFirmAddress.value,
-        gstPin: config.userFirmGSTPin.value,
+        title: config.userFirm,
+        address: config.userFirmAddress,
+        gstPin: config.userFirmGSTPin,
         baseFontSize: baseFontSize,
         leftBorder: 0.5,
       ),
@@ -97,14 +99,14 @@ pw.Widget _detailsContainer({
   );
 }
 
-
-pw.Widget _brokerInfo(double baseFontSize, double width, ConfigController config) {
+pw.Widget _brokerInfo(
+    double baseFontSize, double width, ConfigController config) {
   return PDFContainer(
     width: width,
     topBorder: 1,
-    padding: const pw.EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+    padding: const pw.EdgeInsets.symmetric(vertical: 1, horizontal: 8),
     child: PDFText(
-      data: "Broker: ${config.broker.value}",
+      data: "Broker: ${config.broker}",
       fontSize: baseFontSize,
     ),
   );

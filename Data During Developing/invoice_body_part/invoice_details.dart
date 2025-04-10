@@ -1,5 +1,5 @@
-import 'package:billing/commons/common_container.dart';
-import 'package:billing/commons/common_text.dart';
+import 'package:billing/resources/commons/common_container.dart';
+import 'package:billing/resources/commons/common_text.dart';
 import 'package:billing/resources/constens.dart';
 import 'package:flutter/material.dart';
 

@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:billing/services/save_and_open.dart';
+import 'package:billing/services/pdf_services.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
@@ -21,7 +21,7 @@ class _PDFPreviewPageState extends State<PDFPreviewPage> {
   }
 
   Future<void> loadPdf() async {
-    final file = await SimplePdfApi.generateSimpleTextPdf();
+    final file = await PdfServices.generateInvoicePdf();
     setState(() {
       pdfFile = file;
       isLoading = false;
@@ -32,6 +32,18 @@ class _PDFPreviewPageState extends State<PDFPreviewPage> {
   Widget build(BuildContext context) {
     if (isLoading) return const Center(child: CircularProgressIndicator());
 
-    return SfPdfViewer.file(pdfFile!);
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Bill Book Is In Your Hand"),
+        actions: [
+          IconButton(
+              onPressed: () {
+                PdfServices.sharePdf(pdfFile!)  ;
+              },
+              icon: Icon(Icons.share))
+        ],
+      ),
+      body: SfPdfViewer.file(pdfFile!),
+    );
   }
 }

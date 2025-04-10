@@ -1,7 +1,10 @@
-import 'package:billing/commons/common_text.dart';
-import 'package:billing/controllers/table_ceontroller.dart';
-import 'package:billing/models/item.dart';
+import 'package:billing/resources/commons/common_text.dart';
+import 'package:billing/controllers/table_controller.dart';
+import 'package:billing/models/table_item.dart';
+import 'package:billing/resources/constens.dart';
+import 'package:billing/resources/widgets/show_clear_table.dart';
 import 'package:billing/resources/widgets/show_item_input_dialog.dart';
+import 'package:billing/services/small_services.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -14,15 +17,21 @@ class TableEditorPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const CommonText(data: "Table Editor"),
+        title: const Text("Table Editor"),
         actions: [
-          ElevatedButton.icon(
-            onPressed: () {
-              itemController.clearItems();
-            },
-            icon: const Icon(Icons.delete_forever),
-            label: const CommonText(data: 'Clear Data'),
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal:7),
+            child: ElevatedButton.icon(
+              onPressed: () {
+                showClearTableDialog(() {
+                  itemController.clearItems();
+                },);
+              },
+              icon: const Icon(Icons.delete_forever),
+              label: const CommonText(data: 'Clear Data'),
+              style: ElevatedButton.styleFrom(backgroundColor: onDarkBg),
+              
+            ),
           ),
         ],
       ),
@@ -73,22 +82,24 @@ class TableEditorPage extends StatelessWidget {
             ),
             const SizedBox(width: 8),
             CircleAvatar(
+              backgroundColor: getColor(item.chalanNo),
               child: CommonText(
                 data: "${index + 1}",
-                // style: const TextStyle(color: Colors.white),
+                style: TextStyle(),
               ),
             ),
           ],
         ),
         title: CommonText(
-          data: item.description,
+          data: item.itemName,
           style: const TextStyle(fontWeight: FontWeight.bold),
         ),
-        subtitle: CommonText(data: "Qty: ${item.qty}, Rate: ₹${item.rate}"),
+        subtitle:
+            CommonText(data: "Qty: ${item.quantity}, Rate: ₹${item.rate}"),
         trailing: Wrap(
           children: [
             IconButton(
-              icon: const Icon(Icons.edit, color: Colors.green),
+              icon: Icon(Icons.edit,color: instedOfBlack),
               onPressed: () {
                 showItemInputDialog(item: item).then((value) {
                   if (value != null) {
@@ -98,7 +109,7 @@ class TableEditorPage extends StatelessWidget {
               },
             ),
             IconButton(
-              icon: const Icon(Icons.delete, color: Colors.red),
+              icon: Icon(Icons.delete, color: instedOfBlack),
               onPressed: () {
                 Get.find<TableController>().itemList.remove(item);
               },

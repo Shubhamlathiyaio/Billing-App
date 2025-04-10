@@ -1,13 +1,14 @@
-import 'package:billing/controllers/table_ceontroller.dart';
-import 'package:billing/models/item.dart';
+import 'package:billing/controllers/table_controller.dart';
+import 'package:billing/models/table_item.dart';
 import 'package:billing/resources/widgets/common_pdfs/pdf_text.dart';
+import 'package:billing/services/small_services.dart';
 import 'package:get/get.dart';
+import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 
 pw.Widget invoiceItemsTablePdf(double baseFontSize, double pageWidth) {
   final items = Get.find<TableController>().itemList;
   final TableController table = Get.put(TableController());
-
 
   final int minRows = 15;
   final int emptyRowsNeeded = (minRows - items.length - 2).clamp(0, 100);
@@ -34,25 +35,24 @@ pw.Widget invoiceItemsTablePdf(double baseFontSize, double pageWidth) {
           return _buildItemRow(i, item, baseFontSize);
         }),
         ...List.generate(emptyRowsNeeded, (_) => _buildEmptyRow(baseFontSize)),
-        _buildSubTotalRow(baseFontSize, table.subTotal),
+        _buildSubTotalRow(baseFontSize, table),
       ],
     ),
   );
 }
 
-
 pw.TableRow _buildItemRow(int index, TableItem item, double baseFontSize) {
-  final amount = item.qty * item.rate;
-
+  final amount = item.quantity * item.rate;
+  final color = getPdfColor(item.chalanNo);
   return pw.TableRow(
     children: [
-      _centeredCell(index.toString(), baseFontSize),
-      _leftAlignedCell(item.description, baseFontSize),
-      _centeredCell(item.quality ?? "-", baseFontSize),
-      _centeredCell(item.hsnCode ?? "-", baseFontSize),
-      _centeredCell(item.qty.toString(), baseFontSize),
-      _centeredCell(item.rate.toStringAsFixed(2), baseFontSize),
-      _rightAlignedCell(amount.toStringAsFixed(2), baseFontSize),
+      _centeredCell(index.toString(), baseFontSize, color),
+      _centeredCell(item.chalanNo.toString(), baseFontSize, color, ),
+      _leftAlignedCell(item.itemName, baseFontSize, color),
+      _centeredCell(item.quantity.toString(), baseFontSize, color),
+      _centeredCell(item.quantity.toString(), baseFontSize, color),
+      _centeredCell(item.rate.toStringAsFixed(2), baseFontSize, color),
+      _rightAlignedCell(amount.toStringAsFixed(2), baseFontSize, color),
     ],
   );
 }
@@ -60,8 +60,8 @@ pw.TableRow _buildItemRow(int index, TableItem item, double baseFontSize) {
 Map<int, pw.TableColumnWidth> _getPdfColumnWidths(double width) {
   return {
     0: pw.FixedColumnWidth(width * 0.08),
-    1: pw.FixedColumnWidth(width * 0.28),
-    2: pw.FixedColumnWidth(width * 0.14),
+    1: pw.FixedColumnWidth(width * 0.095),
+    2: pw.FixedColumnWidth(width * 0.28),
     3: pw.FixedColumnWidth(width * 0.14),
     4: pw.FixedColumnWidth(width * 0.10),
     5: pw.FixedColumnWidth(width * 0.12),
@@ -70,7 +70,15 @@ Map<int, pw.TableColumnWidth> _getPdfColumnWidths(double width) {
 }
 
 pw.TableRow _buildHeaderRow(double baseFontSize) {
-  final headers = ["Sr No", "Description", "Quality", "HSN Code", "Qty", "Rate", "Amount"];
+  final headers = [
+    "Sr No",
+    "Chalan",
+    "Description",
+    "Quality",
+    "Qty",
+    "Rate",
+    "Amount"
+  ];
   return pw.TableRow(
     decoration: const pw.BoxDecoration(
       border: pw.Border(
@@ -97,7 +105,7 @@ pw.TableRow _buildEmptyRow(double baseFontSize) {
     children: List.generate(
       7,
       (_) => pw.Container(
-         height: baseFontSize * 1.8, // 👈 Increase this to make the row taller
+        height: baseFontSize * 1.8, // 👈 Increase this to make the row taller
         padding: const pw.EdgeInsets.all(6),
         child: PDFText(data: " ", fontSize: baseFontSize),
       ),
@@ -105,42 +113,42 @@ pw.TableRow _buildEmptyRow(double baseFontSize) {
   );
 }
 
-pw.TableRow _buildSubTotalRow(double baseFontSize, double subtotal) {
+pw.TableRow _buildSubTotalRow(double baseFontSize, TableController table) {
   return pw.TableRow(
     decoration: const pw.BoxDecoration(
       border: pw.Border(top: pw.BorderSide(width: 0.5)),
     ),
     children: [
       pw.SizedBox(),
+      pw.SizedBox(),
       _centeredCell("Sub Total", baseFontSize),
       pw.SizedBox(),
+      _centeredCell(table.totalQuantity.toStringAsFixed(2), baseFontSize),
       pw.SizedBox(),
-      _centeredCell(" ", baseFontSize),
-      pw.SizedBox(),
-      _rightAlignedCell(subtotal.toStringAsFixed(2), baseFontSize),
+      _rightAlignedCell(table.subTotal.toStringAsFixed(2), baseFontSize),
     ],
   );
 }
 
-pw.Widget _centeredCell(String text, double fontSize) {
+pw.Widget _centeredCell(String text, double fontSize,[PdfColor color = PdfColors.black]) {
   return pw.Container(
     alignment: pw.Alignment.center,
-    child: PDFText(data: text, fontSize: fontSize),
+    child: PDFText(data: text, fontSize: fontSize, fontColor: color),
   );
 }
 
-pw.Widget _leftAlignedCell(String text, double fontSize) {
+pw.Widget _leftAlignedCell(String text, double fontSize,[PdfColor color = PdfColors.black]) {
   return pw.Container(
     alignment: pw.Alignment.centerLeft,
     padding: const pw.EdgeInsets.only(left: 6),
-    child: PDFText(data: text, fontSize: fontSize),
+    child: PDFText(data: text, fontSize: fontSize, fontColor: color),
   );
 }
 
-pw.Widget _rightAlignedCell(String text, double fontSize) {
+pw.Widget _rightAlignedCell(String text, double fontSize,[PdfColor color = PdfColors.black]) {
   return pw.Container(
     alignment: pw.Alignment.centerRight,
     padding: const pw.EdgeInsets.only(right: 6),
-    child: PDFText(data: text, fontSize: fontSize),
+    child: PDFText(data: text, fontSize: fontSize,  fontColor: color),
   );
 }

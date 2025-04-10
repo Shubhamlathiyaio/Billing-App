@@ -5,7 +5,7 @@ import 'package:pdf/widgets.dart' as pw;
 pw.Widget invoiceDetailsPdf(
   double baseFontSize,
   double screenWidth,
-  dynamic configController,
+  dynamic config,
 ) {
   final leftWidth = screenWidth * 0.5;
   final rightWidth = screenWidth * 0.45;
@@ -20,11 +20,11 @@ pw.Widget invoiceDetailsPdf(
         child: pw.Column(
           crossAxisAlignment: pw.CrossAxisAlignment.start,
           children: [
-            _detailTextPdf("GST No", configController.gstNumber.value, baseFontSize * 1.2),
+            _detailTextPdf("GST No", config.gstNumber, baseFontSize * 1.2),
             pw.SizedBox(height: 4),
-            _detailTextPdf("PAN No", configController.panNumber.value, baseFontSize),
+            _detailTextPdf("PAN No", config.panNumber, baseFontSize),
             pw.SizedBox(height: 4),
-            _detailTextPdf("State Code", configController.stateCode.value, baseFontSize),
+            _detailTextPdf("State Code", config.stateCode, baseFontSize),
           ],
         ),
       ),
@@ -43,11 +43,11 @@ pw.Widget invoiceDetailsPdf(
         child: pw.Column(
           crossAxisAlignment: pw.CrossAxisAlignment.start,
           children: [
-            _detailTextPdf("Invoice No", configController.invoiceNo.value, baseFontSize),
+            _detailTextPdf("Invoice No", config.invoiceNo, baseFontSize),
             pw.SizedBox(height: 4),
-            _detailTextPdf("Date", "", baseFontSize),
+            _detailTextPdf("Date", config.date, baseFontSize),
             pw.SizedBox(height: 4),
-            _detailTextPdf("Challan No", configController.chalanNo.value, baseFontSize),
+            // _detailTextPdf("Challan No", config.chalanNo, baseFontSize),
           ],
         ),
       ),
@@ -58,8 +58,8 @@ pw.Widget invoiceDetailsPdf(
 
 pw.Widget _detailTextPdf(String label, String value, double fontSize) {
   return PDFText(
-    data: "$label: $value",
+    data: "$label\t: $value",
     fontSize: fontSize,
-    fontWeight: pw.FontWeight.normal,
+    fontWeight: pw.FontWeight.normal
   );
 }

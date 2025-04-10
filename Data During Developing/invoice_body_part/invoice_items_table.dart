@@ -1,8 +1,8 @@
-import 'package:billing/commons/common_box_decoration.dart';
-import 'package:billing/commons/common_container.dart';
-import 'package:billing/commons/common_text.dart';
+import 'package:billing/resources/commons/common_box_decoration.dart';
+import 'package:billing/resources/commons/common_container.dart';
+import 'package:billing/resources/commons/common_text.dart';
 import 'package:billing/controllers/item_controller.dart';
-import 'package:billing/models/item.dart';
+import 'package:billing/models/table_item.dart';
 import 'package:billing/resources/constens.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -71,16 +71,16 @@ TableRow _buildHeaderRow(double baseFontSize) {
 }
 
 TableRow _buildItemRow(double baseFontSize, int index, TableItem item) {
-  final amount = item.qty * item.rate;
+  final amount = item.quantity * item.rate;
   final itemController = Get.find<ItemController>();
 
   return TableRow(
     children: [
       _cell(index.toString(), baseFontSize), // Sr No
       _cell(item.description, baseFontSize), // Description
-      _cell(item.quality, baseFontSize), // Quality
+      _cell(item.quantity, baseFontSize), // Quality
       _cell(item.hsnCode, baseFontSize), // HSN Code
-      _cell(item.qty.toStringAsFixed(2), baseFontSize), // Qty
+      _cell(item.quantity.toStringAsFixed(2), baseFontSize), // Qty
       _cell(item.rate.toStringAsFixed(2), baseFontSize), // Rate
       Padding(
         padding: EdgeInsets.symmetric(horizontal: 8.0),
@@ -112,9 +112,9 @@ Widget _cell(String text, double fontSize) {
 }
 
 TableRow _buildSubTotalRow(double baseFontSize, List<TableItem> items) {
-  final totalQty = items.fold<double>(0, (sum, item) => sum + item.qty);
+  final totalQty = items.fold<double>(0, (sum, item) => sum + item.quantity);
   final totalAmount =
-      items.fold<double>(0, (sum, item) => sum + item.qty * item.rate);
+      items.fold<double>(0, (sum, item) => sum + item.quantity * item.rate);
 
   return TableRow(
     decoration: CommonBoxDecoration.ui(horizontalBorderWidth: LINEWIDTH),

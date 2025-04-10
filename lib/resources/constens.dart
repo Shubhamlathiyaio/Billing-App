@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 
 const double LARGE = 2;
@@ -9,13 +7,15 @@ const double LINEWIDTH = 1;
 const double PADDING = 3;
 const double A4RATIO = 1.414;
 
-const Color primaryColor = Colors.blue;
-const Color secondaryColor = Colors.grey;
+Color? primaryColor = Colors.blueGrey[900];
+const Color secondaryColor = Colors.blueGrey;
 const Color borderColor = Colors.black;
 const Color backgroundColor = Colors.white;
+const Color appBarTextColor = Colors.white;
+const Color onDarkBg = Colors.white;
+Color? instedOfBlack = Colors.blueGrey[900];
 
 const double containerPadding = 10.0;
 const double containerBorderRadius = 8.0;
 const double tilePadding = 6.0;
 const double sectionSpacing = 12.0;
-

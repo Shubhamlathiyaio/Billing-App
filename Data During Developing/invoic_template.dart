@@ -1,5 +1,5 @@
-import 'package:billing/commons/common_button.dart';
-import 'package:billing/commons/common_text.dart';
+import 'package:billing/resources/commons/common_button.dart';
+import 'package:billing/resources/commons/common_text.dart';
 import 'package:billing/controllers/config_controller.dart';
 import 'invoice_controller.dart';
 import 'package:billing/resources/media_query_helper.dart';
@@ -34,7 +34,6 @@ class InvoiceTemplate extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Column(
-          
           children: [
             invoiceBody(
               context,
@@ -42,7 +41,7 @@ class InvoiceTemplate extends StatelessWidget {
             CommonButton(
               text: "Preview",
               onPressed: () async {
-                final simplePdfFile = await SimplePdfApi.generateSimpleTextPdf();
+                final simplePdfFile = await SimplePdfApi.generatePdf();
                 SaveAndOpenDocument.openPdf(simplePdfFile);
               },
             )
@@ -53,9 +52,8 @@ class InvoiceTemplate extends StatelessWidget {
           onPressed: () async {
             showItemInputDialog();
 
-  final simplePdfFile = await SimplePdfApi.generateSimpleTextPdf();
-                SaveAndOpenDocument.openPdf(simplePdfFile);
-
+            final simplePdfFile = await SimplePdfApi.generatePdf();
+            SaveAndOpenDocument.openPdf(simplePdfFile);
           },
           child: Icon(Icons.preview)),
     );
