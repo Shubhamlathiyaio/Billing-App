@@ -28,7 +28,7 @@ class PdfServices {
 
   /// Generate a simple PDF with your invoice layout
   static Future<File> generateInvoicePdf() async {
-    final config = Get.find<ConfigController>();
+    final config =Get.find<ConfigController>();
     final pdf = pw.Document();
 
     pdf.addPage(
@@ -67,4 +67,6 @@ class PdfServices {
       text: message ?? "Here is your invoice PDF.",
     );
   }
+
+  static generatePDF() {}
 }

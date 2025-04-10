@@ -19,7 +19,7 @@ class HomePage extends StatelessWidget {
         onPageChanged: (index) => navController.currentIndex.value = index,
         children: [
           const TableEditorPage(),
-          const PDFPreviewPage(),
+          PdfPreviewPage(),
           ConfigPage(),
           StoragePage(), // New Page
         ],

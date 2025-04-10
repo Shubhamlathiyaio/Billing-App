@@ -1,0 +1,179 @@
+{
+  "_note1": "KEEP THIS FILE! Check it into a version control system (VCS) like git.",
+  "_note2": "ObjectBox manages crucial IDs for your object model. See docs for details.",
+  "_note3": "If you have VCS merge conflicts, you must resolve them according to ObjectBox docs.",
+  "entities": [
+    {
+      "id": "1:1672983046465597673",
+      "lastPropertyId": "21:4893950793228913829",
+      "name": "Invoice",
+      "properties": [
+        {
+          "id": "1:3890450179426364889",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:6865772874563358292",
+          "name": "invoiceNo",
+          "type": 9
+        },
+        {
+          "id": "3:9191885829780781509",
+          "name": "date",
+          "type": 9
+        },
+        {
+          "id": "4:4228676430908737861",
+          "name": "companyName",
+          "type": 9
+        },
+        {
+          "id": "5:4783372659865723367",
+          "name": "address",
+          "type": 9
+        },
+        {
+          "id": "6:4762333585076775615",
+          "name": "gstNumber",
+          "type": 9
+        },
+        {
+          "id": "7:5882257973261177415",
+          "name": "panNumber",
+          "type": 9
+        },
+        {
+          "id": "8:7518775087771973313",
+          "name": "stateCode",
+          "type": 9
+        },
+        {
+          "id": "9:5107038754376229363",
+          "name": "billTaker",
+          "type": 9
+        },
+        {
+          "id": "10:5708073310102450734",
+          "name": "billTakerAddress",
+          "type": 9
+        },
+        {
+          "id": "11:3839464879353333506",
+          "name": "billTakerGSTPin",
+          "type": 9
+        },
+        {
+          "id": "12:4600010460398069013",
+          "name": "userFirm",
+          "type": 9
+        },
+        {
+          "id": "13:3012722547490749159",
+          "name": "userFirmAddress",
+          "type": 9
+        },
+        {
+          "id": "14:4429756325963036195",
+          "name": "userFirmGSTPin",
+          "type": 9
+        },
+        {
+          "id": "15:6473165531744905281",
+          "name": "broker",
+          "type": 9
+        },
+        {
+          "id": "16:8899578811471115002",
+          "name": "discount",
+          "type": 9
+        },
+        {
+          "id": "17:7854756287243316062",
+          "name": "othLess",
+          "type": 9
+        },
+        {
+          "id": "18:8756370834084617573",
+          "name": "freight",
+          "type": 9
+        },
+        {
+          "id": "19:5695355691560927563",
+          "name": "iGst",
+          "type": 9
+        },
+        {
+          "id": "20:248900858212115582",
+          "name": "sGst",
+          "type": 9
+        },
+        {
+          "id": "21:4893950793228913829",
+          "name": "cGst",
+          "type": 9
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "2:443783049247010191",
+      "lastPropertyId": "7:315890099470973849",
+      "name": "InvoiceItem",
+      "properties": [
+        {
+          "id": "1:8917307149150204895",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:6642355817336750266",
+          "name": "chalan",
+          "type": 9
+        },
+        {
+          "id": "3:6822236859265026829",
+          "name": "itemName",
+          "type": 9
+        },
+        {
+          "id": "4:6339038936042033449",
+          "name": "quality",
+          "type": 9
+        },
+        {
+          "id": "5:3453200907485504967",
+          "name": "quantity",
+          "type": 9
+        },
+        {
+          "id": "6:468489216079176211",
+          "name": "rate",
+          "type": 9
+        },
+        {
+          "id": "7:315890099470973849",
+          "name": "invoiceId",
+          "type": 11,
+          "flags": 520,
+          "indexId": "1:412286871668380978",
+          "relationTarget": "Invoice"
+        }
+      ],
+      "relations": []
+    }
+  ],
+  "lastEntityId": "2:443783049247010191",
+  "lastIndexId": "1:412286871668380978",
+  "lastRelationId": "0:0",
+  "lastSequenceId": "0:0",
+  "modelVersion": 5,
+  "modelVersionParserMinimum": 5,
+  "retiredEntityUids": [],
+  "retiredIndexUids": [],
+  "retiredPropertyUids": [],
+  "retiredRelationUids": [],
+  "version": 1
+}

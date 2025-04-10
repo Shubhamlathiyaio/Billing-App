@@ -1,3 +1,4 @@
+import 'package:billing/models/invoice.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -141,5 +142,52 @@ class ConfigController extends GetxController {
   void onClose() {
     fields.forEach((_, field) => field.dispose());
     super.onClose();
+  }
+
+  Invoice getInvoice() {
+    return Invoice(
+      invoiceNo: invoiceNo, // Set dynamically if needed
+      date: date,
+      companyName: companyName,
+      address: address,
+      gstNumber: gstNumber,
+      panNumber: panNumber,
+      stateCode: stateCode,
+      billTaker: billTaker,
+      billTakerAddress: billTakerAddress,
+      billTakerGSTPin: billTakerGSTPin,
+      userFirm: userFirm,
+      userFirmAddress: userFirmAddress,
+      userFirmGSTPin: userFirmGSTPin,
+      broker: broker,
+      discount: discount,
+      othLess: othLess,
+      freight: freight,
+      iGst: iGst,
+      sGst: sGst,
+      cGst: cGst,
+    );
+  }
+  void invoiceToConfig(Invoice invoice){
+    invoiceNoController.text = invoice.invoiceNo;
+    dateController.text = invoice.date;
+    companyNameController.text = invoice.companyName;
+    addressController.text = invoice.address;
+    gstNumberController.text = invoice.gstNumber;
+    panNumberController.text = invoice.panNumber;
+    stateCodeController.text = invoice.stateCode;
+    billTakerController.text = invoice.billTaker;
+    billTakerAddressController.text = invoice.billTakerAddress;
+    billTakerGSTPinController.text = invoice.billTakerGSTPin;
+    userFirmController.text = invoice.userFirm;
+    userFirmAddressController.text = invoice.userFirmAddress;
+    userFirmGSTPinController.text = invoice.userFirmGSTPin;
+    brokerController.text = invoice.broker;
+    discountController.text = invoice.discount.toString();
+    othLessController.text = invoice.othLess.toString();
+    freightController.text = invoice.freight.toString();
+    iGstController.text = invoice.iGst.toString();
+    sGstController.text = invoice.sGst.toString();
+    cGstController.text = invoice.cGst.toString();
   }
 }
