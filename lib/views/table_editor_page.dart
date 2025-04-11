@@ -13,30 +13,31 @@ class TableEditorPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final itemController = Get.find<TableController>();
+    final tableController = Get.find<TableController>();
 
     return Scaffold(
       appBar: AppBar(
         title: const Text("Table Editor"),
         actions: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal:7),
+            padding: const EdgeInsets.symmetric(horizontal: 7),
             child: ElevatedButton.icon(
               onPressed: () {
-                showClearTableDialog(() {
-                  itemController.clearItems();
-                },);
+                showClearTableDialog(
+                  () {
+                    tableController.clearTable();
+                  },
+                );
               },
               icon: const Icon(Icons.delete_forever),
               label: const CommonText(data: 'Clear Data'),
               style: ElevatedButton.styleFrom(backgroundColor: onDarkBg),
-              
             ),
           ),
         ],
       ),
       body: Obx(() {
-        final items = itemController.itemList;
+        final items = tableController.itemList;
 
         if (items.isEmpty) {
           return const Center(child: CommonText(data: "No items added."));
@@ -58,7 +59,7 @@ class TableEditorPage extends StatelessWidget {
       }),
       floatingActionButton: FloatingActionButton(
         onPressed: () => showItemInputDialog().then((value) {
-          if (value != null) itemController.addItem(value);
+          if (value != null) tableController.addItem(value);
         }),
         child: const Icon(Icons.add),
       ),
@@ -99,7 +100,7 @@ class TableEditorPage extends StatelessWidget {
         trailing: Wrap(
           children: [
             IconButton(
-              icon: Icon(Icons.edit,color: instedOfBlack),
+              icon: Icon(Icons.edit, color: instedOfBlack),
               onPressed: () {
                 showItemInputDialog(item: item).then((value) {
                   if (value != null) {

@@ -18,13 +18,16 @@ class TableController extends GetxController {
       itemList.fold(0.0, (sum, item) => sum + (item.quantity * item.rate));
 
   double get discountAmount =>
-      perOf(double.tryParse(config.discount)??0, subTotal);
+      perOf(double.tryParse(config.discount) ?? 0, subTotal);
 
   double get amountAfterDiscount => subTotal - discountAmount;
 
-  double get igst => perOf(double.tryParse(config.iGst)??0, amountAfterDiscount);
-  double get sgst => perOf(double.tryParse(config.sGst)??0, amountAfterDiscount);
-  double get cgst => perOf(double.tryParse(config.cGst)??0, amountAfterDiscount);
+  double get igst =>
+      perOf(double.tryParse(config.iGst) ?? 0, amountAfterDiscount);
+  double get sgst =>
+      perOf(double.tryParse(config.sGst) ?? 0, amountAfterDiscount);
+  double get cgst =>
+      perOf(double.tryParse(config.cGst) ?? 0, amountAfterDiscount);
 
   int get finalTotal => (amountAfterDiscount + igst + sgst + cgst).round();
 
@@ -64,7 +67,7 @@ class TableController extends GetxController {
   }
 
   // ✅ Clear all items
-  void clearItems() {
+  void clearTable() {
     itemList.clear();
     saveItemsToStorage();
   }

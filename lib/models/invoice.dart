@@ -1,10 +1,12 @@
 // lib/models/invoice_model.dart
+import 'package:billing/controllers/storage_controller.dart';
 import 'package:billing/models/invoice_item.dart';
+import 'package:get/get.dart';
 import 'package:objectbox/objectbox.dart';
 
 @Entity()
 class Invoice {
-  int id = 0;
+  int id = Get.find<StorageController>().currentId.value; // Unique ID for each invoice, auto-incremented by ObjectBox
 
   // All fields are stored as String
   String invoiceNo;

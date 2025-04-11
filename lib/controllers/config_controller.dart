@@ -1,3 +1,4 @@
+import 'package:billing/controllers/table_controller.dart';
 import 'package:billing/models/invoice.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -7,6 +8,7 @@ import '../models/config_fields.dart';
 
 class ConfigController extends GetxController {
   final box = GetStorage();
+
   // Company
   final companyNameController = TextEditingController();
   final addressController = TextEditingController();
@@ -35,35 +37,6 @@ class ConfigController extends GetxController {
   final sGstController = TextEditingController();
   final cGstController = TextEditingController();
 
-  // Getters for easy access
-  // Company
-  String get companyName => companyNameController.text;
-  String get address => addressController.text;
-
-  // Invoice
-  String get gstNumber => gstNumberController.text;
-  String get panNumber => panNumberController.text;
-  String get stateCode => stateCodeController.text;
-  String get invoiceNo => invoiceNoController.text;
-  String get date => dateController.text;
-
-  // Billing
-  String get billTaker => billTakerController.text;
-  String get billTakerAddress => billTakerAddressController.text;
-  String get billTakerGSTPin => billTakerGSTPinController.text;
-  String get userFirm => userFirmController.text;
-  String get userFirmAddress => userFirmAddressController.text;
-  String get userFirmGSTPin => userFirmGSTPinController.text;
-  String get broker => brokerController.text;
-
-  // Discount & Taxes
-  String get discount => discountController.text;
-  String get othLess => othLessController.text;
-  String get freight => freightController.text;
-  String get iGst => iGstController.text;
-  String get sGst => sGstController.text;
-  String get cGst => cGstController.text;
-
   final Map<ConfigKeys, ConfigField> fields = {
     for (var key in ConfigKeys.values)
       key: ConfigField(controller: TextEditingController())
@@ -75,52 +48,45 @@ class ConfigController extends GetxController {
     loadConfig();
   }
 
-  // ✅ Save Config to local
+  // ✅ Save Config
   void saveConfig() {
+    final table = Get.find<TableController>();
     box.write('config', {
-      // Company
-      'companyName': companyNameController.text,
-      'address': addressController.text,
-      // Invoice
-      'gstNumber': gstNumberController.text,
-      'panNumber': panNumberController.text,
-      'stateCode': stateCodeController.text,
-      'invoiceNo': invoiceNoController.text,
-      'date': dateController.text,
-
-      // Billing
-      'billTaker': billTakerController.text,
-      'billTakerAddress': billTakerAddressController.text,
-      'billTakerGSTPin': billTakerGSTPinController.text,
-      'userFirm': userFirmController.text,
-      'userFirmAddress': userFirmAddressController.text,
-      'userFirmGSTPin': userFirmGSTPinController.text,
-      'broker': brokerController.text,
-
-      // Discount & Taxes
-      'discount': discountController.text,
-      'othLess': othLessController.text,
-      'freight': freightController.text,
-      'iGst': iGstController.text,
-      'sGst': sGstController.text,
-      'cGst': cGstController.text,
+      'companyName': companyName,
+      'address': address,
+      'gstNumber': gstNumber,
+      'panNumber': panNumber,
+      'stateCode': stateCode,
+      'invoiceNo': invoiceNo,
+      'date': date,
+      'billTaker': billTaker,
+      'billTakerAddress': billTakerAddress,
+      'billTakerGSTPin': billTakerGSTPin,
+      'userFirm': userFirm,
+      'userFirmAddress': userFirmAddress,
+      'userFirmGSTPin': userFirmGSTPin,
+      'broker': broker,
+      'discount': discount,
+      'othLess': othLess,
+      'freight': freight,
+      'iGst': iGst,
+      'sGst': sGst,
+      'cGst': cGst,
+       'itemList': table.itemList.map((e) => e.toJson()).toList(),
     });
   }
 
   // ✅ Load Config
   void loadConfig() {
     final config = box.read('config') ?? {};
-    // Company
+
     companyNameController.text = config['companyName'] ?? '';
     addressController.text = config['address'] ?? '';
-
-    // Invoice
     gstNumberController.text = config['gstNumber'] ?? '';
     panNumberController.text = config['panNumber'] ?? '';
     stateCodeController.text = config['stateCode'] ?? '';
     invoiceNoController.text = config['invoiceNo'] ?? '';
-
-    // Billing
+    dateController.text = config['date'] ?? '';
     billTakerController.text = config['billTaker'] ?? '';
     billTakerAddressController.text = config['billTakerAddress'] ?? '';
     billTakerGSTPinController.text = config['billTakerGSTPin'] ?? '';
@@ -128,8 +94,6 @@ class ConfigController extends GetxController {
     userFirmAddressController.text = config['userFirmAddress'] ?? '';
     userFirmGSTPinController.text = config['userFirmGSTPin'] ?? '';
     brokerController.text = config['broker'] ?? '';
-
-    // Discount & Taxes
     discountController.text = config['discount'] ?? '';
     othLessController.text = config['othLess'] ?? '';
     freightController.text = config['freight'] ?? '';
@@ -138,15 +102,10 @@ class ConfigController extends GetxController {
     cGstController.text = config['cGst'] ?? '';
   }
 
-  @override
-  void onClose() {
-    fields.forEach((_, field) => field.dispose());
-    super.onClose();
-  }
-
+  // ✅ Convert current config to Invoice object
   Invoice getInvoice() {
     return Invoice(
-      invoiceNo: invoiceNo, // Set dynamically if needed
+      invoiceNo: invoiceNo,
       date: date,
       companyName: companyName,
       address: address,
@@ -168,7 +127,9 @@ class ConfigController extends GetxController {
       cGst: cGst,
     );
   }
-  void invoiceToConfig(Invoice invoice){
+
+  // ✅ Load Invoice data into config (for editing/viewing)
+  void invoiceToConfig(Invoice invoice) {
     invoiceNoController.text = invoice.invoiceNo;
     dateController.text = invoice.date;
     companyNameController.text = invoice.companyName;
@@ -189,5 +150,33 @@ class ConfigController extends GetxController {
     iGstController.text = invoice.iGst.toString();
     sGstController.text = invoice.sGst.toString();
     cGstController.text = invoice.cGst.toString();
+  }
+
+  // Getters
+  String get companyName => companyNameController.text;
+  String get address => addressController.text;
+  String get gstNumber => gstNumberController.text;
+  String get panNumber => panNumberController.text;
+  String get stateCode => stateCodeController.text;
+  String get invoiceNo => invoiceNoController.text;
+  String get date => dateController.text;
+  String get billTaker => billTakerController.text;
+  String get billTakerAddress => billTakerAddressController.text;
+  String get billTakerGSTPin => billTakerGSTPinController.text;
+  String get userFirm => userFirmController.text;
+  String get userFirmAddress => userFirmAddressController.text;
+  String get userFirmGSTPin => userFirmGSTPinController.text;
+  String get broker => brokerController.text;
+  String get discount => discountController.text;
+  String get othLess => othLessController.text;
+  String get freight => freightController.text;
+  String get iGst => iGstController.text;
+  String get sGst => sGstController.text;
+  String get cGst => cGstController.text;
+
+  @override
+  void onClose() {
+    fields.forEach((_, field) => field.dispose());
+    super.onClose();
   }
 }
