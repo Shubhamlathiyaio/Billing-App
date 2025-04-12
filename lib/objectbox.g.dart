@@ -140,7 +140,7 @@ final _entities = <obx_int.ModelEntity>[
   obx_int.ModelEntity(
       id: const obx_int.IdUid(2, 443783049247010191),
       name: 'InvoiceItem',
-      lastPropertyId: const obx_int.IdUid(7, 315890099470973849),
+      lastPropertyId: const obx_int.IdUid(8, 7623447192604980631),
       flags: 0,
       properties: <obx_int.ModelProperty>[
         obx_int.ModelProperty(
@@ -160,12 +160,12 @@ final _entities = <obx_int.ModelEntity>[
             flags: 0),
         obx_int.ModelProperty(
             id: const obx_int.IdUid(4, 6339038936042033449),
-            name: 'quality',
+            name: 'taka',
             type: 9,
             flags: 0),
         obx_int.ModelProperty(
             id: const obx_int.IdUid(5, 3453200907485504967),
-            name: 'quantity',
+            name: 'qty',
             type: 9,
             flags: 0),
         obx_int.ModelProperty(
@@ -179,7 +179,12 @@ final _entities = <obx_int.ModelEntity>[
             type: 11,
             flags: 520,
             indexId: const obx_int.IdUid(1, 412286871668380978),
-            relationTarget: 'Invoice')
+            relationTarget: 'Invoice'),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(8, 7623447192604980631),
+            name: 'hsnCode',
+            type: 9,
+            flags: 0)
       ],
       relations: <obx_int.ModelRelation>[],
       backlinks: <obx_int.ModelBacklink>[])
@@ -379,17 +384,19 @@ obx_int.ModelDefinition getObjectBoxModel() {
         objectToFB: (InvoiceItem object, fb.Builder fbb) {
           final chalanOffset = fbb.writeString(object.chalan);
           final itemNameOffset = fbb.writeString(object.itemName);
-          final qualityOffset = fbb.writeString(object.quality);
-          final quantityOffset = fbb.writeString(object.quantity);
+          final takaOffset = fbb.writeString(object.taka);
+          final qtyOffset = fbb.writeString(object.qty);
           final rateOffset = fbb.writeString(object.rate);
-          fbb.startTable(8);
+          final hsnCodeOffset = fbb.writeString(object.hsnCode);
+          fbb.startTable(9);
           fbb.addInt64(0, object.id);
           fbb.addOffset(1, chalanOffset);
           fbb.addOffset(2, itemNameOffset);
-          fbb.addOffset(3, qualityOffset);
-          fbb.addOffset(4, quantityOffset);
+          fbb.addOffset(3, takaOffset);
+          fbb.addOffset(4, qtyOffset);
           fbb.addOffset(5, rateOffset);
           fbb.addInt64(6, object.invoice.targetId);
+          fbb.addOffset(7, hsnCodeOffset);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -400,17 +407,20 @@ obx_int.ModelDefinition getObjectBoxModel() {
               .vTableGet(buffer, rootOffset, 6, '');
           final itemNameParam = const fb.StringReader(asciiOptimization: true)
               .vTableGet(buffer, rootOffset, 8, '');
-          final qualityParam = const fb.StringReader(asciiOptimization: true)
+          final takaParam = const fb.StringReader(asciiOptimization: true)
               .vTableGet(buffer, rootOffset, 10, '');
-          final quantityParam = const fb.StringReader(asciiOptimization: true)
+          final hsnCodeParam = const fb.StringReader(asciiOptimization: true)
+              .vTableGet(buffer, rootOffset, 18, '');
+          final qtyParam = const fb.StringReader(asciiOptimization: true)
               .vTableGet(buffer, rootOffset, 12, '');
           final rateParam = const fb.StringReader(asciiOptimization: true)
               .vTableGet(buffer, rootOffset, 14, '');
           final object = InvoiceItem(
               chalan: chalanParam,
               itemName: itemNameParam,
-              quality: qualityParam,
-              quantity: quantityParam,
+              taka: takaParam,
+              hsnCode: hsnCodeParam,
+              qty: qtyParam,
               rate: rateParam)
             ..id = const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
           object.invoice.targetId =
@@ -528,12 +538,12 @@ class InvoiceItem_ {
   static final itemName =
       obx.QueryStringProperty<InvoiceItem>(_entities[1].properties[2]);
 
-  /// See [InvoiceItem.quality].
-  static final quality =
+  /// See [InvoiceItem.taka].
+  static final taka =
       obx.QueryStringProperty<InvoiceItem>(_entities[1].properties[3]);
 
-  /// See [InvoiceItem.quantity].
-  static final quantity =
+  /// See [InvoiceItem.qty].
+  static final qty =
       obx.QueryStringProperty<InvoiceItem>(_entities[1].properties[4]);
 
   /// See [InvoiceItem.rate].
@@ -543,4 +553,8 @@ class InvoiceItem_ {
   /// See [InvoiceItem.invoice].
   static final invoice =
       obx.QueryRelationToOne<InvoiceItem, Invoice>(_entities[1].properties[6]);
+
+  /// See [InvoiceItem.hsnCode].
+  static final hsnCode =
+      obx.QueryStringProperty<InvoiceItem>(_entities[1].properties[7]);
 }

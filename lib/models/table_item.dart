@@ -1,31 +1,35 @@
 class TableItem {
-  int chalanNo; // ✅ New field
+  int chalanNo;
   String itemName;
-  double quality;
-  double quantity;
+  String taka;
+  String hsnCode; // ✅ New nullable field
+  double qty;
   double rate;
 
   TableItem({
     required this.chalanNo,
     required this.itemName,
-    required this.quality,
-    required this.quantity,
+    required this.taka,
+    required this.hsnCode, // ✅ Optional
+    required this.qty,
     required this.rate,
   });
 
   Map<String, dynamic> toJson() => {
         'chalanNo': chalanNo,
         'itemName': itemName,
-        'quality': quality,
-        'qty': quantity,
+        'taka': taka,
+        'hsnCode': hsnCode, // ✅ Save it
+        'qty': qty,
         'rate': rate,
       };
 
   factory TableItem.fromJson(Map<String, dynamic> json) => TableItem(
         chalanNo: json['chalanNo'] ?? '',
         itemName: json['itemName'],
-        quality: json['quality'],
-        quantity: json['qty'],
+        taka: json['taka'],
+        hsnCode: json['hsnCode'], // ✅ Load it
+        qty: json['qty'],
         rate: json['rate'],
       );
 }

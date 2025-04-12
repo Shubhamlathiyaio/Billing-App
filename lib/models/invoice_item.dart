@@ -8,17 +8,44 @@ class InvoiceItem {
 
   String chalan;
   String itemName;
-  String quality;
-  String quantity; // Store as String, convert to double when needed
-  String rate;     // Store as String, convert to double when needed
+  String taka;
+  String hsnCode;
+  String qty; // Store as String, convert to double when needed
+  String rate; // Store as String, convert to double when needed
 
-  final invoice = ToOne<Invoice>();
+  final invoice = ToOne<Invoice>(); // Relation to Invoice
 
   InvoiceItem({
     required this.chalan,
     required this.itemName,
-    required this.quality,
-    required this.quantity,
+    required this.taka,
+    required this.hsnCode,
+    required this.qty,
     required this.rate,
   });
+
+  // Convert the object to JSON format for external use
+  Map<String, dynamic> toJson() => {
+        'chalan': chalan,
+        'itemName': itemName,
+        'taka': taka,
+        'hsnCode': hsnCode,
+        'qty': qty,
+        'rate': rate,
+      };
+
+  // Factory to create an InvoiceItem from JSON
+  factory InvoiceItem.fromJson(Map<String, dynamic> json) => InvoiceItem(
+        chalan: json['chalan'] ?? '',
+        itemName: json['itemName'] ?? '',
+        taka: json['taka'] ?? '',
+        hsnCode: json['hsnCode'] ?? '',
+        qty: json['qty'] ?? '0',
+        rate: json['rate'] ?? '0',
+      );
+
+  @override
+  String toString() {
+    return 'InvoiceItem{id: $id, chalan: $chalan, itemName: $itemName, taka: $taka, hsnCode: $hsnCode, qty: $qty, rate: $rate}';
+  }
 }

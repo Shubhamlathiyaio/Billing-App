@@ -119,7 +119,7 @@
     },
     {
       "id": "2:443783049247010191",
-      "lastPropertyId": "7:315890099470973849",
+      "lastPropertyId": "8:7623447192604980631",
       "name": "InvoiceItem",
       "properties": [
         {
@@ -140,12 +140,12 @@
         },
         {
           "id": "4:6339038936042033449",
-          "name": "quality",
+          "name": "taka",
           "type": 9
         },
         {
           "id": "5:3453200907485504967",
-          "name": "quantity",
+          "name": "qty",
           "type": 9
         },
         {
@@ -160,6 +160,11 @@
           "flags": 520,
           "indexId": "1:412286871668380978",
           "relationTarget": "Invoice"
+        },
+        {
+          "id": "8:7623447192604980631",
+          "name": "hsnCode",
+          "type": 9
         }
       ],
       "relations": []

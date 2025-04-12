@@ -27,9 +27,9 @@ class ConfigExpansionController extends GetxController {
 
   void toggleTile(int index) {
     if (openTileIndex.value == index) {
-      openTileIndex.value = -1; // collapse
+      openTileIndex.value = -1;
     } else {
-      openTileIndex.value = index; // open the new one
+      openTileIndex.value = index;
     }
   }
 }

@@ -2,8 +2,9 @@ import 'package:billing/resources/commons/common_text.dart';
 import 'package:billing/controllers/table_controller.dart';
 import 'package:billing/models/table_item.dart';
 import 'package:billing/resources/constens.dart';
-import 'package:billing/resources/widgets/show_clear_table.dart';
-import 'package:billing/resources/widgets/show_item_input_dialog.dart';
+import 'package:billing/resources/widgets/dilogs/show_clear_table.dart';
+import 'package:billing/resources/widgets/dilogs/show_delete_dialog.dart';
+import 'package:billing/resources/widgets/dilogs/show_item_input_dialog.dart';
 import 'package:billing/services/small_services.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -40,7 +41,7 @@ class TableEditorPage extends StatelessWidget {
         final items = tableController.itemList;
 
         if (items.isEmpty) {
-          return const Center(child: CommonText(data: "No items added."));
+          return Center(child: CommonText(data: "No Items Yet!"));
         }
 
         return ReorderableListView.builder(
@@ -95,8 +96,7 @@ class TableEditorPage extends StatelessWidget {
           data: item.itemName,
           style: const TextStyle(fontWeight: FontWeight.bold),
         ),
-        subtitle:
-            CommonText(data: "Qty: ${item.quantity}, Rate: ₹${item.rate}"),
+        subtitle: CommonText(data: "Qty: ${item.qty}, Rate: ₹${item.rate}"),
         trailing: Wrap(
           children: [
             IconButton(
@@ -112,7 +112,9 @@ class TableEditorPage extends StatelessWidget {
             IconButton(
               icon: Icon(Icons.delete, color: instedOfBlack),
               onPressed: () {
-                Get.find<TableController>().itemList.remove(item);
+                showDeleteDialog(
+                  () => Get.find<TableController>().itemList.remove(item),
+                );
               },
             ),
           ],

@@ -1,12 +1,13 @@
-// lib/models/invoice_model.dart
 import 'package:billing/controllers/storage_controller.dart';
-import 'package:billing/models/invoice_item.dart';
 import 'package:get/get.dart';
 import 'package:objectbox/objectbox.dart';
+import 'package:billing/models/invoice_item.dart'; // Import the InvoiceItem model
 
 @Entity()
 class Invoice {
-  int id = Get.find<StorageController>().currentId.value; // Unique ID for each invoice, auto-incremented by ObjectBox
+  int id = Get.find<StorageController>()
+      .currentId
+      .value; // Unique ID (auto-incremented)
 
   // All fields are stored as String
   String invoiceNo;
@@ -31,7 +32,7 @@ class Invoice {
   String cGst;
 
   @Backlink()
-  final items = ToMany<InvoiceItem>();
+  final items = ToMany<InvoiceItem>(); // ToMany relation to InvoiceItem
 
   Invoice({
     required this.invoiceNo,
@@ -55,4 +56,82 @@ class Invoice {
     required this.sGst,
     required this.cGst,
   });
+
+  // Method to copy the current Invoice instance (useful if needed)
+  copy() {
+    return Invoice(
+      invoiceNo: invoiceNo,
+      date: date,
+      companyName: companyName,
+      address: address,
+      gstNumber: gstNumber,
+      panNumber: panNumber,
+      stateCode: stateCode,
+      billTaker: billTaker,
+      billTakerAddress: billTakerAddress,
+      billTakerGSTPin: billTakerGSTPin,
+      userFirm: userFirm,
+      userFirmAddress: userFirmAddress,
+      userFirmGSTPin: userFirmGSTPin,
+      broker: broker,
+      discount: discount,
+      othLess: othLess,
+      freight: freight,
+      iGst: iGst,
+      sGst: sGst,
+      cGst: cGst,
+    );
+  }
+
+  // Convert the Invoice to JSON (if needed)
+  toJson() {
+    return {
+      'invoiceNo': invoiceNo,
+      'date': date,
+      'companyName': companyName,
+      'address': address,
+      'gstNumber': gstNumber,
+      'panNumber': panNumber,
+      'stateCode': stateCode,
+      'billTaker': billTaker,
+      'billTakerAddress': billTakerAddress,
+      'billTakerGSTPin': billTakerGSTPin,
+      'userFirm': userFirm,
+      'userFirmAddress': userFirmAddress,
+      'userFirmGSTPin': userFirmGSTPin,
+      'broker': broker,
+      'discount': discount,
+      'othLess': othLess,
+      'freight': freight,
+      'iGst': iGst,
+      'sGst': sGst,
+      'cGst': cGst,
+    };
+  }
+}
+
+
+Invoice emptyInvoice() {
+  return Invoice(
+    invoiceNo: '',
+    date: '',
+    companyName: '',
+    address: '',
+    gstNumber: '',
+    panNumber: '',
+    stateCode: '',
+    billTaker: '',
+    billTakerAddress: '',
+    billTakerGSTPin: '',
+    userFirm: '',
+    userFirmAddress: '',
+    userFirmGSTPin: '',
+    broker: '',
+    discount: '',
+    othLess: '',
+    freight: '',
+    iGst: '',
+    sGst: '',
+    cGst: '',
+  );
 }

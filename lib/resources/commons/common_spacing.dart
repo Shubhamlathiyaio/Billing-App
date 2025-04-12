@@ -14,6 +14,7 @@ const h32 = SizedBox(height: 32);
 const h40 = SizedBox(height: 40);  
 const h48 = SizedBox(height: 48);  
 const h50 = SizedBox(height: 50);  
+const h60 = SizedBox(height: 60);  
 
 // 🔥 Horizontal Spacing  
 const w0 = SizedBox(width: 0);  
@@ -29,3 +30,4 @@ const w32 = SizedBox(width: 32);
 const w40 = SizedBox(width: 40);  
 const w48 = SizedBox(width: 48);  
 const w50 = SizedBox(width: 50);  
+const w60 = SizedBox(width: 60);  

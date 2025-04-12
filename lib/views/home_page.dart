@@ -13,6 +13,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      
       body: PageView(
         physics: const NeverScrollableScrollPhysics(),
         controller: navController.pageController,
@@ -25,14 +26,17 @@ class HomePage extends StatelessWidget {
         ],
       ),
       bottomNavigationBar: Obx(
-        () => BottomNavigationBar(
+        () => BottomNavigationBar( type: BottomNavigationBarType.fixed,
+        backgroundColor: Theme.of(context).primaryColor,
           currentIndex: navController.currentIndex.value,
+          selectedItemColor: Colors.white,
+          unselectedItemColor: Theme.of(context).colorScheme.secondary,
           onTap: navController.changePage,
           items: [
-            BottomNavigationBarItem(icon: const Icon(Icons.table_chart), label: "Table",backgroundColor: Theme.of(context).primaryColor),
-            BottomNavigationBarItem(icon: Icon(Icons.picture_as_pdf), label: "PDF",backgroundColor: Theme.of(context).primaryColor),
-            BottomNavigationBarItem(icon: Icon(Icons.settings), label: "Config",backgroundColor: Theme.of(context).primaryColor),
-            BottomNavigationBarItem(icon: Icon(Icons.storage), label: "Storage",backgroundColor: Theme.of(context).primaryColor),
+            BottomNavigationBarItem(icon: const Icon(Icons.table_chart), label: "Table",backgroundColor: Colors.white),
+            BottomNavigationBarItem(icon: Icon(Icons.picture_as_pdf), label: "PDF",backgroundColor: Colors.white),
+            BottomNavigationBarItem(icon: Icon(Icons.settings), label: "Config",backgroundColor: Colors.white),
+            BottomNavigationBarItem(icon: Icon(Icons.storage), label: "Storage",backgroundColor: Colors.white),
           ],
         ),
       ),

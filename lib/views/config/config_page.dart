@@ -1,4 +1,3 @@
-import 'package:billing/controllers/table_controller.dart';
 import 'package:billing/resources/constens.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -13,37 +12,43 @@ class ConfigPage extends StatelessWidget {
     _initializeGroups();
   }
 
-  final configController = Get.put(ConfigController());
+  final config = Get.put(ConfigController());
   final expansionController = Get.put(ConfigExpansionController());
+
+
+  bool hasChanges(Map<String, dynamic> current, Map<String, dynamic> original) {
+  return current.toString() != original.toString();
+}
+
 
   late final List<ConfigGroup> configGroups;
 
   void _initializeGroups() {
     configGroups = <ConfigGroup>[
       ConfigGroup(title: "Company", fields: [
-        ConfigField(label: "Company Name", controller: configController.companyNameController),
-        ConfigField(label: "Address", controller: configController.addressController),
+        ConfigField(label: "Company Name", controller: config.companyNameController),
+        ConfigField(label: "Address", controller: config.addressController),
       ]),
       ConfigGroup(title: "Invoice", fields: [
-        ConfigField(label: "GST No.", controller: configController.gstNumberController),
-        ConfigField(label: "PAN No.", controller: configController.panNumberController),
-        ConfigField(label: "State Code", controller: configController.stateCodeController, type: ConfigFieldType.number),
-        ConfigField(label: "Date: ", controller: configController.dateController, type: ConfigFieldType.date),
-        ConfigField(label: "Invoice No", controller: configController.invoiceNoController, type: ConfigFieldType.number),
+        ConfigField(label: "GST No.", controller: config.gstNumberController),
+        ConfigField(label: "PAN No.", controller: config.panNumberController),
+        ConfigField(label: "State Code", controller: config.stateCodeController, type: ConfigFieldType.number),
+        ConfigField(label: "Date: ", controller: config.dateController, type: ConfigFieldType.date),
+        ConfigField(label: "Invoice No", controller: config.invoiceNoController, type: ConfigFieldType.number),
       ]),
       ConfigGroup(title: "Billing", fields: [
-        ConfigField(label: "Bill Taker", controller: configController.billTakerController),
-        ConfigField(label: "Bill Taker Address", controller: configController.billTakerAddressController),
-        ConfigField(label: "Bill Taker GST Pin", controller: configController.billTakerGSTPinController, type: ConfigFieldType.number),
-        ConfigField(label: "User Firm", controller: configController.userFirmController),
-        ConfigField(label: "User Firm Address", controller: configController.userFirmAddressController),
-        ConfigField(label: "User Firm GST Pin", controller: configController.userFirmGSTPinController, type: ConfigFieldType.number),
+        ConfigField(label: "Bill Taker", controller: config.billTakerController),
+        ConfigField(label: "Bill Taker Address", controller: config.billTakerAddressController),
+        ConfigField(label: "Bill Taker GST Pin", controller: config.billTakerGSTPinController, type: ConfigFieldType.number),
+        ConfigField(label: "User Firm", controller: config.userFirmController),
+        ConfigField(label: "User Firm Address", controller: config.userFirmAddressController),
+        ConfigField(label: "User Firm GST Pin", controller: config.userFirmGSTPinController, type: ConfigFieldType.number),
       ]),
       ConfigGroup(title: "Discounts", fields: [
-        ConfigField(label: "Discount", controller: configController.discountController, type: ConfigFieldType.number),
-        ConfigField(label: "IGST", controller: configController.iGstController, type: ConfigFieldType.number),
-        ConfigField(label: "SGST", controller: configController.sGstController, type: ConfigFieldType.number),
-        ConfigField(label: "CGST", controller: configController.cGstController, type: ConfigFieldType.number),
+        ConfigField(label: "Discount", controller: config.discountController, type: ConfigFieldType.number),
+        ConfigField(label: "IGST", controller: config.iGstController, type: ConfigFieldType.number),
+        ConfigField(label: "SGST", controller: config.sGstController, type: ConfigFieldType.number),
+        ConfigField(label: "CGST", controller: config.cGstController, type: ConfigFieldType.number),
       ]),
     ];
   }
@@ -56,12 +61,12 @@ class ConfigPage extends StatelessWidget {
         actions: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: CommonButton(
+            child: CommonButton(verticalPadding: 5,
               text: "Save",textColor: instedOfBlack,
               backgroundColor: onDarkBg,
               onPressed: () {
                 FocusScope.of(context).unfocus();
-                configController.saveConfig();
+                config.saveConfig();
                 Get.find<NavigationController>().changePage(1);
               },
             ),

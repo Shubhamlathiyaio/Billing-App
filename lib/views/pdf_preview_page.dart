@@ -1,11 +1,10 @@
 import 'dart:io';
 import 'package:billing/controllers/config_controller.dart';
 import 'package:billing/controllers/storage_controller.dart';
-import 'package:billing/controllers/table_controller.dart';
 import 'package:billing/resources/commons/common_chip.dart';
 import 'package:billing/resources/commons/common_text.dart';
+import 'package:billing/resources/keep_button.dart';
 import 'package:billing/services/pdf_services.dart';
-import 'package:billing/views/home_page.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:billing/controllers/pdf_preview_controller.dart';
@@ -27,7 +26,8 @@ class PdfPreviewPage extends StatelessWidget {
           actions: [
             IconButton(
                 onPressed: () {
-                  PdfServices.sharePdf(pdfController.pdfFile.value!);
+                  PdfServices.sharePdfById(
+                      Get.find<StorageController>().currentId.value);
                 },
                 icon: Icon(Icons.share))
           ],
@@ -54,7 +54,7 @@ class PdfPreviewPage extends StatelessWidget {
                         fontColor: Colors.white,
                         fontSize: 21,
                         data:
-                            "${Get.find<StorageController>().currentId.value}"),
+                            "${Get.find<StorageController>().currentId.value}".padLeft(3, '0')),
                   ),
               ),
             ],
@@ -63,14 +63,21 @@ class PdfPreviewPage extends StatelessWidget {
           return const Center(child: Text("Failed to load PDF."));
         }
       }),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: KeepStyleFAB(),
+    );
+  }
+}
+
+
+
+/*
+
+FloatingActionButton(
         onPressed: () {
           Get.find<StorageController>().saveInvoice(config.getInvoice());
           Get.find<TableController>().clearTable();
           Get.find<NavigationController>().changePage(3);
         },
         child: const Icon(Icons.save),
-      ),
-    );
-  }
-}
+      )
+ */

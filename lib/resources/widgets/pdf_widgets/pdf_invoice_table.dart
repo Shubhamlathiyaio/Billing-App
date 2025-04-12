@@ -8,7 +8,7 @@ import 'package:pdf/widgets.dart' as pw;
 
 pw.Widget invoiceItemsTablePdf(double baseFontSize, double pageWidth) {
   final items = Get.find<TableController>().itemList;
-  final TableController table = Get.put(TableController());
+  final TableController table = Get.find<TableController>();
 
   final int minRows = 15;
   final int emptyRowsNeeded = (minRows - items.length - 2).clamp(0, 100);
@@ -42,15 +42,16 @@ pw.Widget invoiceItemsTablePdf(double baseFontSize, double pageWidth) {
 }
 
 pw.TableRow _buildItemRow(int index, TableItem item, double baseFontSize) {
-  final amount = item.quantity * item.rate;
+  final amount = item.qty * item.rate;
   final color = getPdfColor(item.chalanNo);
   return pw.TableRow(
     children: [
       _centeredCell(index.toString(), baseFontSize, color),
       _centeredCell(item.chalanNo.toString(), baseFontSize, color, ),
       _leftAlignedCell(item.itemName, baseFontSize, color),
-      _centeredCell(item.quantity.toString(), baseFontSize, color),
-      _centeredCell(item.quantity.toString(), baseFontSize, color),
+      _centeredCell(item.taka.toString(), baseFontSize, color),
+      _centeredCell(item.hsnCode, baseFontSize, color),
+      _centeredCell(item.qty.toString(), baseFontSize, color),
       _centeredCell(item.rate.toStringAsFixed(2), baseFontSize, color),
       _rightAlignedCell(amount.toStringAsFixed(2), baseFontSize, color),
     ],
@@ -61,20 +62,22 @@ Map<int, pw.TableColumnWidth> _getPdfColumnWidths(double width) {
   return {
     0: pw.FixedColumnWidth(width * 0.08),
     1: pw.FixedColumnWidth(width * 0.095),
-    2: pw.FixedColumnWidth(width * 0.28),
-    3: pw.FixedColumnWidth(width * 0.14),
-    4: pw.FixedColumnWidth(width * 0.10),
-    5: pw.FixedColumnWidth(width * 0.12),
-    6: pw.FixedColumnWidth(width * 0.14),
+    2: pw.FixedColumnWidth(width * 0.26),
+    3: pw.FixedColumnWidth(width * 0.12),
+    4: pw.FixedColumnWidth(width * 0.10), 
+    5: pw.FixedColumnWidth(width * 0.10),
+    6: pw.FixedColumnWidth(width * 0.12),
+    7: pw.FixedColumnWidth(width * 0.12),
   };
 }
 
 pw.TableRow _buildHeaderRow(double baseFontSize) {
   final headers = [
     "Sr No",
-    "Chalan",
+    "Chal No",
     "Description",
     "Quality",
+    "HSN",
     "Qty",
     "Rate",
     "Amount"
@@ -103,7 +106,7 @@ pw.TableRow _buildHeaderRow(double baseFontSize) {
 pw.TableRow _buildEmptyRow(double baseFontSize) {
   return pw.TableRow(
     children: List.generate(
-      7,
+      8,
       (_) => pw.Container(
         height: baseFontSize * 1.8, // 👈 Increase this to make the row taller
         padding: const pw.EdgeInsets.all(6),
@@ -122,6 +125,7 @@ pw.TableRow _buildSubTotalRow(double baseFontSize, TableController table) {
       pw.SizedBox(),
       pw.SizedBox(),
       _centeredCell("Sub Total", baseFontSize),
+      pw.SizedBox(),
       pw.SizedBox(),
       _centeredCell(table.totalQuantity.toStringAsFixed(2), baseFontSize),
       pw.SizedBox(),

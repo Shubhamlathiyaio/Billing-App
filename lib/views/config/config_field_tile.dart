@@ -22,7 +22,10 @@ class ConfigFieldTile extends StatelessWidget {
               lastDate: DateTime(2100),
             );
             if (picked != null) {
-              field.controller.text = picked.toString().split(" ").first;
+              field.controller.text =
+    "${picked.day.toString().padLeft(2, '0')}/${picked.month.toString().padLeft(2, '0')}/${picked.year}";
+
+              
             }
           },
           child: AbsorbPointer(

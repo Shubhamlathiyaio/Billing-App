@@ -5,8 +5,9 @@ import 'package:get/get.dart';
 import 'package:pdf/widgets.dart' as pw;
 
 pw.Widget paymentSummaryPdf(double fontSize) {
+  final table = Get.find<TableController>();
+
   final ConfigController config = Get.put(ConfigController());
-  final TableController table = Get.put(TableController());
   return pw.Column(
     children: [
       pw.Row(
@@ -120,8 +121,7 @@ pw.Widget _dueDetailsSection(double fontSize, TableController table) {
       ]
           .map((text) => pw.Text(text,
               style: pw.TextStyle(
-                  fontSize: [for (int i = 0; i < 10; i++) "$i"]
-                          .contains(text[text.length - 1])
+                  fontSize: RegExp(r'\d$').hasMatch(text)
                       ? fontSize + fontSize * .5
                       : fontSize,
                   fontWeight: pw.FontWeight.bold)))

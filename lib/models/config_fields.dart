@@ -10,10 +10,12 @@ class ConfigField {
   void load(String? savedValue) {
     controller.text = savedValue ?? '';
     value.value = controller.text;
+    print("Loaded value: $savedValue");
   }
 
   void updateValue() {
     value.value = controller.text;
+    print("Updated value: ${value.value}");
   }
 
   void dispose() {
