@@ -40,34 +40,29 @@ class CommonSnackbar {
     );
   }
 
-  static noItemSnackbar() =>
-    show(
-        title: "Error",
-        message: "No items to save",
-        icon: Icon(
-          Icons.error,
-          color: Colors.red,
-        ));
-  
-  static errorSnackbar(String lable) =>
-    show(
-        title: "Error",
-        message: lable,
-        icon: Icon(
-          Icons.error,
-          color: Colors.red,
-        ));
-  
+  static noItemSnackbar() => show(
+      title: "Error",
+      message: "No items to save",
+      icon: Icon(
+        Icons.error,
+        color: Colors.red,
+      ));
 
-  static successSnackbar(String label) =>
-    show(
-                  title: label,
-                  message: "Invoice $label successfully",
-                  icon: Icon(
-                    Icons.check_circle,
-                    color: Colors.green,
-                    size: 24,
-                  ),
-                );
-  
+  static errorSnackbar(String lable) => show(
+      title: "Error",
+      message: lable,
+      icon: Icon(
+        Icons.error,
+        color: Colors.red,
+      ));
+
+  static successSnackbar(String label) => show(
+        title: label,
+        message: "Invoice $label successfully",
+        icon: Icon(
+          Icons.check_circle,
+          color: Colors.green,
+          size: 24,
+        ),
+      );
 }

@@ -1,6 +1,7 @@
 import 'package:billing/controllers/table_controller.dart';
 import 'package:billing/models/invoice.dart';
 import 'package:billing/models/table_item.dart';
+import 'package:billing/services/small_services.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -78,36 +79,35 @@ class ConfigController extends GetxController {
   }
 
   // ✅ Load Config
- void loadConfig() {
-  final config = box.read('config') ?? {};
+  void loadConfig() {
+    final config = box.read('config') ?? {};
 
-  companyNameController.text = config['companyName'] ?? '';
-  addressController.text = config['address'] ?? '';
-  gstNumberController.text = config['gstNumber'] ?? '';
-  panNumberController.text = config['panNumber'] ?? '';
-  stateCodeController.text = config['stateCode'] ?? '';
-  billTakerController.text = config['billTaker'] ?? '';
-  billTakerAddressController.text = config['billTakerAddress'] ?? '';
-  billTakerGSTPinController.text = config['billTakerGSTPin'] ?? '';
-  userFirmController.text = config['userFirm'] ?? '';
-  userFirmAddressController.text = config['userFirmAddress'] ?? '';
-  userFirmGSTPinController.text = config['userFirmGSTPin'] ?? '';
-  brokerController.text = config['broker'] ?? '';
-  discountController.text = config['discount'] ?? '';
-  othLessController.text = config['othLess'] ?? '';
-  freightController.text = config['freight'] ?? '';
-  iGstController.text = config['iGst'] ?? '';
-  sGstController.text = config['sGst'] ?? '';
-  cGstController.text = config['cGst'] ?? '';
+    companyNameController.text = config['companyName'] ?? '';
+    addressController.text = config['address'] ?? '';
+    gstNumberController.text = config['gstNumber'] ?? '';
+    panNumberController.text = config['panNumber'] ?? '';
+    stateCodeController.text = config['stateCode'] ?? '';
+    billTakerController.text = config['billTaker'] ?? '';
+    billTakerAddressController.text = config['billTakerAddress'] ?? '';
+    billTakerGSTPinController.text = config['billTakerGSTPin'] ?? '';
+    userFirmController.text = config['userFirm'] ?? '';
+    userFirmAddressController.text = config['userFirmAddress'] ?? '';
+    userFirmGSTPinController.text = config['userFirmGSTPin'] ?? '';
+    brokerController.text = config['broker'] ?? '';
+    discountController.text = config['discount'] ?? '';
+    othLessController.text = config['othLess'] ?? '';
+    freightController.text = config['freight'] ?? '';
+    iGstController.text = config['iGst'] ?? '';
+    sGstController.text = config['sGst'] ?? '';
+    cGstController.text = config['cGst'] ?? '';
 
-  /// ✅ Auto-set date only if not saved before
-  dateController.text = config['date'] ?? _getTodayDate();
+    /// ✅ Auto-set date only if not saved before
+    dateController.text = config['date'] ?? getTodayDate();
 
-  /// ✅ Auto-increment invoice number
-  final lastInvoiceNo = config['invoiceNo'];
-  invoiceNoController.text = _generateNextInvoiceNo(lastInvoiceNo);
-}
-
+    /// ✅ Auto-increment invoice number
+    final lastInvoiceNo = config['invoiceNo'];
+    invoiceNoController.text = generateNextInvoiceNo(lastInvoiceNo);
+  }
 
   // ✅ Convert current config to Invoice object
   Invoice getInvoice() {
@@ -222,28 +222,4 @@ class ConfigController extends GetxController {
     fields.forEach((_, field) => field.dispose());
     super.onClose();
   }
-
-
-
-
-
-
-
-
-
-
-
-
-  String _getTodayDate() {
-  final now = DateTime.now();
-  return '${now.day.toString().padLeft(2, '0')}/${now.month.toString().padLeft(2, '0')}/${now.year}';
-}
-
-String _generateNextInvoiceNo(String? lastInvoiceNo) {
-  if (lastInvoiceNo == null || lastInvoiceNo.isEmpty) return '001';
-
-  final number = int.tryParse(lastInvoiceNo.replaceAll(RegExp(r'\D'), '')) ?? 0;
-  return (number + 1).toString().padLeft(3, '0');
-}
-
 }

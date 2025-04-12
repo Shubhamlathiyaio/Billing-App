@@ -4,7 +4,6 @@ import 'package:billing/controllers/storage_controller.dart';
 import 'package:billing/resources/commons/common_chip.dart';
 import 'package:billing/resources/commons/common_text.dart';
 import 'package:billing/resources/keep_button.dart';
-import 'package:billing/services/pdf_services.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:billing/controllers/pdf_preview_controller.dart';
@@ -21,17 +20,7 @@ class PdfPreviewPage extends StatelessWidget {
     pdfController.loadPdf();
 
     return Scaffold(
-      appBar: AppBar(
-          title: const Text('PDF Preview'),
-          actions: [
-            IconButton(
-                onPressed: () {
-                  PdfServices.sharePdfById(
-                      Get.find<StorageController>().currentId.value);
-                },
-                icon: Icon(Icons.share))
-          ],
-          ),
+      appBar: AppBar(title: const Text('PDF Preview')),
       body: Obx(() {
         if (pdfController.isLoading.value) {
           return const Center(child: CircularProgressIndicator());
@@ -40,22 +29,24 @@ class PdfPreviewPage extends StatelessWidget {
           return Stack(
             children: [
               SfPdfViewer.file(pdfFile),
-              Positioned(left: 15,top: 55,
+              Positioned(
+                left: 15,
+                top: 55,
                 child: CommonChip(
-                    verticalPadding: 0,
-                    iconSize: 21,
-                    alignment: Alignment.center,
-                    backgroundColor: Theme.of(context).primaryColor,
-                    icon: Icons.receipt_long,
-                    height: 40,
-                    width: 100,
-                    radius: 5,
-                    child: CommonText(
-                        fontColor: Colors.white,
-                        fontSize: 21,
-                        data:
-                            "${Get.find<StorageController>().currentId.value}".padLeft(3, '0')),
-                  ),
+                  verticalPadding: 0,
+                  iconSize: 21,
+                  alignment: Alignment.center,
+                  backgroundColor: Theme.of(context).primaryColor,
+                  icon: Icons.receipt_long,
+                  height: 40,
+                  width: 100,
+                  radius: 5,
+                  child: CommonText(
+                      fontColor: Colors.white,
+                      fontSize: 21,
+                      data: "${Get.find<StorageController>().currentId.value}"
+                          .padLeft(3, '0')),
+                ),
               ),
             ],
           );
@@ -67,17 +58,3 @@ class PdfPreviewPage extends StatelessWidget {
     );
   }
 }
-
-
-
-/*
-
-FloatingActionButton(
-        onPressed: () {
-          Get.find<StorageController>().saveInvoice(config.getInvoice());
-          Get.find<TableController>().clearTable();
-          Get.find<NavigationController>().changePage(3);
-        },
-        child: const Icon(Icons.save),
-      )
- */

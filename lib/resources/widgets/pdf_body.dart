@@ -1,5 +1,4 @@
 import 'package:billing/controllers/config_controller.dart';
-import 'package:billing/controllers/table_controller.dart';
 import 'package:billing/resources/constens.dart';
 import 'package:billing/resources/widgets/pdf_widgets/pdf_billing_delivety.dart';
 import 'package:billing/resources/widgets/pdf_widgets/pdf_details.dart';
@@ -7,13 +6,12 @@ import 'package:billing/resources/widgets/pdf_widgets/pdf_header.dart';
 import 'package:billing/resources/widgets/pdf_widgets/pdf_invoice_table.dart';
 import 'package:billing/resources/widgets/pdf_widgets/pdf_payment.dart';
 import 'package:billing/resources/widgets/pdf_widgets/pdf_terms_summary.dart';
-import 'package:get/get.dart';
 import 'package:pdf/widgets.dart';
 
 Widget invoiceBodyPdf(
   ConfigController configController,
   double screenWidth,
-  int id, // 👈 Added
+  int id,
 ) {
   final double x = (screenWidth - 20) / 47;
   final double baseFontSize = screenWidth * 0.016;

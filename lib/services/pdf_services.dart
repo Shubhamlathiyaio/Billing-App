@@ -27,13 +27,11 @@ class PdfServices {
 
   static Future<File> savePdf(String name, pw.Document pdf) async {
     Directory? dir;
-        if (Platform.isAndroid) {
+    if (Platform.isAndroid) {
       dir = Directory('/storage/emulated/0/Download'); // Downloads folder
     } else {
       dir = await getApplicationDocumentsDirectory(); // iOS fallback
     }
-
-
 
     final file = File('${dir.path}/$name');
     await file.writeAsBytes(await pdf.save());

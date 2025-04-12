@@ -42,12 +42,11 @@ class TableController extends GetxController {
   List<int> get listOfChalanNumbers =>
       [for (TableItem e in itemList) e.chalanNo];
 
-@override
-void onInit() {
-  super.onInit();
-  loadItemsFromStorage(); // 👈 Load saved items on controller init
-}
-
+  @override
+  void onInit() {
+    super.onInit();
+    loadItemsFromStorage(); // 👈 Load saved items on controller init
+  }
 
   // ✅ Add Item
   void addItem(TableItem item) {
@@ -84,7 +83,8 @@ void onInit() {
   void setTableById(int id) {
     final invoice = Get.find<StorageController>().getInvoiceById(id);
     if (invoice.items.isEmpty) return; // ❌ Don’t reset if invoice has no data
-    final tableItems =Get.find<TableController>().getTableItemsFromInvoice(invoice);
+    final tableItems =
+        Get.find<TableController>().getTableItemsFromInvoice(invoice);
     Get.find<TableController>().itemList.value = tableItems;
   }
 

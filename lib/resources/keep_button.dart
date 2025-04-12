@@ -64,7 +64,7 @@ class _KeepStyleFABState extends State<KeepStyleFAB>
               }
               _toggleFab();
             },
-            position: 3,
+            position: 4,
           ),
           _buildAnimatedOption(
             label: "Save",
@@ -80,7 +80,7 @@ class _KeepStyleFABState extends State<KeepStyleFAB>
               }
               _toggleFab();
             },
-            position: 2,
+            position: 3,
           ),
           _buildAnimatedOption(
             label: "Download",
@@ -92,6 +92,17 @@ class _KeepStyleFABState extends State<KeepStyleFAB>
                 PdfServices.downloadPdfById(storage.currentId.value);
                 CommonSnackbar.successSnackbar("Download");
               }
+              _toggleFab();
+            },
+            position: 2,
+          ),
+          _buildAnimatedOption(
+            label: "New Invoice",
+            icon: Icons.add,
+            onTap: () {
+              Get.find<StorageController>().currentId.value = 0;
+              Get.find<TableController>().clearTable();
+              Get.find<NavigationController>().changePage(0);
               _toggleFab();
             },
             position: 1,
