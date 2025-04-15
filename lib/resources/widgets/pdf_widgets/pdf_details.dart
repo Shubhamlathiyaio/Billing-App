@@ -23,7 +23,7 @@ pw.Widget invoiceDetailsPdf(
           children: [
             _detailTextPdf("GST No", config.gstNumber, baseFontSize * 1.2),
             pw.SizedBox(height: 4),
-            _detailTextPdf("PAN No", config.panNumber, baseFontSize),
+            _detailTextPdf("Mobile No", config.panNumber, baseFontSize),
             pw.SizedBox(height: 4),
             _detailTextPdf("State Code", config.stateCode, baseFontSize),
           ],
@@ -44,7 +44,7 @@ pw.Widget invoiceDetailsPdf(
         child: pw.Column(
           crossAxisAlignment: pw.CrossAxisAlignment.start,
           children: [
-            _detailTextPdf("Invoice No", config.invoiceNo, baseFontSize),
+            _detailTextPdf("Bill No", config.invoiceNo, baseFontSize),
             pw.SizedBox(height: 4),
             _detailTextPdf("Date", config.date, baseFontSize),
             pw.SizedBox(height: 4),
@@ -58,9 +58,17 @@ pw.Widget invoiceDetailsPdf(
 
 
 pw.Widget _detailTextPdf(String label, String value, double fontSize) {
-  return PDFText(
-    data: "$label\t: $value",
+  return pw.Row(
+    children: [
+      PDFText(
+    data: "$label : \t",
     fontSize: fontSize,
-    fontWeight: pw.FontWeight.normal
+  ),
+  PDFText(
+    data: value,
+    fontSize: fontSize + (label=="Bill No" ? fontSize *.8:0),
+    fontWeight: label=="Bill No" ?  pw.FontWeight.bold: pw.FontWeight.normal,
+  )
+    ]
   );
 }

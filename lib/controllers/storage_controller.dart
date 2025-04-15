@@ -37,7 +37,10 @@ class StorageController extends GetxController {
   }
 
   void saveInvoice(Invoice invoice) {
+    invoice.id = Get.find<StorageController>().currentId.value;
     final tableItems = Get.find<TableController>().itemList;
+    invoice.items.clear(); // Clear existing items
+    print(invoice.items.length);
     invoice.items.addAll(tableItems.map((item) {
       final invoiceItem = InvoiceItem(
           chalan: item.chalanNo.toString(),
@@ -51,7 +54,11 @@ class StorageController extends GetxController {
       return invoiceItem;
     }));
 
+    print(invoice.items.length);
+    if(invoice.id!=0)_invoiceBox.remove(invoice.id); // Remove existing invoice if any
     _invoiceBox.put(invoice);
+
+    print(_invoiceBox.get(invoice.id)?.items.length);
 
     loadInvoices();
     currentId.value = 0;

@@ -4,6 +4,7 @@ import 'package:billing/controllers/table_controller.dart';
 import 'package:billing/resources/commons/common_get_snackbar.dart';
 import 'package:billing/resources/media_query_helper.dart';
 import 'package:billing/services/pdf_services.dart';
+import 'package:billing/services/small_services.dart';
 import 'package:billing/views/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -61,8 +62,11 @@ class _KeepStyleFABState extends State<KeepStyleFAB>
                 CommonSnackbar.noItemSnackbar();
               } else {
                 storage.saveInvoice(config.getInvoice());
+                PdfServices.sharePdf(
+                    PdfServices.getPdfDoc(
+                        Get.find<StorageController>().currentId.value),
+                    getFileName(storage.currentId.value));
                 Get.find<TableController>().clearTable();
-                PdfServices.sharePdfById(storage.currentId.value);
               }
               _toggleFab();
             },
@@ -91,7 +95,8 @@ class _KeepStyleFABState extends State<KeepStyleFAB>
               if (Get.find<TableController>().itemList.isEmpty) {
                 CommonSnackbar.noItemSnackbar();
               } else {
-                PdfServices.downloadPdfById(storage.currentId.value);
+                int id = storage.currentId.value;
+                PdfServices.downloadPdf(PdfServices.getPdfDoc(id), getFileName(id));
                 CommonSnackbar.customSuccessSnackbar("Download");
               }
               _toggleFab();

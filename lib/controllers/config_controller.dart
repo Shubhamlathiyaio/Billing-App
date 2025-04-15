@@ -216,7 +216,6 @@ class ConfigController extends GetxController {
     iGstController.text = invoice.iGst.toString();
     sGstController.text = invoice.sGst.toString();
     cGstController.text = invoice.cGst.toString();
-    Get.find<TableController>().itemList.clear();
     Get.find<TableController>().itemList.addAll(
           invoice.items.map((e) => TableItem(
                 chalanNo: int.tryParse(e.chalan) ?? 0,

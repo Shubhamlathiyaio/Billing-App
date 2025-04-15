@@ -9,7 +9,7 @@ import 'package:billing/resources/widgets/pdf_widgets/pdf_terms_summary.dart';
 import 'package:pdf/widgets.dart';
 
 Widget invoiceBodyPdf(
-  ConfigController configController,
+  ConfigController config,
   double screenWidth,
   int id,
 ) {
@@ -27,11 +27,11 @@ Widget invoiceBodyPdf(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          companyHeaderPdf(baseFontSize, screenWidth, configController),
-          invoiceDetailsPdf(baseFontSize, screenWidth,height, configController),
-          billingAndDeliveryDetailsPdf(baseFontSize, screenWidth, configController),
+          companyHeaderPdf(baseFontSize, screenWidth, config),
+          invoiceDetailsPdf(baseFontSize, screenWidth, height, config),
+          billingAndDeliveryDetailsPdf(baseFontSize, screenWidth, config),
           invoiceItemsTablePdf(baseFontSize, x),
-          paymentSummaryPdf(baseFontSize), 
+          paymentSummaryPdf(baseFontSize),
           termsAndConditionsSectionPdf(baseFontSize),
         ],
       ),

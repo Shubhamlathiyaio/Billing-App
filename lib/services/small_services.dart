@@ -28,18 +28,24 @@ double rxStringToDouble(RxString value) {
 }
 
 String getAmountInWords(int amount) {
-  return amount == 0? "": '${NumberToWord().convert('en-in', amount).toUpperCase()} ONLY';
+  return amount == 0
+      ? ""
+      : '${NumberToWord().convert('en-in', amount).toUpperCase()} ONLY';
 }
 
-  // font = await loadGujaratiFont();
+// font = await loadGujaratiFont();
 Future<pw.Font> loadGujaratiFont() async {
-  final fontData = await rootBundle.load("assets/fonts/NotoSansGujarati-VariableFont_wdth,wght.ttf");
+  final fontData = await rootBundle
+      .load("assets/fonts/NotoSansGujarati-VariableFont_wdth,wght.ttf");
   return pw.Font.ttf(fontData);
 }
 
+String getFileName(int id) => "Invo_${id}_${getDate(DateTime.now())}";
+String getDate(DateTime date) => "${date.day}/${date.month}/${date.year}";
+
 List<int> chalanNos = [];
 Color getColor(int index) {
-  if(Get.find<TableController>().itemList.isEmpty) chalanNos = [];
+  if (Get.find<TableController>().itemList.isEmpty) chalanNos = [];
   if (!chalanNos.contains(index)) chalanNos.add(index);
   return chalanColors[chalanNos.indexOf(index)];
 }

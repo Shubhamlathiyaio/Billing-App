@@ -3,6 +3,7 @@ import 'package:billing/resources/commons/common_get_snackbar.dart';
 import 'package:billing/resources/commons/common_spacing.dart';
 import 'package:billing/resources/commons/common_text.dart';
 import 'package:billing/services/pdf_services.dart';
+import 'package:billing/services/small_services.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:billing/controllers/storage_controller.dart';
@@ -98,15 +99,15 @@ Widget customTile(int index, Invoice invoice) {
               child: Text('Edit'),
               onTap: () => storage.openInvoiceById(invoice.id),
             ),
-            PopupMenuItem(
-              value: 'share',
-              child: Text('Share'),
-              onTap: () => PdfServices.sharePdfById(invoice.id),
-            ),
+            // PopupMenuItem(
+            //   value: 'share',
+            //   child: Text('Share'),
+            //   onTap: () => PdfServices.sharePdf(PdfServices.getPdfDoc(invoice.id),getFileName(invoice.id)),
+            // ),
             PopupMenuItem(
               value: 'download',
               child: Text('Download'),
-              onTap: () => PdfServices.downloadPdfById(invoice.id),
+              onTap: () => PdfServices.downloadPdf(PdfServices.getPdfDoc(invoice.id), getFileName(invoice.id)),
             ),
             PopupMenuItem(
               value: 'delete',

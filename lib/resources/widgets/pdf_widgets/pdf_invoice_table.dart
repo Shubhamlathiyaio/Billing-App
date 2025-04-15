@@ -75,9 +75,9 @@ pw.TableRow _buildHeaderRow(double baseFontSize) {
     "Sr No",
     "Chal No",
     "Description",
-    "Quality",
+    "Taka",
     "HSN",
-    "Qty",
+    "Meter",
     "Rate",
     "Amount"
   ];

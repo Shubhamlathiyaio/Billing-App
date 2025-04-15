@@ -18,7 +18,7 @@ class PdfPreviewPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    pdfController.generatePdfForDownload();
+    pdfController.generatePdfForView();
 
     return Scaffold(
       drawer: Drawer(

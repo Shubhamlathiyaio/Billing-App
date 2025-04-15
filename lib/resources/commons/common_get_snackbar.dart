@@ -48,9 +48,9 @@ class CommonSnackbar {
         color: Colors.red,
       ));
 
-  static errorSnackbar(String lable) => show(
-      title: "Error",
-      message: lable,
+  static errorSnackbar([String lable = "Error" , String message = ""]) => show(
+      title: message=="" ? "Error" : lable,
+      message: message=="" ? lable :message,
       icon: Icon(
         Icons.error,
         color: Colors.red,
