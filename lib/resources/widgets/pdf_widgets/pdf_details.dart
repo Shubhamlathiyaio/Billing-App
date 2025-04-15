@@ -5,6 +5,7 @@ import 'package:pdf/widgets.dart' as pw;
 pw.Widget invoiceDetailsPdf(
   double baseFontSize,
   double screenWidth,
+  double height,
   dynamic config,
 ) {
   final leftWidth = screenWidth * 0.5;
@@ -32,7 +33,7 @@ pw.Widget invoiceDetailsPdf(
       // Divider
       pw.Container(
         width: 1,
-        height: 60,
+        height: height * 0.05,
         color: PdfColors.black,
       ),
 

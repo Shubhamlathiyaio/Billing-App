@@ -46,20 +46,19 @@ class StoragePage extends StatelessWidget {
 
 Widget customTile(int index, Invoice invoice) {
   final StorageController storage = Get.find<StorageController>();
+
   return Card(
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(10),
     ),
     child: Row(
       children: [
-        //h50,
         w16,
         CommonText(
           data: "${invoice.id}".padLeft(3, "0"),
           fontSize: 20,
         ),
         w10,
-        //divider,
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Container(
@@ -69,38 +68,60 @@ Widget customTile(int index, Invoice invoice) {
           ),
         ),
         w10,
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            CommonText(data: invoice.billTaker),
-            CommonText(
-              data: invoice.date,
-              fontSize: 12,
-              fontColor: Colors.grey,
-            ),
-          ],
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                invoice.billTaker,
+                overflow: TextOverflow.ellipsis,
+              ),
+              CommonText(
+                data: invoice.date,
+                fontSize: 12,
+                fontColor: Colors.grey,
+              ),
+            ],
+          ),
         ),
-        const Spacer(),
         PopupMenuButton<String>(
           icon: Icon(Icons.more_vert),
-          onSelected: (value) {
-            // Handle actions here
-          },
+          onSelected: (value) {},
           itemBuilder: (context) => [
             PopupMenuItem(
               value: 'open',
-              onTap:()=> storage.openInvoiceById(invoice.id),
+              onTap: () => storage.openInvoiceById(invoice.id),
               child: Text('Open'),
             ),
-            PopupMenuItem(value: 'edit', child: Text('Edit'),onTap: () =>storage.openInvoiceById(invoice.id),),
-            PopupMenuItem(value: 'share', child: Text('Share'), onTap: ()=>PdfServices.sharePdfById(invoice.id),),
-            PopupMenuItem(value: 'download', child: Text('Download'), onTap: ()=>PdfServices.downloadPdfById(invoice.id)),
-            PopupMenuItem(value: 'delete', child: Text('Delete'), onTap: ()=>storage.deleteInvoiceById(invoice.id) ? CommonSnackbar.successSnackbar("Deleted") : CommonSnackbar.errorSnackbar("Invoice Not Deleted"),),
+            PopupMenuItem(
+              value: 'edit',
+              child: Text('Edit'),
+              onTap: () => storage.openInvoiceById(invoice.id),
+            ),
+            PopupMenuItem(
+              value: 'share',
+              child: Text('Share'),
+              onTap: () => PdfServices.sharePdfById(invoice.id),
+            ),
+            PopupMenuItem(
+              value: 'download',
+              child: Text('Download'),
+              onTap: () => PdfServices.downloadPdfById(invoice.id),
+            ),
+            PopupMenuItem(
+              value: 'delete',
+              child: Text('Delete'),
+              onTap: () {
+                final deleted = storage.deleteInvoiceById(invoice.id);
+                deleted
+                    ? CommonSnackbar.customSuccessSnackbar("Deleted")
+                    : CommonSnackbar.errorSnackbar("Invoice Not Deleted");
+              },
+            ),
           ],
         ),
         w10,
       ],
     ),
   );
- 
 }

@@ -13,9 +13,9 @@ enum ConfigKeys {
   billTaker,
   billTakerAddress,
   billTakerGSTPin,
-  userFirm,
-  userFirmAddress,
-  userFirmGSTPin,
+  deliveryFirm,
+  deliveryFirmAddress,
+  deliveryFirmGSTPin,
   broker,
   // Discount
   discount,

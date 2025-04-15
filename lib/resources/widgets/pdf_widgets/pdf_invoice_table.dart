@@ -1,7 +1,6 @@
 import 'package:billing/controllers/table_controller.dart';
 import 'package:billing/models/table_item.dart';
 import 'package:billing/resources/widgets/common_pdfs/pdf_text.dart';
-import 'package:billing/services/small_services.dart';
 import 'package:get/get.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
@@ -43,7 +42,7 @@ pw.Widget invoiceItemsTablePdf(double baseFontSize, double pageWidth) {
 
 pw.TableRow _buildItemRow(int index, TableItem item, double baseFontSize) {
   final amount = item.qty * item.rate;
-  final color = getPdfColor(item.chalanNo);
+  final color = PdfColors.black;
   return pw.TableRow(
     children: [
       _centeredCell(index.toString(), baseFontSize, color),

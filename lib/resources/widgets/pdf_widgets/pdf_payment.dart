@@ -13,7 +13,7 @@ pw.Widget paymentSummaryPdf(double fontSize) {
       pw.Row(
         crossAxisAlignment: pw.CrossAxisAlignment.start,
         children: [
-          _bankDetailsSection(fontSize),
+          _bankDetailsSection(fontSize, config),
           _summaryDetailsSection(fontSize, config, table),
         ],
       ),
@@ -23,7 +23,7 @@ pw.Widget paymentSummaryPdf(double fontSize) {
   );
 }
 
-pw.Widget _bankDetailsSection(double fontSize) {
+pw.Widget _bankDetailsSection(double fontSize, ConfigController config) {
   return pw.Expanded(
     flex: 3,
     child: pw.Column(
@@ -33,9 +33,11 @@ pw.Widget _bankDetailsSection(double fontSize) {
           padding: const pw.EdgeInsets.all(8),
           child: pw.Column(
             crossAxisAlignment: pw.CrossAxisAlignment.start,
-            children: ["Bank", "Branch", "A/C", "IFSC"]
-                .map((text) =>
-                    pw.Text(text, style: pw.TextStyle(fontSize: fontSize)))
+            children: <Map>[{'lable':"Bank", 'data':config.bankNameController.text}, {'lable':"Branch",'data':config.branchNameController.text}, {'lable':"A/C","data":config.accountNoController.text}, {"lable":"IFSC","data":config.ifscCodeController.text}]
+                .map((m) => pw.Row(children: [
+                      pw.Text(m['lable'], style: pw.TextStyle(fontSize: fontSize)),
+                      pw.Text(" :\t${m['data']}")
+                    ]))
                 .toList(),
           ),
         ),
@@ -56,8 +58,8 @@ pw.Widget _summaryDetailsSection(
     double fontSize, ConfigController config, TableController table) {
   final rows = [
     ["Discount", "-", config.discount, table.discountAmount.toString()],
-    ["Oth Less", "-", config.othLess, "00.00"],
-    ["Freight", "+", config.freight, "00.00"],
+    ["Oth Less", "-", config.othLess, table.othLess.toString()],
+    ["Freight", "+", config.freight, table.freight.toString()],
     ["Taxable Value", "", "0", table.amountAfterDiscount.toStringAsFixed(2)],
     ["I GST", "+", config.iGst, table.igst.toStringAsFixed(2)],
     ["S GST", "+", config.sGst, table.sgst.toStringAsFixed(2)],

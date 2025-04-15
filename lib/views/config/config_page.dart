@@ -15,40 +15,95 @@ class ConfigPage extends StatelessWidget {
   final config = Get.put(ConfigController());
   final expansionController = Get.put(ConfigExpansionController());
 
-
   bool hasChanges(Map<String, dynamic> current, Map<String, dynamic> original) {
-  return current.toString() != original.toString();
-}
-
+    return current.toString() != original.toString();
+  }
 
   late final List<ConfigGroup> configGroups;
 
   void _initializeGroups() {
     configGroups = <ConfigGroup>[
       ConfigGroup(title: "Company", fields: [
-        ConfigField(label: "Company Name", controller: config.companyNameController),
+        ConfigField(
+            label: "Company Name", controller: config.companyNameController),
         ConfigField(label: "Address", controller: config.addressController),
+        ConfigField(label: "Mobile No.", controller: config.mobileNoController,type: ConfigFieldType.number),
       ]),
       ConfigGroup(title: "Invoice", fields: [
         ConfigField(label: "GST No.", controller: config.gstNumberController),
         ConfigField(label: "PAN No.", controller: config.panNumberController),
-        ConfigField(label: "State Code", controller: config.stateCodeController, type: ConfigFieldType.number),
-        ConfigField(label: "Date: ", controller: config.dateController, type: ConfigFieldType.date),
-        ConfigField(label: "Invoice No", controller: config.invoiceNoController, type: ConfigFieldType.number),
+        ConfigField(
+            label: "State Code",
+            controller: config.stateCodeController,
+            type: ConfigFieldType.number),
+        ConfigField(
+            label: "Date: ",
+            controller: config.dateController,
+            type: ConfigFieldType.date),
+        ConfigField(
+            label: "Invoice No",
+            controller: config.invoiceNoController,
+            type: ConfigFieldType.number),
       ]),
       ConfigGroup(title: "Billing", fields: [
-        ConfigField(label: "Bill Taker", controller: config.billTakerController),
-        ConfigField(label: "Bill Taker Address", controller: config.billTakerAddressController),
-        ConfigField(label: "Bill Taker GST Pin", controller: config.billTakerGSTPinController, type: ConfigFieldType.number),
-        ConfigField(label: "User Firm", controller: config.userFirmController),
-        ConfigField(label: "User Firm Address", controller: config.userFirmAddressController),
-        ConfigField(label: "User Firm GST Pin", controller: config.userFirmGSTPinController, type: ConfigFieldType.number),
+        ConfigField(
+            label: "Bill Taker", controller: config.billTakerController),
+        ConfigField(
+            label: "Bill Taker Address",
+            controller: config.billTakerAddressController),
+        ConfigField(
+            label: "Bill Taker GST Pin",
+            controller: config.billTakerGSTPinController),
+        ConfigField(
+            label: "Delivery Firm", controller: config.deliveryFirmController),
+        ConfigField(
+            label: "Delivery Firm Address",
+            controller: config.deliveryFirmAddressController),
+        ConfigField(
+            label: "Delivery Firm GST Pin",
+            controller: config.deliveryFirmGSTPinController),
+        ConfigField(label: "Broker", controller: config.brokerController),
+      ]),
+      ConfigGroup(title: "Bank Details", fields: [
+        ConfigField(
+            label: "Bank Name",
+            controller: config.bankNameController),
+        ConfigField(
+            label: "Branch",
+            controller: config.branchNameController),
+        ConfigField(
+            label: "A/C",
+            controller: config.accountNoController,
+            type: ConfigFieldType.number),
+        ConfigField(
+            label: "IFSC",
+            controller: config.ifscCodeController),
       ]),
       ConfigGroup(title: "Discounts", fields: [
-        ConfigField(label: "Discount", controller: config.discountController, type: ConfigFieldType.number),
-        ConfigField(label: "IGST", controller: config.iGstController, type: ConfigFieldType.number),
-        ConfigField(label: "SGST", controller: config.sGstController, type: ConfigFieldType.number),
-        ConfigField(label: "CGST", controller: config.cGstController, type: ConfigFieldType.number),
+        ConfigField(
+            label: "Discount",
+            controller: config.discountController,
+            type: ConfigFieldType.number),
+        ConfigField(
+            label: "Oth Less",
+            controller: config.othLessController,
+            type: ConfigFieldType.number),
+        ConfigField(
+            label: "Freight",
+            controller: config.freightController,
+            type: ConfigFieldType.number),
+        ConfigField(
+            label: "IGST",
+            controller: config.iGstController,
+            type: ConfigFieldType.number),
+        ConfigField(
+            label: "SGST",
+            controller: config.sGstController,
+            type: ConfigFieldType.number),
+        ConfigField(
+            label: "CGST",
+            controller: config.cGstController,
+            type: ConfigFieldType.number),
       ]),
     ];
   }
@@ -61,11 +116,17 @@ class ConfigPage extends StatelessWidget {
         actions: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: CommonButton(verticalPadding: 5,
-              text: "Save",textColor: instedOfBlack,
+            child: CommonButton(
+              verticalPadding: 5,
+              text: "Save",
+              textColor: instedOfBlack,
               backgroundColor: onDarkBg,
               onPressed: () {
                 FocusScope.of(context).unfocus();
+                if(config.deliveryFirmController.text.isEmpty) config.deliveryFirmController.text = config.billTakerController.text;
+                if(config.deliveryFirmAddressController.text.isEmpty) config.deliveryFirmAddressController.text = config.billTakerAddressController.text;
+                if(config.deliveryFirmMobileNoController.text.isEmpty) config.deliveryFirmMobileNoController.text = config.billTakerMobileNoController.text;
+                if(config.deliveryFirmGSTPinController.text.isEmpty) config.deliveryFirmGSTPinController.text = config.billTakerGSTPinController.text;
                 config.saveConfig();
                 Get.find<NavigationController>().changePage(1);
               },

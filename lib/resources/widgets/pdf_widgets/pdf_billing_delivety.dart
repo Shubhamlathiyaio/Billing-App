@@ -51,9 +51,9 @@ pw.Widget _detailsRow(double baseFontSize, ConfigController config) {
         rightBorder: 0.5,
       ),
       _detailsContainer(
-        title: config.userFirm,
-        address: config.userFirmAddress,
-        gstPin: config.userFirmGSTPin,
+        title: config.deliveryFirm=="" ? "Firm of Deliver" : config.deliveryFirm,
+        address: config.deliveryFirmAddress,
+        gstPin: config.deliveryFirmGSTPin,
         baseFontSize: baseFontSize,
         leftBorder: 0.5,
       ),

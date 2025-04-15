@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,6 +20,7 @@ Future<void> main() async {
   final objectBox = await ObjectBoxStore.init(); // ✅ Then ObjectBox
 
   _initControllers(objectBox); // 🔥 Clean setup
+   await requestStoragePermission();
 
   runApp(const MainApp());
 }
@@ -31,8 +33,23 @@ void _initControllers(ObjectBoxStore objectBox) {
   Get.put(NavigationController());
   Get.put(PdfPreviewController());
   Get.put(TableController()).loadItemsFromStorage();
-  
 }
+
+
+  Future<bool> requestPermission() async {
+  if (await Permission.manageExternalStorage.request().isGranted ||
+      await Permission.storage.request().isGranted) {
+    return true;
+  }
+  return false;
+}
+
+Future<void> requestStoragePermission() async {
+  if (await Permission.manageExternalStorage.isDenied) {
+    await Permission.manageExternalStorage.request();
+  }
+}
+
 
 class MainApp extends StatelessWidget {
   const MainApp({super.key});

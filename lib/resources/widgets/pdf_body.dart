@@ -28,7 +28,7 @@ Widget invoiceBodyPdf(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           companyHeaderPdf(baseFontSize, screenWidth, configController),
-          invoiceDetailsPdf(baseFontSize, screenWidth, configController),
+          invoiceDetailsPdf(baseFontSize, screenWidth,height, configController),
           billingAndDeliveryDetailsPdf(baseFontSize, screenWidth, configController),
           invoiceItemsTablePdf(baseFontSize, x),
           paymentSummaryPdf(baseFontSize), 

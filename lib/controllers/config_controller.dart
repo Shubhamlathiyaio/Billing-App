@@ -14,6 +14,7 @@ class ConfigController extends GetxController {
   // Company
   final companyNameController = TextEditingController();
   final addressController = TextEditingController();
+  final mobileNoController = TextEditingController();
 
   // Invoice
   final gstNumberController = TextEditingController();
@@ -25,11 +26,20 @@ class ConfigController extends GetxController {
   // Billing
   final billTakerController = TextEditingController();
   final billTakerAddressController = TextEditingController();
+  final billTakerMobileNoController = TextEditingController();
   final billTakerGSTPinController = TextEditingController();
-  final userFirmController = TextEditingController();
-  final userFirmAddressController = TextEditingController();
-  final userFirmGSTPinController = TextEditingController();
+  final deliveryFirmController = TextEditingController();
+  final deliveryFirmAddressController = TextEditingController();
+  final deliveryFirmMobileNoController = TextEditingController();
+  final deliveryFirmGSTPinController = TextEditingController();
   final brokerController = TextEditingController();
+
+  // Bank Details
+  final bankNameController = TextEditingController();
+  final branchNameController = TextEditingController();
+  final accountNoController = TextEditingController();
+  final ifscCodeController = TextEditingController();
+  final remarkController = TextEditingController();
 
   // Discount & Taxes
   final discountController = TextEditingController();
@@ -56,6 +66,7 @@ class ConfigController extends GetxController {
     box.write('config', {
       'companyName': companyName,
       'address': address,
+      'mobileNo': mobileNoController.text,
       'gstNumber': gstNumber,
       'panNumber': panNumber,
       'stateCode': stateCode,
@@ -63,11 +74,18 @@ class ConfigController extends GetxController {
       'date': date,
       'billTaker': billTaker,
       'billTakerAddress': billTakerAddress,
+      'billTakerMobileNo': billTakerMobileNo,
       'billTakerGSTPin': billTakerGSTPin,
-      'userFirm': userFirm,
-      'userFirmAddress': userFirmAddress,
-      'userFirmGSTPin': userFirmGSTPin,
+      'deliveryFirm': deliveryFirm,
+      'deliveryFirmAddress': deliveryFirmAddress,
+      'deliveryFirmMobileNo': deliveryFirmMobileNo,
+      'deliveryFirmGSTPin': deliveryFirmGSTPin,
       'broker': broker,
+      'bankName': bankName,
+      'branchName': branchName,
+      'accountNo': accountNo,
+      'ifscCode': ifscCode,
+      'remark': remark,
       'discount': discount,
       'othLess': othLess,
       'freight': freight,
@@ -82,18 +100,33 @@ class ConfigController extends GetxController {
   void loadConfig() {
     final config = box.read('config') ?? {};
 
+    // Company
     companyNameController.text = config['companyName'] ?? '';
     addressController.text = config['address'] ?? '';
+    mobileNoController.text = config['mobileNo'] ?? '';
+    // Invoice
     gstNumberController.text = config['gstNumber'] ?? '';
     panNumberController.text = config['panNumber'] ?? '';
     stateCodeController.text = config['stateCode'] ?? '';
+    invoiceNoController.text = config['invoiceNo'] ?? '';
+    dateController.text = config['date'] ?? getTodayDate();
+    // Billing
     billTakerController.text = config['billTaker'] ?? '';
     billTakerAddressController.text = config['billTakerAddress'] ?? '';
+    billTakerMobileNoController.text = config['billTakerMobileNo'] ?? '';
     billTakerGSTPinController.text = config['billTakerGSTPin'] ?? '';
-    userFirmController.text = config['userFirm'] ?? '';
-    userFirmAddressController.text = config['userFirmAddress'] ?? '';
-    userFirmGSTPinController.text = config['userFirmGSTPin'] ?? '';
+    deliveryFirmController.text = config['deliveryFirm'] ?? '';
+    deliveryFirmMobileNoController.text = config['deliveryFirmMobileNo'] ?? '';
+    deliveryFirmAddressController.text = config['deliveryFirmAddress'] ?? '';
+    deliveryFirmGSTPinController.text = config['deliveryFirmGSTPin'] ?? '';
     brokerController.text = config['broker'] ?? '';
+    // Bank Details
+    bankNameController.text = config['bankName'] ?? '';
+    branchNameController.text = config['branchName'] ?? '';
+    accountNoController.text = config['accountNo'] ?? '';
+    ifscCodeController.text = config['ifscCode'] ?? '';
+    remarkController.text = config['remark'] ?? '';
+    // Discount & Taxes
     discountController.text = config['discount'] ?? '';
     othLessController.text = config['othLess'] ?? '';
     freightController.text = config['freight'] ?? '';
@@ -112,20 +145,33 @@ class ConfigController extends GetxController {
   // ✅ Convert current config to Invoice object
   Invoice getInvoice() {
     return Invoice(
-      invoiceNo: invoiceNo,
-      date: date,
+      // Company
       companyName: companyName,
       address: address,
+      mobileNo: mobileNo,
+      // Invoice
       gstNumber: gstNumber,
       panNumber: panNumber,
       stateCode: stateCode,
+      invoiceNo: invoiceNo,
+      date: date,
+      // Billing
       billTaker: billTaker,
       billTakerAddress: billTakerAddress,
+      billTakerMobileNo: billTakerMobileNo,
       billTakerGSTPin: billTakerGSTPin,
-      userFirm: userFirm,
-      userFirmAddress: userFirmAddress,
-      userFirmGSTPin: userFirmGSTPin,
+      deliveryFirm: deliveryFirm,
+      deliveryFirmAddress: deliveryFirmAddress,
+      deliveryFirmMobileNo: deliveryFirmMobileNo,
+      deliveryFirmGSTPin: deliveryFirmGSTPin,
       broker: broker,
+      // Bank details
+      bankName: bankNameController.text,
+      bankBranch: branchNameController.text,
+      bankAccountNo: accountNoController.text,
+      bankIFSCCode: ifscCodeController.text,
+      remark: remarkController.text,
+      // Discount & Taxes
       discount: discount,
       othLess: othLess,
       freight: freight,
@@ -137,20 +183,33 @@ class ConfigController extends GetxController {
 
   // ✅ Load Invoice data into config (for editing/viewing)
   void invoiceToConfig(Invoice invoice) {
-    invoiceNoController.text = invoice.invoiceNo;
-    dateController.text = invoice.date;
+    // Company
     companyNameController.text = invoice.companyName;
     addressController.text = invoice.address;
+    mobileNoController.text = invoice.mobileNo;
+    // Invoice
     gstNumberController.text = invoice.gstNumber;
     panNumberController.text = invoice.panNumber;
     stateCodeController.text = invoice.stateCode;
+    invoiceNoController.text = invoice.invoiceNo;
+    dateController.text = invoice.date;
+
+    // Billing
     billTakerController.text = invoice.billTaker;
     billTakerAddressController.text = invoice.billTakerAddress;
+    billTakerMobileNoController.text = invoice.billTakerMobileNo;
     billTakerGSTPinController.text = invoice.billTakerGSTPin;
-    userFirmController.text = invoice.userFirm;
-    userFirmAddressController.text = invoice.userFirmAddress;
-    userFirmGSTPinController.text = invoice.userFirmGSTPin;
+    deliveryFirmController.text = invoice.deliveryFirm;
+    deliveryFirmAddressController.text = invoice.deliveryFirmAddress;
+    deliveryFirmMobileNoController.text = invoice.deliveryFirmMobileNo;
+    deliveryFirmGSTPinController.text = invoice.deliveryFirmGSTPin;
     brokerController.text = invoice.broker;
+    // Bank Details
+    bankNameController.text = invoice.bankName;
+    branchNameController.text = invoice.bankBranch;
+    accountNoController.text = invoice.bankAccountNo;
+    ifscCodeController.text = invoice.bankIFSCCode;
+    remarkController.text = invoice.remark;
     discountController.text = invoice.discount.toString();
     othLessController.text = invoice.othLess.toString();
     freightController.text = invoice.freight.toString();
@@ -174,6 +233,7 @@ class ConfigController extends GetxController {
     return {
       'companyName': companyName,
       'address': address,
+      'mobileNo': mobileNoController.text,
       'gstNumber': gstNumber,
       'panNumber': panNumber,
       'stateCode': stateCode,
@@ -181,10 +241,12 @@ class ConfigController extends GetxController {
       'date': date,
       'billTaker': billTaker,
       'billTakerAddress': billTakerAddress,
+      'billTakerMobileNo': billTakerMobileNoController.text,
       'billTakerGSTPin': billTakerGSTPin,
-      'userFirm': userFirm,
-      'userFirmAddress': userFirmAddress,
-      'userFirmGSTPin': userFirmGSTPin,
+      'deliveryFirm': deliveryFirm,
+      'deliveryFirmAddress': deliveryFirmAddress,
+      'deliveryFirmMobileNo': deliveryFirmMobileNoController.text,
+      'deliveryFirmGSTPin': deliveryFirmGSTPin,
       'broker': broker,
       'discount': discount,
       'othLess': othLess,
@@ -196,20 +258,33 @@ class ConfigController extends GetxController {
   }
 
   // Getters
+  // Commpany
   String get companyName => companyNameController.text;
   String get address => addressController.text;
+  String get mobileNo => mobileNoController.text;
+  // Invoice
   String get gstNumber => gstNumberController.text;
   String get panNumber => panNumberController.text;
   String get stateCode => stateCodeController.text;
   String get invoiceNo => invoiceNoController.text;
   String get date => dateController.text;
+  // Billing
   String get billTaker => billTakerController.text;
   String get billTakerAddress => billTakerAddressController.text;
+  String get billTakerMobileNo => billTakerMobileNoController.text;
   String get billTakerGSTPin => billTakerGSTPinController.text;
-  String get userFirm => userFirmController.text;
-  String get userFirmAddress => userFirmAddressController.text;
-  String get userFirmGSTPin => userFirmGSTPinController.text;
+  String get deliveryFirm => deliveryFirmController.text;
+  String get deliveryFirmAddress => deliveryFirmAddressController.text;
+  String get deliveryFirmMobileNo => deliveryFirmMobileNoController.text;
+  String get deliveryFirmGSTPin => deliveryFirmGSTPinController.text;
   String get broker => brokerController.text;
+  // Bank Details
+  String get bankName => bankNameController.text;
+  String get branchName => branchNameController.text;
+  String get accountNo => accountNoController.text;
+  String get ifscCode => ifscCodeController.text;
+  String get remark => remarkController.text;
+  // Discount & Taxes
   String get discount => discountController.text;
   String get othLess => othLessController.text;
   String get freight => freightController.text;

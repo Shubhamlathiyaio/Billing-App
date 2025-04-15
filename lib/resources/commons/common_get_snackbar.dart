@@ -56,7 +56,7 @@ class CommonSnackbar {
         color: Colors.red,
       ));
 
-  static successSnackbar(String label) => show(
+  static customSuccessSnackbar(String label) => show(
         title: label,
         message: "Invoice $label successfully",
         icon: Icon(
@@ -65,4 +65,15 @@ class CommonSnackbar {
           size: 24,
         ),
       );
+
+  static successSnackbar(String label, String message) => show(
+        title: label,
+        message: message,
+        icon: Icon(
+          Icons.check_circle,
+          color: Colors.green,
+          size: 24,
+        ),
+      );
 }
+

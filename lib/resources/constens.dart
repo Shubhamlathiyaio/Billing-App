@@ -19,3 +19,7 @@ const double containerPadding = 10.0;
 const double containerBorderRadius = 8.0;
 const double tilePadding = 6.0;
 const double sectionSpacing = 12.0;
+
+const String FILE_STORAGE_PATH = '/storage/emulated/0/Download';
+
+late final font;

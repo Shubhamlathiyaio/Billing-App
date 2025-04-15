@@ -13,6 +13,13 @@ pw.Widget companyHeaderPdf(
     children: [
       pw.SizedBox(height: 4),
       PDFText(
+        data: "|| Shree Ganeshay Namah ||",
+        fontSize: baseFontSize,
+        fontWeight: pw.FontWeight.bold,
+        align: pw.TextAlign.center,
+      ),
+      pw.SizedBox(height: 4),
+      PDFText(
         data: config.companyName,
         fontSize: baseFontSize * LARGE,
         fontWeight: pw.FontWeight.bold,

@@ -4,6 +4,7 @@ import 'package:billing/controllers/storage_controller.dart';
 import 'package:billing/resources/commons/common_chip.dart';
 import 'package:billing/resources/commons/common_text.dart';
 import 'package:billing/resources/keep_button.dart';
+import 'package:billing/views/home_page.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:billing/controllers/pdf_preview_controller.dart';
@@ -17,9 +18,12 @@ class PdfPreviewPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    pdfController.loadPdf();
+    pdfController.generatePdfForDownload();
 
     return Scaffold(
+      drawer: Drawer(
+        child: buildAppDrawer(context),
+      ),
       appBar: AppBar(title: const Text('PDF Preview')),
       body: Obx(() {
         if (pdfController.isLoading.value) {

@@ -1,8 +1,10 @@
 import 'dart:io';
 import 'package:billing/controllers/invoice_controller.dart';
 import 'package:billing/controllers/storage_controller.dart';
+import 'package:billing/main.dart';
+import 'package:billing/resources/commons/common_get_snackbar.dart';
 import 'package:get/get.dart';
-import 'package:open_file/open_file.dart';
+import 'package:open_file_plus/open_file_plus.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
@@ -28,14 +30,19 @@ class PdfServices {
   static Future<File> savePdf(String name, pw.Document pdf) async {
     Directory? dir;
     if (Platform.isAndroid) {
-      dir = Directory('/storage/emulated/0/Download'); // Downloads folder
+      dir = Directory('/storage/emulated/0/Download/'); // Downloads folder
     } else {
       dir = await getApplicationDocumentsDirectory(); // iOS fallback
     }
 
     final file = File('${dir.path}/$name');
-    await file.writeAsBytes(await pdf.save());
-    return file;
+    if (await requestPermission()) {
+      await file.writeAsBytes(await pdf.save());
+      return file;
+    } else {
+      CommonSnackbar.errorSnackbar("Show message: Permission denied");
+    }
+    return File("");
   }
 
   static Future<File?> generatePdfById(int id) async {
@@ -75,9 +82,9 @@ class PdfServices {
         .map((item) => TableItem(
               chalan: item.chalan,
               itemName: item.itemName,
-              taka: item.taka, // previously 'quality'
-              hsnCode: item.hsnCode, // previously 'hsn'
-              qty: item.qty, // previously 'quantity'
+              taka: item.taka,
+              hsnCode: item.hsnCode,
+              qty: item.qty,
               rate: item.rate,
             ))
         .toList();

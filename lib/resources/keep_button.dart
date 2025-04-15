@@ -60,6 +60,8 @@ class _KeepStyleFABState extends State<KeepStyleFAB>
               if (Get.find<TableController>().itemList.isEmpty) {
                 CommonSnackbar.noItemSnackbar();
               } else {
+                storage.saveInvoice(config.getInvoice());
+                Get.find<TableController>().clearTable();
                 PdfServices.sharePdfById(storage.currentId.value);
               }
               _toggleFab();
@@ -76,7 +78,7 @@ class _KeepStyleFABState extends State<KeepStyleFAB>
                 storage.saveInvoice(config.getInvoice());
                 Get.find<TableController>().clearTable();
                 Get.find<NavigationController>().changePage(3);
-                CommonSnackbar.successSnackbar("Saved");
+                CommonSnackbar.customSuccessSnackbar("Saved");
               }
               _toggleFab();
             },
@@ -90,7 +92,7 @@ class _KeepStyleFABState extends State<KeepStyleFAB>
                 CommonSnackbar.noItemSnackbar();
               } else {
                 PdfServices.downloadPdfById(storage.currentId.value);
-                CommonSnackbar.successSnackbar("Download");
+                CommonSnackbar.customSuccessSnackbar("Download");
               }
               _toggleFab();
             },

@@ -50,7 +50,6 @@ class ConfigFieldTile extends StatelessWidget {
           CommonTextField(
             controller: field.controller,
             keyboardType: field.type == ConfigFieldType.number ? TextInputType.number : TextInputType.text,
-            textCapitalization: TextCapitalization.characters,
           ),
         ],
       ),

@@ -5,7 +5,7 @@
   "entities": [
     {
       "id": "1:1672983046465597673",
-      "lastPropertyId": "21:4893950793228913829",
+      "lastPropertyId": "29:2508087491037836745",
       "name": "Invoice",
       "properties": [
         {
@@ -66,17 +66,17 @@
         },
         {
           "id": "12:4600010460398069013",
-          "name": "userFirm",
+          "name": "deliveryFirm",
           "type": 9
         },
         {
           "id": "13:3012722547490749159",
-          "name": "userFirmAddress",
+          "name": "deliveryFirmAddress",
           "type": 9
         },
         {
           "id": "14:4429756325963036195",
-          "name": "userFirmGSTPin",
+          "name": "deliveryFirmGSTPin",
           "type": 9
         },
         {
@@ -112,6 +112,46 @@
         {
           "id": "21:4893950793228913829",
           "name": "cGst",
+          "type": 9
+        },
+        {
+          "id": "22:4125794333757904567",
+          "name": "bankName",
+          "type": 9
+        },
+        {
+          "id": "23:3167655237790876470",
+          "name": "bankBranch",
+          "type": 9
+        },
+        {
+          "id": "24:8686299434915302807",
+          "name": "bankAccountNo",
+          "type": 9
+        },
+        {
+          "id": "25:3201465326323911375",
+          "name": "bankIFSCCode",
+          "type": 9
+        },
+        {
+          "id": "26:5425372191135784770",
+          "name": "remark",
+          "type": 9
+        },
+        {
+          "id": "27:1736394768535198769",
+          "name": "mobileNo",
+          "type": 9
+        },
+        {
+          "id": "28:1484988344574880309",
+          "name": "billTakerMobileNo",
+          "type": 9
+        },
+        {
+          "id": "29:2508087491037836745",
+          "name": "deliveryFirmMobileNo",
           "type": 9
         }
       ],

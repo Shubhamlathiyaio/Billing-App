@@ -1,8 +1,12 @@
+import 'package:billing/controllers/table_controller.dart';
 import 'package:billing/resources/colors.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:number_to_words/number_to_words.dart';
 import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
 
 String getTodayDate() {
   final now = DateTime.now();
@@ -24,16 +28,23 @@ double rxStringToDouble(RxString value) {
 }
 
 String getAmountInWords(int amount) {
-  return '${NumberToWord().convert('en-in', amount).toUpperCase()} ONLY';
+  return amount == 0? "": '${NumberToWord().convert('en-in', amount).toUpperCase()} ONLY';
 }
 
-List<int> chalanNo = [];
+  // font = await loadGujaratiFont();
+Future<pw.Font> loadGujaratiFont() async {
+  final fontData = await rootBundle.load("assets/fonts/NotoSansGujarati-VariableFont_wdth,wght.ttf");
+  return pw.Font.ttf(fontData);
+}
+
+List<int> chalanNos = [];
 Color getColor(int index) {
-  if (!chalanNo.contains(index)) chalanNo.add(index);
-  return chalanColors[chalanNo.indexOf(index)];
+  if(Get.find<TableController>().itemList.isEmpty) chalanNos = [];
+  if (!chalanNos.contains(index)) chalanNos.add(index);
+  return chalanColors[chalanNos.indexOf(index)];
 }
 
 PdfColor getPdfColor(int index) {
-  if (!chalanNo.contains(index)) chalanNo.add(index);
-  return chalanPdfColors[chalanNo.indexOf(index)];
+  if (!chalanNos.contains(index)) chalanNos.add(index);
+  return chalanPdfColors[chalanNos.indexOf(index)];
 }

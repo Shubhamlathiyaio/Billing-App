@@ -12,7 +12,7 @@ class TableController extends GetxController {
 
   // Observable item list
   var itemList = <TableItem>[].obs;
-
+  
   // ✅ Totals and Calculations
   double get totalQuantity => itemList.fold(0.0, (sum, item) => sum + item.qty);
 
@@ -22,7 +22,12 @@ class TableController extends GetxController {
   double get discountAmount =>
       perOf(double.tryParse(config.discount) ?? 0, subTotal);
 
-  double get amountAfterDiscount => subTotal - discountAmount;
+  double get othLess =>
+      perOf(double.tryParse(config.othLess) ?? 0, subTotal);
+      double get freight =>
+      perOf(double.tryParse(config.freight) ?? 0, subTotal);
+
+  double get amountAfterDiscount => subTotal - discountAmount - othLess + freight;
 
   double get igst =>
       perOf(double.tryParse(config.iGst) ?? 0, amountAfterDiscount);

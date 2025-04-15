@@ -78,11 +78,6 @@ class TableEditorPage extends StatelessWidget {
         leading: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            ReorderableDragStartListener(
-              index: index,
-              child: const Icon(Icons.drag_handle, color: Colors.grey),
-            ),
-            const SizedBox(width: 8),
             CircleAvatar(
               backgroundColor: getColor(item.chalanNo),
               child: CommonText(
