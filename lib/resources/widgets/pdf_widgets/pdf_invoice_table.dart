@@ -46,7 +46,11 @@ pw.TableRow _buildItemRow(int index, TableItem item, double baseFontSize) {
   return pw.TableRow(
     children: [
       _centeredCell(index.toString(), baseFontSize, color),
-      _centeredCell(item.chalanNo.toString(), baseFontSize, color, ),
+      _centeredCell(
+        item.chalanNo.toString(),
+        baseFontSize,
+        color,
+      ),
       _leftAlignedCell(item.itemName, baseFontSize, color),
       _centeredCell(item.taka.toString(), baseFontSize, color),
       _centeredCell(item.hsnCode, baseFontSize, color),
@@ -63,7 +67,7 @@ Map<int, pw.TableColumnWidth> _getPdfColumnWidths(double width) {
     1: pw.FixedColumnWidth(width * 0.095),
     2: pw.FixedColumnWidth(width * 0.26),
     3: pw.FixedColumnWidth(width * 0.12),
-    4: pw.FixedColumnWidth(width * 0.10), 
+    4: pw.FixedColumnWidth(width * 0.10),
     5: pw.FixedColumnWidth(width * 0.10),
     6: pw.FixedColumnWidth(width * 0.12),
     7: pw.FixedColumnWidth(width * 0.12),
@@ -133,14 +137,16 @@ pw.TableRow _buildSubTotalRow(double baseFontSize, TableController table) {
   );
 }
 
-pw.Widget _centeredCell(String text, double fontSize,[PdfColor color = PdfColors.black]) {
+pw.Widget _centeredCell(String text, double fontSize,
+    [PdfColor color = PdfColors.black]) {
   return pw.Container(
     alignment: pw.Alignment.center,
     child: PDFText(data: text, fontSize: fontSize, fontColor: color),
   );
 }
 
-pw.Widget _leftAlignedCell(String text, double fontSize,[PdfColor color = PdfColors.black]) {
+pw.Widget _leftAlignedCell(String text, double fontSize,
+    [PdfColor color = PdfColors.black]) {
   return pw.Container(
     alignment: pw.Alignment.centerLeft,
     padding: const pw.EdgeInsets.only(left: 6),
@@ -148,10 +154,11 @@ pw.Widget _leftAlignedCell(String text, double fontSize,[PdfColor color = PdfCol
   );
 }
 
-pw.Widget _rightAlignedCell(String text, double fontSize,[PdfColor color = PdfColors.black]) {
+pw.Widget _rightAlignedCell(String text, double fontSize,
+    [PdfColor color = PdfColors.black]) {
   return pw.Container(
     alignment: pw.Alignment.centerRight,
     padding: const pw.EdgeInsets.only(right: 6),
-    child: PDFText(data: text, fontSize: fontSize,  fontColor: color),
+    child: PDFText(data: text, fontSize: fontSize, fontColor: color),
   );
 }

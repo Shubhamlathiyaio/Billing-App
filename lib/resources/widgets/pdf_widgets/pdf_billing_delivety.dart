@@ -1,16 +1,16 @@
-import 'package:billing/controllers/config_controller.dart';
+import 'package:billing/models/invoice.dart';
 import 'package:billing/resources/widgets/common_pdfs/pdf_conatiner.dart';
 import 'package:billing/resources/widgets/common_pdfs/pdf_text.dart';
 import 'package:pdf/widgets.dart' as pw;
 
 pw.Widget billingAndDeliveryDetailsPdf(
-    double baseFontSize, double pageWidth, ConfigController config) {
+    double baseFontSize, double pageWidth, Invoice invoice) {
   return pw.Column(
     crossAxisAlignment: pw.CrossAxisAlignment.start,
     children: [
       _headerRow(baseFontSize),
-      _detailsRow(baseFontSize, config),
-      _brokerInfo(baseFontSize, pageWidth, config),
+      _detailsRow(baseFontSize, invoice),
+      _brokerInfo(baseFontSize, pageWidth, invoice),
     ],
   );
 }
@@ -40,20 +40,22 @@ pw.Widget _headerContainer(String title, double baseFontSize,
   );
 }
 
-pw.Widget _detailsRow(double baseFontSize, ConfigController config) {
+pw.Widget _detailsRow(double baseFontSize, Invoice invoice) {
   return pw.Row(
     children: [
       _detailsContainer(
-        title: "M/S.: ${config.billTaker}",
-        address: config.billTakerAddress,
-        gstPin: config.billTakerGSTPin,
+        title: "M/S.: ${invoice.billTaker}",
+        address: invoice.billTakerAddress,
+        gstPin: invoice.billTakerGSTPin,
         baseFontSize: baseFontSize,
         rightBorder: 0.5,
       ),
       _detailsContainer(
-        title: config.deliveryFirm=="" ? "Firm of Deliver" : config.deliveryFirm,
-        address: config.deliveryFirmAddress,
-        gstPin: config.deliveryFirmGSTPin,
+        title: invoice.deliveryFirm.trim().isEmpty
+            ? "Firm of Delivery"
+            : invoice.deliveryFirm,
+        address: invoice.deliveryFirmAddress,
+        gstPin: invoice.deliveryFirmGSTPin,
         baseFontSize: baseFontSize,
         leftBorder: 0.5,
       ),
@@ -99,14 +101,13 @@ pw.Widget _detailsContainer({
   );
 }
 
-pw.Widget _brokerInfo(
-    double baseFontSize, double width, ConfigController config) {
+pw.Widget _brokerInfo(double baseFontSize, double width, Invoice invoice) {
   return PDFContainer(
     width: width,
     topBorder: 1,
     padding: const pw.EdgeInsets.symmetric(vertical: 1, horizontal: 8),
     child: PDFText(
-      data: "Broker: ${config.broker}",
+      data: "Broker: ${invoice.broker}",
       fontSize: baseFontSize,
     ),
   );

@@ -1,4 +1,3 @@
-import 'package:billing/controllers/config_controller.dart';
 import 'package:billing/resources/constens.dart';
 import 'package:billing/resources/widgets/pdf_widgets/pdf_billing_delivety.dart';
 import 'package:billing/resources/widgets/pdf_widgets/pdf_details.dart';
@@ -7,9 +6,10 @@ import 'package:billing/resources/widgets/pdf_widgets/pdf_invoice_table.dart';
 import 'package:billing/resources/widgets/pdf_widgets/pdf_payment.dart';
 import 'package:billing/resources/widgets/pdf_widgets/pdf_terms_summary.dart';
 import 'package:pdf/widgets.dart';
+import 'package:billing/models/invoice.dart';
 
 Widget invoiceBodyPdf(
-  ConfigController config,
+  Invoice unsavedInvoice,
   double screenWidth,
   int id,
 ) {
@@ -27,9 +27,10 @@ Widget invoiceBodyPdf(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          companyHeaderPdf(baseFontSize, screenWidth, config),
-          invoiceDetailsPdf(baseFontSize, screenWidth, height, config),
-          billingAndDeliveryDetailsPdf(baseFontSize, screenWidth, config),
+          companyHeaderPdf(baseFontSize, screenWidth, unsavedInvoice),
+          invoiceDetailsPdf(baseFontSize, screenWidth, height, unsavedInvoice),
+          billingAndDeliveryDetailsPdf(
+              baseFontSize, screenWidth, unsavedInvoice),
           invoiceItemsTablePdf(baseFontSize, x),
           paymentSummaryPdf(baseFontSize),
           termsAndConditionsSectionPdf(baseFontSize),

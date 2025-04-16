@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:billing/controllers/config_controller.dart';
 import 'package:billing/controllers/storage_controller.dart';
 import 'package:billing/resources/commons/common_get_snackbar.dart';
 import 'package:billing/resources/widgets/pdf_body.dart';
@@ -13,7 +12,7 @@ class PdfServices {
   // 1. Generate PDF in memory (not saved anywhere, only returned as a file).
   static Future<File> generatePdfInMemory(int id) async {
     try {
-      final pdf = getPdfDoc(id);
+      final pdf = getPdfDoc();
       final data = await pdf.save();
       final file =
           File('${(await getTemporaryDirectory()).path}/temp_invo_$id.pdf');
@@ -82,16 +81,34 @@ class PdfServices {
   }
 
   // Helper function: Generate PDF document based on ID.
-  static pw.Document getPdfDoc(int id) {
+  static pw.Document getPdfDoc() {
     final pdf = pw.Document();
-    ConfigController config = Get.find<ConfigController>();
-    config.invoiceToConfig(Get.find<StorageController>().getInvoiceById(id));
-    print(config.accountNo);
+    StorageController storageController = Get.find<StorageController>();
+
+    // Get the unsaved invoice
+    final unsavedInvoice = storageController.unsavedInvoice;
+
+    // If no unsaved invoice, return an empty document (or handle error if required)
+    if (unsavedInvoice.id == 0) {
+      // Handle case where no unsaved invoice is present, maybe show an error
+      print("No unsaved invoice found.");
+      return pdf;
+    }
+
+    // Use unsavedInvoice directly here instead of config
+    print(
+        unsavedInvoice.bankAccountNo); // Just an example to print invoice data
+
     pdf.addPage(
       pw.Page(
-        build: (context) => invoiceBodyPdf(config,context.page.pageFormat.width, id),
+        build: (context) => invoiceBodyPdf(
+          unsavedInvoice, // Pass unsavedInvoice instead of config
+          context.page.pageFormat.width,
+          unsavedInvoice.id,
+        ),
       ),
     );
+
     return pdf;
   }
 }
