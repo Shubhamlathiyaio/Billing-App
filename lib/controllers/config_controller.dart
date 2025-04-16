@@ -1,5 +1,6 @@
 import 'package:billing/controllers/table_controller.dart';
 import 'package:billing/models/invoice.dart';
+import 'package:billing/models/invoice_item.dart';
 import 'package:billing/models/table_item.dart';
 import 'package:billing/services/small_services.dart';
 import 'package:flutter/material.dart';
@@ -144,42 +145,65 @@ class ConfigController extends GetxController {
 
   // ✅ Convert current config to Invoice object
   Invoice getInvoice() {
-    return Invoice(
-      // Company
-      companyName: companyName,
-      address: address,
-      mobileNo: mobileNo,
-      // Invoice
-      gstNumber: gstNumber,
-      panNumber: panNumber,
-      stateCode: stateCode,
-      invoiceNo: invoiceNo,
-      date: date,
-      // Billing
-      billTaker: billTaker,
-      billTakerAddress: billTakerAddress,
-      billTakerMobileNo: billTakerMobileNo,
-      billTakerGSTPin: billTakerGSTPin,
-      deliveryFirm: deliveryFirm,
-      deliveryFirmAddress: deliveryFirmAddress,
-      deliveryFirmMobileNo: deliveryFirmMobileNo,
-      deliveryFirmGSTPin: deliveryFirmGSTPin,
-      broker: broker,
-      // Bank details
-      bankName: bankNameController.text,
-      bankBranch: branchNameController.text,
-      bankAccountNo: accountNoController.text,
-      bankIFSCCode: ifscCodeController.text,
-      remark: remarkController.text,
-      // Discount & Taxes
-      discount: discount,
-      othLess: othLess,
-      freight: freight,
-      iGst: iGst,
-      sGst: sGst,
-      cGst: cGst,
+  final invoice = Invoice(
+    // Company
+    companyName: companyName,
+    address: address,
+    mobileNo: mobileNo,
+
+    // Invoice
+    gstNumber: gstNumber,
+    panNumber: panNumber,
+    stateCode: stateCode,
+    invoiceNo: invoiceNo,
+    date: date,
+
+    // Billing
+    billTaker: billTaker,
+    billTakerAddress: billTakerAddress,
+    billTakerMobileNo: billTakerMobileNo,
+    billTakerGSTPin: billTakerGSTPin,
+    deliveryFirm: deliveryFirm,
+    deliveryFirmAddress: deliveryFirmAddress,
+    deliveryFirmMobileNo: deliveryFirmMobileNo,
+    deliveryFirmGSTPin: deliveryFirmGSTPin,
+    broker: broker,
+
+    // Bank details
+    bankName: bankNameController.text,
+    bankBranch: branchNameController.text,
+    bankAccountNo: accountNoController.text,
+    bankIFSCCode: ifscCodeController.text,
+    remark: remarkController.text,
+
+    // Discount & Taxes
+    discount: discount,
+    othLess: othLess,
+    freight: freight,
+    iGst: iGst,
+    sGst: sGst,
+    cGst: cGst,
+  );
+
+  // Add table data (items)
+  final tableItems = Get.find<TableController>().itemList;
+
+  invoice.items.addAll(tableItems.map((item) {
+    final invoiceItem = InvoiceItem(
+      chalan: item.chalanNo.toString(),
+      itemName: item.itemName,
+      taka: item.taka.toString(),
+      hsnCode: item.hsnCode.toString(),
+      qty: item.qty.toString(),
+      rate: item.rate.toString(),
     );
-  }
+    invoiceItem.invoice.target = invoice;
+    return invoiceItem;
+  }));
+
+  return invoice;
+}
+
 
   // ✅ Load Invoice data into config (for editing/viewing)
   void invoiceToConfig(Invoice invoice) {

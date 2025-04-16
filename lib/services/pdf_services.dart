@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:billing/controllers/config_controller.dart';
+import 'package:billing/controllers/storage_controller.dart';
 import 'package:billing/resources/commons/common_get_snackbar.dart';
 import 'package:billing/resources/widgets/pdf_body.dart';
 import 'package:get/get.dart';
@@ -83,9 +84,9 @@ class PdfServices {
   // Helper function: Generate PDF document based on ID.
   static pw.Document getPdfDoc(int id) {
     final pdf = pw.Document();
-    // Get.find<ConfigController>().invoiceToConfig(Get.find<StorageController>().getInvoiceById(id));
     ConfigController config = Get.find<ConfigController>();
-    // Replace this with your actual PDF generation code
+    config.invoiceToConfig(Get.find<StorageController>().getInvoiceById(id));
+    print(config.accountNo);
     pdf.addPage(
       pw.Page(
         build: (context) => invoiceBodyPdf(config,context.page.pageFormat.width, id),

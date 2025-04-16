@@ -87,7 +87,12 @@ Widget customTile(int index, Invoice invoice) {
         ),
         PopupMenuButton<String>(
           icon: Icon(Icons.more_vert),
-          onSelected: (value) {},
+          onSelected: (value) async {
+            if (value == 'share') {
+              final pdf = PdfServices.getPdfDoc(invoice.id);
+              await PdfServices.sharePdf(pdf, getFileName(invoice.id));
+            }
+          },
           itemBuilder: (context) => [
             PopupMenuItem(
               value: 'open',
@@ -99,15 +104,17 @@ Widget customTile(int index, Invoice invoice) {
               child: Text('Edit'),
               onTap: () => storage.openInvoiceById(invoice.id),
             ),
-            // PopupMenuItem(
-            //   value: 'share',
-            //   child: Text('Share'),
-            //   onTap: () => PdfServices.sharePdf(PdfServices.getPdfDoc(invoice.id),getFileName(invoice.id)),
-            // ),
+            PopupMenuItem(
+              value: 'share',
+              child: Text('Share'),
+              onTap: () => PdfServices.sharePdf(
+                  PdfServices.getPdfDoc(invoice.id), getFileName(invoice.id)),
+            ),
             PopupMenuItem(
               value: 'download',
               child: Text('Download'),
-              onTap: () => PdfServices.downloadPdf(PdfServices.getPdfDoc(invoice.id), getFileName(invoice.id)),
+              onTap: () => PdfServices.downloadPdf(
+                  PdfServices.getPdfDoc(invoice.id), getFileName(invoice.id)),
             ),
             PopupMenuItem(
               value: 'delete',

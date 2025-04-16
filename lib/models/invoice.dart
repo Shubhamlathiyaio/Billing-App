@@ -5,9 +5,7 @@ import 'package:billing/models/invoice_item.dart'; // Import the InvoiceItem mod
 
 @Entity()
 class Invoice {
-  int id = Get.find<StorageController>()
-      .currentId
-      .value; // Unique ID (auto-incremented)
+  int id = Get.find<StorageController>().currentId.value; // Unique ID (auto-incremented)
 
   // All fields are stored as String
   String companyName;
@@ -75,8 +73,9 @@ class Invoice {
   });
 
   // Method to copy the current Invoice instance (useful if needed)
-  copy() {
+  Invoice copy() {
     return Invoice(
+      id: this.id,
       companyName: companyName,
       address: address,
       mobileNo: mobileNo,
@@ -105,12 +104,14 @@ class Invoice {
       iGst: iGst,
       sGst: sGst,
       cGst: cGst,
+      
     );
   }
 
   // Convert the Invoice to JSON (if needed)
-  toJson() {
+  Map<String, dynamic> toJson() {
     return {
+      'id': id,
       'companyName': companyName,
       'address': address,
       'mobileNo': mobileNo,
@@ -141,37 +142,38 @@ class Invoice {
       'cGst': cGst,
     };
   }
-}
 
-Invoice emptyInvoice() {
-  return Invoice(
-    companyName: '',
-    address: '',
-    mobileNo: '',
-    gstNumber: '',
-    panNumber: '',
-    stateCode: '',
-    invoiceNo: '',
-    date: '',
-    billTaker: '',
-    billTakerAddress: '',
-    billTakerMobileNo: '',
-    billTakerGSTPin: '',
-    deliveryFirm: '',
-    deliveryFirmAddress: '',
-    deliveryFirmMobileNo: '',
-    deliveryFirmGSTPin: '',
-    broker: '',
-    bankName: '',
-    bankBranch: '',
-    bankAccountNo: '',
-    bankIFSCCode: '',
-    remark: '',
-    discount: '',
-    othLess: '',
-    freight: '',
-    iGst: '',
-    sGst: '',
-    cGst: '',
-  );
+  // Static method to create an empty Invoice instance
+  static Invoice emptyInvoice() {
+    return Invoice(
+      companyName: '',
+      address: '',
+      mobileNo: '',
+      gstNumber: '',
+      panNumber: '',
+      stateCode: '',
+      invoiceNo: '',
+      date: '',
+      billTaker: '',
+      billTakerAddress: '',
+      billTakerMobileNo: '',
+      billTakerGSTPin: '',
+      deliveryFirm: '',
+      deliveryFirmAddress: '',
+      deliveryFirmMobileNo: '',
+      deliveryFirmGSTPin: '',
+      broker: '',
+      bankName: '',
+      bankBranch: '',
+      bankAccountNo: '',
+      bankIFSCCode: '',
+      remark: '',
+      discount: '',
+      othLess: '',
+      freight: '',
+      iGst: '',
+      sGst: '',
+      cGst: '',
+    );
+  }
 }
