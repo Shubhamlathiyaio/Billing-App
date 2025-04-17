@@ -12,7 +12,7 @@ class TableController extends GetxController {
 
   // Observable item list
   var itemList = <TableItem>[].obs;
-  
+
   // ✅ Totals and Calculations
   double get totalQuantity => itemList.fold(0.0, (sum, item) => sum + item.qty);
 
@@ -22,12 +22,11 @@ class TableController extends GetxController {
   double get discountAmount =>
       perOf(double.tryParse(config.discount) ?? 0, subTotal);
 
-  double get othLess =>
-      perOf(double.tryParse(config.othLess) ?? 0, subTotal);
-      double get freight =>
-      perOf(double.tryParse(config.freight) ?? 0, subTotal);
+  double get othLess => perOf(double.tryParse(config.othLess) ?? 0, subTotal);
+  double get freight => perOf(double.tryParse(config.freight) ?? 0, subTotal);
 
-  double get amountAfterDiscount => subTotal - discountAmount - othLess + freight;
+  double get amountAfterDiscount =>
+      subTotal - discountAmount - othLess + freight;
 
   double get igst =>
       perOf(double.tryParse(config.iGst) ?? 0, amountAfterDiscount);
@@ -92,6 +91,22 @@ class TableController extends GetxController {
         Get.find<TableController>().getTableItemsFromInvoice(invoice);
     Get.find<TableController>().itemList.value = tableItems;
   }
+
+ // TableController.dart
+Iterable<InvoiceItem> getInvoiceItemsFor(Invoice invoice) {
+  return itemList.map((item) {
+    final invoiceItem = InvoiceItem(
+      chalan: item.chalanNo.toString(),
+      itemName: item.itemName,
+      taka: item.taka.toString(),
+      hsnCode: item.hsnCode.toString(),
+      qty: item.qty.toString(),
+      rate: item.rate.toString(),
+    );
+    invoiceItem.invoice.target = invoice;
+    return invoiceItem;
+  });
+}
 
   RxList<TableItem> getTableItemsFromInvoice(Invoice invoice) {
     RxList<TableItem> tableItems = RxList<TableItem>();

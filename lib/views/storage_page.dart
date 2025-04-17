@@ -89,7 +89,7 @@ Widget customTile(int index, Invoice invoice) {
           icon: Icon(Icons.more_vert),
           onSelected: (value) async {
             if (value == 'share') {
-              final pdf = PdfServices.getPdfDoc(invoice.id);
+              final pdf = PdfServices.getPdfDoc(invoice);
               await PdfServices.sharePdf(pdf, getFileName(invoice.id));
             }
           },
@@ -108,13 +108,13 @@ Widget customTile(int index, Invoice invoice) {
               value: 'share',
               child: Text('Share'),
               onTap: () => PdfServices.sharePdf(
-                  PdfServices.getPdfDoc(invoice.id), getFileName(invoice.id)),
+                  PdfServices.getPdfDoc(invoice), getFileName(invoice.id)),
             ),
             PopupMenuItem(
               value: 'download',
               child: Text('Download'),
               onTap: () => PdfServices.downloadPdf(
-                  PdfServices.getPdfDoc(invoice.id), getFileName(invoice.id)),
+                  PdfServices.getPdfDoc(invoice), getFileName(invoice.id)),
             ),
             PopupMenuItem(
               value: 'delete',

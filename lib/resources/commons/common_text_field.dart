@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class CommonTextField extends StatelessWidget {
   final dynamic label; // Accepts String or Widget
@@ -15,6 +16,9 @@ class CommonTextField extends StatelessWidget {
   final double? horizontalPadding;
   final double? verticalPadding;
   final ValueChanged<String>? onChanged;
+  final int? maxLines;
+  final int? maxLength;
+  final List<TextInputFormatter>? inputFormatters;
 
   const CommonTextField({
     Key? key,
@@ -32,6 +36,9 @@ class CommonTextField extends StatelessWidget {
     this.horizontalPadding,
     this.verticalPadding,
     this.onChanged,
+    this.maxLines,
+    this.maxLength,
+    this.inputFormatters,
   }) : super(key: key);
 
   @override
@@ -50,6 +57,9 @@ class CommonTextField extends StatelessWidget {
         vertical: verticalPadding ?? 5,
       ),
       child: TextField(
+        maxLines: maxLines ?? 1,
+        inputFormatters: inputFormatters,
+        maxLength: maxLength,
         controller: controller,
         obscureText: isPassword,
         style: TextStyle(color: textColor),

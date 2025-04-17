@@ -26,13 +26,13 @@ Future<void> main() async {
 }
 
 void _initControllers(ObjectBoxStore objectBox) {
-  final storageController = Get.put(StorageController());
-  storageController.init(objectBox.invoiceBox);
   Get.put(ConfigController());
   Get.put(ConfigExpansionController());
   Get.put(NavigationController());
   Get.put(PdfPreviewController());
   Get.put(TableController()).loadItemsFromStorage();
+  final storage = Get.put(StorageController());
+  storage.init(objectBox.invoiceBox);
 }
 
 

@@ -8,13 +8,15 @@ class PdfPreviewController extends GetxController {
   RxBool isLoading = true.obs;
   Rx<File?> pdfFile = Rx<File?>(null);
 
-   Future<void> generatePdfForView() async {
+  Future<void> generatePdfForView() async {
     isLoading.value = true;
 
-    final id = Get.find<StorageController>().currentId.value;
-
+    Get.find<StorageController>().updateUnsavedInvoice();
+    print("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+    print(Get.find<StorageController>().unsavedInvoice.companyName);
     // Generate PDF in memory (user can't see the file)
-    final file = await PdfServices.generatePdfInMemory(id);
+    final file = await PdfServices.generatePdfInMemory(
+        Get.find<StorageController>().unsavedInvoice);
 
     pdfFile.value = file;
     isLoading.value = false;

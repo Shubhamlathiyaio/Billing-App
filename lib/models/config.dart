@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-enum ConfigFieldType { text, number, date }
+enum ConfigFieldType { text, number, date, address, numCap, mobile }
 
 class ConfigField {
   final String label;

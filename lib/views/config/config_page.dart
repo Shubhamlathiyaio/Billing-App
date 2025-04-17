@@ -1,3 +1,4 @@
+import 'package:billing/controllers/storage_controller.dart';
 import 'package:billing/resources/constens.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -26,58 +27,69 @@ class ConfigPage extends StatelessWidget {
       ConfigGroup(title: "Company", fields: [
         ConfigField(
             label: "Company Name", controller: config.companyNameController),
-        ConfigField(label: "Address", controller: config.addressController),
-        ConfigField(label: "Mobile No.", controller: config.mobileNoController,type: ConfigFieldType.number),
+        ConfigField(
+            label: "Address",
+            controller: config.addressController,
+            type: ConfigFieldType.address),
       ]),
       ConfigGroup(title: "Invoice", fields: [
-        ConfigField(label: "GST No.", controller: config.gstNumberController),
-        ConfigField(label: "PAN No.", controller: config.panNumberController),
-        ConfigField(
-            label: "State Code",
-            controller: config.stateCodeController,
-            type: ConfigFieldType.number),
-        ConfigField(
-            label: "Date: ",
-            controller: config.dateController,
-            type: ConfigFieldType.date),
         ConfigField(
             label: "Invoice No",
             controller: config.invoiceNoController,
             type: ConfigFieldType.number),
+        ConfigField(
+            label: "GST No.",
+            controller: config.gstNumberController,
+            type: ConfigFieldType.numCap),
+        ConfigField(
+            label: "Mobile No.",
+            controller: config.mobileNoController,
+            type: ConfigFieldType.mobile),
+        ConfigField(
+            label: "State Code", controller: config.stateCodeController),
+        ConfigField(
+            label: "Date: ",
+            controller: config.dateController,
+            type: ConfigFieldType.date),
       ]),
       ConfigGroup(title: "Billing", fields: [
         ConfigField(
             label: "Bill Taker", controller: config.billTakerController),
         ConfigField(
             label: "Bill Taker Address",
-            controller: config.billTakerAddressController),
+            controller: config.billTakerAddressController,
+            type: ConfigFieldType.address),
+        ConfigField(
+            label: "Bill Taker Mobile No.",
+            controller: config.billTakerMobileNoController,
+            type: ConfigFieldType.mobile),
         ConfigField(
             label: "Bill Taker GST Pin",
-            controller: config.billTakerGSTPinController),
+            controller: config.billTakerGSTPinController,
+            type: ConfigFieldType.numCap),
         ConfigField(
             label: "Delivery Firm", controller: config.deliveryFirmController),
         ConfigField(
             label: "Delivery Firm Address",
-            controller: config.deliveryFirmAddressController),
+            controller: config.deliveryFirmAddressController,
+            type: ConfigFieldType.address),
         ConfigField(
-            label: "Delivery Firm GST Pin",
-            controller: config.deliveryFirmGSTPinController),
+            label: "Delivery Firm Mobile No.",
+            controller: config.deliveryFirmMobileNoController,
+            type: ConfigFieldType.mobile),
         ConfigField(label: "Broker", controller: config.brokerController),
       ]),
       ConfigGroup(title: "Bank Details", fields: [
-        ConfigField(
-            label: "Bank Name",
-            controller: config.bankNameController),
-        ConfigField(
-            label: "Branch",
-            controller: config.branchNameController),
+        ConfigField(label: "Bank Name", controller: config.bankNameController),
+        ConfigField(label: "Branch", controller: config.branchNameController),
         ConfigField(
             label: "A/C",
             controller: config.accountNoController,
             type: ConfigFieldType.number),
         ConfigField(
             label: "IFSC",
-            controller: config.ifscCodeController),
+            controller: config.ifscCodeController,
+            type: ConfigFieldType.numCap),
       ]),
       ConfigGroup(title: "Discounts", fields: [
         ConfigField(
@@ -123,11 +135,11 @@ class ConfigPage extends StatelessWidget {
               backgroundColor: onDarkBg,
               onPressed: () {
                 FocusScope.of(context).unfocus();
-                if(config.deliveryFirmController.text.isEmpty) config.deliveryFirmController.text = config.billTakerController.text;
-                if(config.deliveryFirmAddressController.text.isEmpty) config.deliveryFirmAddressController.text = config.billTakerAddressController.text;
-                if(config.deliveryFirmMobileNoController.text.isEmpty) config.deliveryFirmMobileNoController.text = config.billTakerMobileNoController.text;
-                if(config.deliveryFirmGSTPinController.text.isEmpty) config.deliveryFirmGSTPinController.text = config.billTakerGSTPinController.text;
+                if (config.deliveryFirmController.text.isEmpty) config.deliveryFirmController.text = config.billTakerController.text;
+                if (config.deliveryFirmAddressController.text.isEmpty) config.deliveryFirmAddressController.text = config.billTakerAddressController.text;
+                if (config.deliveryFirmMobileNoController.text.isEmpty) config.deliveryFirmMobileNoController.text = config.billTakerMobileNoController.text;
                 config.saveConfig();
+                Get.find<StorageController>().updateUnsavedInvoice();
                 Get.find<NavigationController>().changePage(1);
               },
             ),

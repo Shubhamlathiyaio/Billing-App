@@ -1,6 +1,7 @@
 import 'package:billing/resources/widgets/common_pdfs/pdf_conatiner.dart';
 import 'package:billing/resources/widgets/common_pdfs/pdf_text.dart';
 import 'package:billing/resources/constens.dart';
+import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 
 pw.Widget companyHeaderPdf(
@@ -23,6 +24,7 @@ pw.Widget companyHeaderPdf(
         data: config.companyName,
         fontSize: baseFontSize * LARGE,
         fontWeight: pw.FontWeight.bold,
+        fontColor: compalyColor,
         align: pw.TextAlign.center,
       ),
       pw.SizedBox(height: 2),

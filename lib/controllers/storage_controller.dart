@@ -23,39 +23,68 @@ class StorageController extends GetxController {
   }
 
   void loadInvoices() => invoiceList.value = _invoiceBox.getAll();
-  
-
-  Invoice? get currentInvoice {
-    if (currentId.value > 0) {
-      return _invoiceBox.get(currentId.value);
-    }
-    return null;
-  }
 
   Invoice getInvoiceById(int id) {
-    if (id <= 0) return Invoice.emptyInvoice();
-    return _invoiceBox.get(id) ?? Invoice.emptyInvoice();
+    if (id <= 0) return unsavedInvoice;
+    return _invoiceBox.get(id) ?? unsavedInvoice;
   }
 
   /// Use when opening existing invoice for edit
- void loadInvoiceToUnsaved(Invoice selectedInvoice) {
-  unsavedInvoice = selectedInvoice.copy(); // copy base fields
+  void loadInvoiceToUnsaved(Invoice selectedInvoice) {
+    unsavedInvoice = selectedInvoice.copy(); // copy base fields
 
-  unsavedInvoice.items.clear();
-  for (final item in selectedInvoice.items) {
-    final copiedItem = item.copyWith(); // or create new instance
-    copiedItem.invoice.target = unsavedInvoice;
-    unsavedInvoice.items.add(copiedItem);
+    unsavedInvoice.items.clear();
+    for (final item in selectedInvoice.items) {
+      final copiedItem = item.copyWith(); // or create new instance
+      copiedItem.invoice.target = unsavedInvoice;
+      unsavedInvoice.items.add(copiedItem);
+    }
   }
-}
 
-
-  /// Build live invoice from config + table
-  Invoice _buildUnsavedInvoice() {
+  Invoice getInvoice() {
     final config = Get.find<ConfigController>();
-    final tableItems = Get.find<TableController>().itemList;
+    final invoice = Invoice(
+      // Company
+      companyName: config.companyName,
+      address: config.address,
+      mobileNo: config.mobileNo,
 
-    final invoice = config.getInvoice();
+      // Invoice
+      gstNumber: config.gstNumber,
+      panNumber: config.panNumber,
+      stateCode: config.stateCode,
+      invoiceNo: config.invoiceNo,
+      date: config.date,
+
+      // Billing
+      billTaker: config.billTaker,
+      billTakerAddress: config.billTakerAddress,
+      billTakerMobileNo: config.billTakerMobileNo,
+      billTakerGSTPin: config.billTakerGSTPin,
+      deliveryFirm: config.deliveryFirm,
+      deliveryFirmAddress: config.deliveryFirmAddress,
+      deliveryFirmMobileNo: config.deliveryFirmMobileNo,
+      deliveryFirmGSTPin: config.deliveryFirmGSTPin,
+      broker: config.broker,
+
+      // Bank details
+      bankName: config.bankName,
+      bankBranch: config.branchName,
+      bankAccountNo: config.accountNo,
+      bankIFSCCode: config.ifscCode,
+      remark: config.remark,
+
+      // Discount & Taxes
+      discount: config.discount,
+      othLess: config.othLess,
+      freight: config.freight,
+      iGst: config.iGst,
+      sGst: config.sGst,
+      cGst: config.cGst,
+    );
+
+    // Add table data (items)
+    final tableItems = Get.find<TableController>().itemList;
 
     invoice.items.addAll(tableItems.map((item) {
       final invoiceItem = InvoiceItem(
@@ -73,8 +102,25 @@ class StorageController extends GetxController {
     return invoice;
   }
 
+  /// Build live invoice from config + table
+  Invoice _buildUnsavedInvoice() {
+    print("🧩 Building unsavedInvoice...");
+    final invoice = getInvoice(); // get base invoice from config
+    print(invoice.companyName);
+    final tableItems = Get.find<TableController>().getInvoiceItemsFor(invoice);
+    invoice.items.addAll(tableItems); // add items from table
+    print("✅ Table items added");
+    print(invoice.companyName);
+    print(invoice.items.length);
+    return invoice;
+  }
+
   void updateUnsavedInvoice() {
     unsavedInvoice = _buildUnsavedInvoice();
+    print("----------------------------------");
+    print(unsavedInvoice.companyName);
+    print(unsavedInvoice.items.length);
+    print("----------------------------------");
   }
 
   void clearUnsavedInvoice() {
@@ -85,18 +131,13 @@ class StorageController extends GetxController {
   void saveInvoice() {
     final invoice = unsavedInvoice;
 
-    if (invoice.id == 0) {
-      invoice.id = _invoiceBox.getAll().length + 1;
-    } else {
-      _invoiceBox.remove(invoice.id);
-    }
+    if (invoice.id != 0) _invoiceBox.remove(invoice.id);
 
     _invoiceBox.put(invoice);
-    loadInvoices();
 
+    loadInvoices();
     clearUnsavedInvoice();
     currentId.value = 0;
-
     Get.find<NavigationController>().changePage(3);
     CommonSnackbar.customSuccessSnackbar("Saved");
   }

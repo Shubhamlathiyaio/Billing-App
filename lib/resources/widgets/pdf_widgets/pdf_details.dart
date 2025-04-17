@@ -1,3 +1,5 @@
+import 'package:billing/models/invoice.dart';
+import 'package:billing/resources/constens.dart';
 import 'package:billing/resources/widgets/common_pdfs/pdf_text.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
@@ -6,7 +8,7 @@ pw.Widget invoiceDetailsPdf(
   double baseFontSize,
   double screenWidth,
   double height,
-  dynamic config,
+  Invoice invoice,
 ) {
   final leftWidth = screenWidth * 0.5;
   final rightWidth = screenWidth * 0.45;
@@ -21,11 +23,11 @@ pw.Widget invoiceDetailsPdf(
         child: pw.Column(
           crossAxisAlignment: pw.CrossAxisAlignment.start,
           children: [
-            _detailTextPdf("GST No", config.gstNumber, baseFontSize * 1.2),
+            _detailTextPdf("GST No", invoice.gstNumber, baseFontSize * 1.2, invoiRed),
             pw.SizedBox(height: 4),
-            _detailTextPdf("Mobile No", config.panNumber, baseFontSize),
+            _detailTextPdf("Mobile No", invoice.mobileNo, baseFontSize, invoiRed),
             pw.SizedBox(height: 4),
-            _detailTextPdf("State Code", config.stateCode, baseFontSize),
+            _detailTextPdf("State Code", invoice.stateCode, baseFontSize, invoiRed),
           ],
         ),
       ),
@@ -44,11 +46,11 @@ pw.Widget invoiceDetailsPdf(
         child: pw.Column(
           crossAxisAlignment: pw.CrossAxisAlignment.start,
           children: [
-            _detailTextPdf("Bill No", config.invoiceNo, baseFontSize),
+            _detailTextPdf("Bill No", invoice.invoiceNo, baseFontSize),
             pw.SizedBox(height: 4),
-            _detailTextPdf("Date", config.date, baseFontSize),
+            _detailTextPdf("Date", invoice.date, baseFontSize),
             pw.SizedBox(height: 4),
-            // _detailTextPdf("Challan No", config.chalanNo, baseFontSize),
+            // _detailTextPdf("Challan No", invoice.chalanNo, baseFontSize),
           ],
         ),
       ),
@@ -57,12 +59,13 @@ pw.Widget invoiceDetailsPdf(
 }
 
 
-pw.Widget _detailTextPdf(String label, String value, double fontSize) {
+pw.Widget _detailTextPdf(String label, String value, double fontSize, [PdfColor? color = PdfColors.black]) {
   return pw.Row(
     children: [
       PDFText(
     data: "$label : \t",
     fontSize: fontSize,
+    fontColor: color
   ),
   PDFText(
     data: value,

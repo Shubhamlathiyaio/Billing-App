@@ -1,8 +1,5 @@
 import 'dart:io';
 import 'package:billing/controllers/config_controller.dart';
-import 'package:billing/controllers/storage_controller.dart';
-import 'package:billing/resources/commons/common_chip.dart';
-import 'package:billing/resources/commons/common_text.dart';
 import 'package:billing/resources/keep_button.dart';
 import 'package:billing/views/home_page.dart';
 import 'package:get/get.dart';
@@ -30,30 +27,7 @@ class PdfPreviewPage extends StatelessWidget {
           return const Center(child: CircularProgressIndicator());
         } else if (pdfController.pdfFile.value != null) {
           File pdfFile = pdfController.pdfFile.value!;
-          return Stack(
-            children: [
-              SfPdfViewer.file(pdfFile),
-              Positioned(
-                left: 15,
-                top: 55,
-                child: CommonChip(
-                  verticalPadding: 0,
-                  iconSize: 21,
-                  alignment: Alignment.center,
-                  backgroundColor: Theme.of(context).primaryColor,
-                  icon: Icons.receipt_long,
-                  height: 40,
-                  width: 100,
-                  radius: 5,
-                  child: CommonText(
-                      fontColor: Colors.white,
-                      fontSize: 21,
-                      data: "${Get.find<StorageController>().currentId.value}"
-                          .padLeft(3, '0')),
-                ),
-              ),
-            ],
-          );
+          return SfPdfViewer.file(pdfFile);
         } else {
           return const Center(child: Text("Failed to load PDF."));
         }

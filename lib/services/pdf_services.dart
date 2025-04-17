@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:billing/controllers/storage_controller.dart';
+import 'package:billing/models/invoice.dart';
 import 'package:billing/resources/commons/common_get_snackbar.dart';
 import 'package:billing/resources/widgets/pdf_body.dart';
 import 'package:get/get.dart';
@@ -10,12 +11,14 @@ import 'package:share_plus/share_plus.dart';
 
 class PdfServices {
   // 1. Generate PDF in memory (not saved anywhere, only returned as a file).
-  static Future<File> generatePdfInMemory(int id) async {
+  static Future<File> generatePdfInMemory(Invoice invoice) async {
+    final storage = Get.find<StorageController>();
+    print("objec888888888888888888ts: ${invoice.companyName}");
     try {
-      final pdf = getPdfDoc();
+      final pdf = getPdfDoc(storage.getInvoiceById(invoice.id));
       final data = await pdf.save();
       final file =
-          File('${(await getTemporaryDirectory()).path}/temp_invo_$id.pdf');
+          File('${(await getTemporaryDirectory()).path}/temp_invo_${invoice.id}.pdf');
       await file.writeAsBytes(data);
       return file;
     } catch (e) {
@@ -58,14 +61,25 @@ class PdfServices {
 
   // 4. Share the PDF without showing it (it is saved temporarily and shared).
   static Future<void> sharePdf(pw.Document pdf, String fileName) async {
-    final file = await generatePdfInMemory(fileName.hashCode);
-    await Share.shareXFiles([XFile(file.path)], text: "Invoice Share");
+    // 1. Get temporary directory
+    final dir = await getTemporaryDirectory();
+    final file = File('${dir.path}/$fileName.pdf');
+    await file.create(recursive: true);
+
+    // 2. Write the PDF document to file
+    final pdfBytes = await pdf.save();
+    await file.writeAsBytes(pdfBytes);
+
+    // 3. Share the file
+    await Share.shareXFiles(
+      [XFile(file.path)],
+      text: "📄 Invoice: $fileName",
+    );
   }
 
   // 5. Open the saved PDF for user to view.
-  static Future<void> openPdf(File file) async {
-    await OpenFile.open(file.path);
-  }
+  static Future<void> openPdf(File file) async => await OpenFile.open(file.path);
+  
 
   // 6. Delete a PDF file (either in memory or storage).
   static Future<void> deletePdf(String path) async {
@@ -81,24 +95,12 @@ class PdfServices {
   }
 
   // Helper function: Generate PDF document based on ID.
-  static pw.Document getPdfDoc() {
+  static pw.Document getPdfDoc(Invoice unsavedInvoice) {
     final pdf = pw.Document();
-    StorageController storageController = Get.find<StorageController>();
 
-    // Get the unsaved invoice
-    final unsavedInvoice = storageController.unsavedInvoice;
+    if (unsavedInvoice.items.isEmpty) print("⚠️ Invoice has no items.");
 
-    // If no unsaved invoice, return an empty document (or handle error if required)
-    if (unsavedInvoice.id == 0) {
-      // Handle case where no unsaved invoice is present, maybe show an error
-      print("No unsaved invoice found.");
-      return pdf;
-    }
-
-    // Use unsavedInvoice directly here instead of config
-    print(
-        unsavedInvoice.bankAccountNo); // Just an example to print invoice data
-
+    print("objects: ${unsavedInvoice.companyName}");
     pdf.addPage(
       pw.Page(
         build: (context) => invoiceBodyPdf(
@@ -108,7 +110,6 @@ class PdfServices {
         ),
       ),
     );
-
     return pdf;
   }
 }

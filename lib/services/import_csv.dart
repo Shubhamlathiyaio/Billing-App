@@ -56,7 +56,7 @@ if (file != null) {
       invoice.items.addAll(parseItemsFromString(row[29].toString()));
 
       // Save in ObjectBox
-      Get.find<StorageController>().saveInvoice(invoice);
+      Get.find<StorageController>().saveInvoice();
     }
 
     CommonSnackbar.successSnackbar("CSV Imported", "Invoices imported successfully.");

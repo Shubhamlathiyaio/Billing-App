@@ -41,65 +41,100 @@ pw.Widget _headerContainer(String title, double baseFontSize,
 }
 
 pw.Widget _detailsRow(double baseFontSize, Invoice invoice) {
+  final commonPadding = const pw.EdgeInsets.symmetric(horizontal: 8);
+  final boxHeight = baseFontSize * 8.5;
+
   return pw.Row(
     children: [
-      _detailsContainer(
-        title: "M/S.: ${invoice.billTaker}",
-        address: invoice.billTakerAddress,
-        gstPin: invoice.billTakerGSTPin,
-        baseFontSize: baseFontSize,
-        rightBorder: 0.5,
+      // Left Box - Bill Taker
+      pw.Expanded(
+        child: pw.Container(
+          height: boxHeight,
+          decoration: pw.BoxDecoration(
+            border: pw.Border(right: pw.BorderSide(width: 0.5)),
+          ),
+          padding: commonPadding,
+          child: pw.Column(
+            mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: pw.CrossAxisAlignment.start,
+            children: [
+              // Title and Address
+              pw.Column(
+                crossAxisAlignment: pw.CrossAxisAlignment.start,
+                children: [
+                  _labelAndData("M/S.:", invoice.billTaker, baseFontSize * 1.2),
+                  pw.SizedBox(height: 2),
+                  _labelAndData("Address:", invoice.billTakerAddress, baseFontSize - baseFontSize * 0.08),
+                ],
+              ),
+              // Mobile and GST
+              pw.Column(
+                crossAxisAlignment: pw.CrossAxisAlignment.start,
+                children: [
+                  _labelAndData("Mobile no:", invoice.billTakerMobileNo, baseFontSize),
+                  pw.SizedBox(height: 2),
+                  _labelAndData("GST PIN:", invoice.billTakerGSTPin, baseFontSize),
+                ],
+              )
+            ],
+          ),
+        ),
       ),
-      _detailsContainer(
-        title: invoice.deliveryFirm.trim().isEmpty
-            ? "Firm of Delivery"
-            : invoice.deliveryFirm,
-        address: invoice.deliveryFirmAddress,
-        gstPin: invoice.deliveryFirmGSTPin,
-        baseFontSize: baseFontSize,
-        leftBorder: 0.5,
+
+      // Right Box - Delivery Firm
+      pw.Expanded(
+        child: pw.Container(
+          height: boxHeight,
+          decoration: pw.BoxDecoration(
+            border: pw.Border(left: pw.BorderSide(width: 0.5)),
+          ),
+          padding: commonPadding,
+          child: pw.Column(
+            mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: pw.CrossAxisAlignment.start,
+            children: [
+              // Title and Address
+              pw.Column(
+                crossAxisAlignment: pw.CrossAxisAlignment.start,
+                children: [
+                  _labelAndData("Delivery Firm :", invoice.deliveryFirm, baseFontSize * 1.2),
+                  pw.SizedBox(height: 2),
+                  _labelAndData("Address:", invoice.deliveryFirmAddress, baseFontSize - baseFontSize * 0.08),
+                ],
+              ),
+              // Mobile
+              pw.Column(
+                crossAxisAlignment: pw.CrossAxisAlignment.start,
+                children: [
+                  _labelAndData("Mobile no:", invoice.deliveryFirmMobileNo, baseFontSize),
+                ],
+              )
+            ],
+          ),
+        ),
       ),
     ],
   );
 }
 
-pw.Widget _detailsContainer({
-  required String title,
-  required String address,
-  required String gstPin,
-  required double baseFontSize,
-  double leftBorder = 0,
-  double rightBorder = 0,
-}) {
-  return pw.Expanded(
-    child: PDFContainer(
-      padding: const pw.EdgeInsets.symmetric(horizontal: 8),
-      leftBorder: leftBorder,
-      rightBorder: rightBorder,
-      child: pw.Column(
-        crossAxisAlignment: pw.CrossAxisAlignment.start,
-        children: [
-          PDFText(data: title, fontSize: baseFontSize * 1.2),
-          pw.SizedBox(height: 2),
-          pw.Container(
-            height: baseFontSize * 4.5,
-            child: PDFText(
-              data: address,
-              fontSize: baseFontSize,
-              fontWeight: pw.FontWeight.normal,
-            ),
+pw.Widget _labelAndData(String label, String? data, double fontSize) {
+  return pw.RichText(
+    text: pw.TextSpan(
+      children: [
+        pw.TextSpan(
+          text: "$label ",
+          style: pw.TextStyle(fontSize: fontSize, fontWeight: pw.FontWeight.bold),
+        ),
+        if (data != null && data.trim().isNotEmpty)
+          pw.TextSpan(
+            text: data,
+            style: pw.TextStyle(fontSize: fontSize, fontWeight: pw.FontWeight.normal),
           ),
-          pw.SizedBox(height: 2),
-          PDFText(
-            data: "GST PIN: $gstPin",
-            fontSize: baseFontSize,
-            fontWeight: pw.FontWeight.normal,
-          ),
-        ],
-      ),
+      ],
     ),
   );
 }
+
 
 pw.Widget _brokerInfo(double baseFontSize, double width, Invoice invoice) {
   return PDFContainer(
