@@ -23,7 +23,7 @@ final _entities = <obx_int.ModelEntity>[
   obx_int.ModelEntity(
       id: const obx_int.IdUid(1, 1672983046465597673),
       name: 'Invoice',
-      lastPropertyId: const obx_int.IdUid(29, 2508087491037836745),
+      lastPropertyId: const obx_int.IdUid(30, 6041125877116891193),
       flags: 0,
       properties: <obx_int.ModelProperty>[
         obx_int.ModelProperty(
@@ -57,11 +57,6 @@ final _entities = <obx_int.ModelEntity>[
             type: 9,
             flags: 0),
         obx_int.ModelProperty(
-            id: const obx_int.IdUid(7, 5882257973261177415),
-            name: 'panNumber',
-            type: 9,
-            flags: 0),
-        obx_int.ModelProperty(
             id: const obx_int.IdUid(8, 7518775087771973313),
             name: 'stateCode',
             type: 9,
@@ -79,21 +74,6 @@ final _entities = <obx_int.ModelEntity>[
         obx_int.ModelProperty(
             id: const obx_int.IdUid(11, 3839464879353333506),
             name: 'billTakerGSTPin',
-            type: 9,
-            flags: 0),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(12, 4600010460398069013),
-            name: 'deliveryFirm',
-            type: 9,
-            flags: 0),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(13, 3012722547490749159),
-            name: 'deliveryFirmAddress',
-            type: 9,
-            flags: 0),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(14, 4429756325963036195),
-            name: 'deliveryFirmGSTPin',
             type: 9,
             flags: 0),
         obx_int.ModelProperty(
@@ -167,8 +147,8 @@ final _entities = <obx_int.ModelEntity>[
             type: 9,
             flags: 0),
         obx_int.ModelProperty(
-            id: const obx_int.IdUid(29, 2508087491037836745),
-            name: 'deliveryFirmMobileNo',
+            id: const obx_int.IdUid(30, 6041125877116891193),
+            name: 'rawItemsJson',
             type: 9,
             flags: 0)
       ],
@@ -271,7 +251,13 @@ obx_int.ModelDefinition getObjectBoxModel() {
       lastSequenceId: const obx_int.IdUid(0, 0),
       retiredEntityUids: const [],
       retiredIndexUids: const [],
-      retiredPropertyUids: const [],
+      retiredPropertyUids: const [
+        5882257973261177415,
+        4600010460398069013,
+        3012722547490749159,
+        4429756325963036195,
+        2508087491037836745
+      ],
       retiredRelationUids: const [],
       modelVersion: 5,
       modelVersionParserMinimum: 5,
@@ -295,17 +281,11 @@ obx_int.ModelDefinition getObjectBoxModel() {
           final companyNameOffset = fbb.writeString(object.companyName);
           final addressOffset = fbb.writeString(object.address);
           final gstNumberOffset = fbb.writeString(object.gstNumber);
-          final panNumberOffset = fbb.writeString(object.panNumber);
           final stateCodeOffset = fbb.writeString(object.stateCode);
           final billTakerOffset = fbb.writeString(object.billTaker);
           final billTakerAddressOffset =
               fbb.writeString(object.billTakerAddress);
           final billTakerGSTPinOffset = fbb.writeString(object.billTakerGSTPin);
-          final deliveryFirmOffset = fbb.writeString(object.deliveryFirm);
-          final deliveryFirmAddressOffset =
-              fbb.writeString(object.deliveryFirmAddress);
-          final deliveryFirmGSTPinOffset =
-              fbb.writeString(object.deliveryFirmGSTPin);
           final brokerOffset = fbb.writeString(object.broker);
           final discountOffset = fbb.writeString(object.discount);
           final othLessOffset = fbb.writeString(object.othLess);
@@ -321,23 +301,18 @@ obx_int.ModelDefinition getObjectBoxModel() {
           final mobileNoOffset = fbb.writeString(object.mobileNo);
           final billTakerMobileNoOffset =
               fbb.writeString(object.billTakerMobileNo);
-          final deliveryFirmMobileNoOffset =
-              fbb.writeString(object.deliveryFirmMobileNo);
-          fbb.startTable(30);
+          final rawItemsJsonOffset = fbb.writeString(object.rawItemsJson);
+          fbb.startTable(31);
           fbb.addInt64(0, object.id);
           fbb.addOffset(1, invoiceNoOffset);
           fbb.addOffset(2, dateOffset);
           fbb.addOffset(3, companyNameOffset);
           fbb.addOffset(4, addressOffset);
           fbb.addOffset(5, gstNumberOffset);
-          fbb.addOffset(6, panNumberOffset);
           fbb.addOffset(7, stateCodeOffset);
           fbb.addOffset(8, billTakerOffset);
           fbb.addOffset(9, billTakerAddressOffset);
           fbb.addOffset(10, billTakerGSTPinOffset);
-          fbb.addOffset(11, deliveryFirmOffset);
-          fbb.addOffset(12, deliveryFirmAddressOffset);
-          fbb.addOffset(13, deliveryFirmGSTPinOffset);
           fbb.addOffset(14, brokerOffset);
           fbb.addOffset(15, discountOffset);
           fbb.addOffset(16, othLessOffset);
@@ -352,24 +327,24 @@ obx_int.ModelDefinition getObjectBoxModel() {
           fbb.addOffset(25, remarkOffset);
           fbb.addOffset(26, mobileNoOffset);
           fbb.addOffset(27, billTakerMobileNoOffset);
-          fbb.addOffset(28, deliveryFirmMobileNoOffset);
+          fbb.addOffset(29, rawItemsJsonOffset);
           fbb.finish(fbb.endTable());
           return object.id;
         },
         objectFromFB: (obx.Store store, ByteData fbData) {
           final buffer = fb.BufferContext(fbData);
           final rootOffset = buffer.derefObject(0);
+          final idParam =
+              const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
           final companyNameParam =
               const fb.StringReader(asciiOptimization: true)
                   .vTableGet(buffer, rootOffset, 10, '');
           final addressParam = const fb.StringReader(asciiOptimization: true)
               .vTableGet(buffer, rootOffset, 12, '');
-          final mobileNoParam = const fb.StringReader(asciiOptimization: true)
-              .vTableGet(buffer, rootOffset, 56, '');
           final gstNumberParam = const fb.StringReader(asciiOptimization: true)
               .vTableGet(buffer, rootOffset, 14, '');
-          final panNumberParam = const fb.StringReader(asciiOptimization: true)
-              .vTableGet(buffer, rootOffset, 16, '');
+          final mobileNoParam = const fb.StringReader(asciiOptimization: true)
+              .vTableGet(buffer, rootOffset, 56, '');
           final stateCodeParam = const fb.StringReader(asciiOptimization: true)
               .vTableGet(buffer, rootOffset, 18, '');
           final invoiceNoParam = const fb.StringReader(asciiOptimization: true)
@@ -387,18 +362,6 @@ obx_int.ModelDefinition getObjectBoxModel() {
           final billTakerGSTPinParam =
               const fb.StringReader(asciiOptimization: true)
                   .vTableGet(buffer, rootOffset, 24, '');
-          final deliveryFirmParam =
-              const fb.StringReader(asciiOptimization: true)
-                  .vTableGet(buffer, rootOffset, 26, '');
-          final deliveryFirmAddressParam =
-              const fb.StringReader(asciiOptimization: true)
-                  .vTableGet(buffer, rootOffset, 28, '');
-          final deliveryFirmMobileNoParam =
-              const fb.StringReader(asciiOptimization: true)
-                  .vTableGet(buffer, rootOffset, 60, '');
-          final deliveryFirmGSTPinParam =
-              const fb.StringReader(asciiOptimization: true)
-                  .vTableGet(buffer, rootOffset, 30, '');
           final brokerParam = const fb.StringReader(asciiOptimization: true)
               .vTableGet(buffer, rootOffset, 32, '');
           final bankNameParam = const fb.StringReader(asciiOptimization: true)
@@ -425,12 +388,15 @@ obx_int.ModelDefinition getObjectBoxModel() {
               .vTableGet(buffer, rootOffset, 42, '');
           final cGstParam = const fb.StringReader(asciiOptimization: true)
               .vTableGet(buffer, rootOffset, 44, '');
+          final rawItemsJsonParam =
+              const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 62, '');
           final object = Invoice(
+              id: idParam,
               companyName: companyNameParam,
               address: addressParam,
-              mobileNo: mobileNoParam,
               gstNumber: gstNumberParam,
-              panNumber: panNumberParam,
+              mobileNo: mobileNoParam,
               stateCode: stateCodeParam,
               invoiceNo: invoiceNoParam,
               date: dateParam,
@@ -438,10 +404,6 @@ obx_int.ModelDefinition getObjectBoxModel() {
               billTakerAddress: billTakerAddressParam,
               billTakerMobileNo: billTakerMobileNoParam,
               billTakerGSTPin: billTakerGSTPinParam,
-              deliveryFirm: deliveryFirmParam,
-              deliveryFirmAddress: deliveryFirmAddressParam,
-              deliveryFirmMobileNo: deliveryFirmMobileNoParam,
-              deliveryFirmGSTPin: deliveryFirmGSTPinParam,
               broker: brokerParam,
               bankName: bankNameParam,
               bankBranch: bankBranchParam,
@@ -453,8 +415,8 @@ obx_int.ModelDefinition getObjectBoxModel() {
               freight: freightParam,
               iGst: iGstParam,
               sGst: sGstParam,
-              cGst: cGstParam)
-            ..id = const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
+              cGst: cGstParam,
+              rawItemsJson: rawItemsJsonParam);
           obx_int.InternalToManyAccess.setRelInfo<Invoice>(
               object.items,
               store,
@@ -548,97 +510,81 @@ class Invoice_ {
   static final gstNumber =
       obx.QueryStringProperty<Invoice>(_entities[0].properties[5]);
 
-  /// See [Invoice.panNumber].
-  static final panNumber =
-      obx.QueryStringProperty<Invoice>(_entities[0].properties[6]);
-
   /// See [Invoice.stateCode].
   static final stateCode =
-      obx.QueryStringProperty<Invoice>(_entities[0].properties[7]);
+      obx.QueryStringProperty<Invoice>(_entities[0].properties[6]);
 
   /// See [Invoice.billTaker].
   static final billTaker =
-      obx.QueryStringProperty<Invoice>(_entities[0].properties[8]);
+      obx.QueryStringProperty<Invoice>(_entities[0].properties[7]);
 
   /// See [Invoice.billTakerAddress].
   static final billTakerAddress =
-      obx.QueryStringProperty<Invoice>(_entities[0].properties[9]);
+      obx.QueryStringProperty<Invoice>(_entities[0].properties[8]);
 
   /// See [Invoice.billTakerGSTPin].
   static final billTakerGSTPin =
-      obx.QueryStringProperty<Invoice>(_entities[0].properties[10]);
-
-  /// See [Invoice.deliveryFirm].
-  static final deliveryFirm =
-      obx.QueryStringProperty<Invoice>(_entities[0].properties[11]);
-
-  /// See [Invoice.deliveryFirmAddress].
-  static final deliveryFirmAddress =
-      obx.QueryStringProperty<Invoice>(_entities[0].properties[12]);
-
-  /// See [Invoice.deliveryFirmGSTPin].
-  static final deliveryFirmGSTPin =
-      obx.QueryStringProperty<Invoice>(_entities[0].properties[13]);
+      obx.QueryStringProperty<Invoice>(_entities[0].properties[9]);
 
   /// See [Invoice.broker].
   static final broker =
-      obx.QueryStringProperty<Invoice>(_entities[0].properties[14]);
+      obx.QueryStringProperty<Invoice>(_entities[0].properties[10]);
 
   /// See [Invoice.discount].
   static final discount =
-      obx.QueryStringProperty<Invoice>(_entities[0].properties[15]);
+      obx.QueryStringProperty<Invoice>(_entities[0].properties[11]);
 
   /// See [Invoice.othLess].
   static final othLess =
-      obx.QueryStringProperty<Invoice>(_entities[0].properties[16]);
+      obx.QueryStringProperty<Invoice>(_entities[0].properties[12]);
 
   /// See [Invoice.freight].
   static final freight =
-      obx.QueryStringProperty<Invoice>(_entities[0].properties[17]);
+      obx.QueryStringProperty<Invoice>(_entities[0].properties[13]);
 
   /// See [Invoice.iGst].
   static final iGst =
-      obx.QueryStringProperty<Invoice>(_entities[0].properties[18]);
+      obx.QueryStringProperty<Invoice>(_entities[0].properties[14]);
 
   /// See [Invoice.sGst].
   static final sGst =
-      obx.QueryStringProperty<Invoice>(_entities[0].properties[19]);
+      obx.QueryStringProperty<Invoice>(_entities[0].properties[15]);
 
   /// See [Invoice.cGst].
   static final cGst =
-      obx.QueryStringProperty<Invoice>(_entities[0].properties[20]);
+      obx.QueryStringProperty<Invoice>(_entities[0].properties[16]);
 
   /// See [Invoice.bankName].
   static final bankName =
-      obx.QueryStringProperty<Invoice>(_entities[0].properties[21]);
+      obx.QueryStringProperty<Invoice>(_entities[0].properties[17]);
 
   /// See [Invoice.bankBranch].
   static final bankBranch =
-      obx.QueryStringProperty<Invoice>(_entities[0].properties[22]);
+      obx.QueryStringProperty<Invoice>(_entities[0].properties[18]);
 
   /// See [Invoice.bankAccountNo].
   static final bankAccountNo =
-      obx.QueryStringProperty<Invoice>(_entities[0].properties[23]);
+      obx.QueryStringProperty<Invoice>(_entities[0].properties[19]);
 
   /// See [Invoice.bankIFSCCode].
   static final bankIFSCCode =
-      obx.QueryStringProperty<Invoice>(_entities[0].properties[24]);
+      obx.QueryStringProperty<Invoice>(_entities[0].properties[20]);
 
   /// See [Invoice.remark].
   static final remark =
-      obx.QueryStringProperty<Invoice>(_entities[0].properties[25]);
+      obx.QueryStringProperty<Invoice>(_entities[0].properties[21]);
 
   /// See [Invoice.mobileNo].
   static final mobileNo =
-      obx.QueryStringProperty<Invoice>(_entities[0].properties[26]);
+      obx.QueryStringProperty<Invoice>(_entities[0].properties[22]);
 
   /// See [Invoice.billTakerMobileNo].
   static final billTakerMobileNo =
-      obx.QueryStringProperty<Invoice>(_entities[0].properties[27]);
+      obx.QueryStringProperty<Invoice>(_entities[0].properties[23]);
 
-  /// See [Invoice.deliveryFirmMobileNo].
-  static final deliveryFirmMobileNo =
-      obx.QueryStringProperty<Invoice>(_entities[0].properties[28]);
+  /// See [Invoice.rawItemsJson].
+  static final rawItemsJson =
+      obx.QueryStringProperty<Invoice>(_entities[0].properties[24]);
 
   /// see [Invoice.items]
   static final items =

@@ -1,11 +1,11 @@
 import 'package:billing/controllers/storage_controller.dart';
 import 'package:billing/models/invoice.dart';
 import 'package:billing/models/invoice_item.dart';
-import 'package:billing/objectbox.g.dart';
 import 'package:billing/resources/commons/common_get_snackbar.dart';
 import 'package:csv/csv.dart';
 import 'package:file_selector/file_selector.dart';
 import 'package:get/get.dart';
+import 'package:objectbox/objectbox.dart';
 Future<void> importInvoicesFromCsv() async {
   // 👇 This opens the file explorer
   final XFile? file = await openFile(
@@ -24,9 +24,9 @@ if (file != null) {
       final invoice = Invoice(
         companyName: row[1].toString(),
         address: row[2].toString(),
-        mobileNo: row[3].toString(),
         gstNumber: row[4].toString(),
-        panNumber: row[5].toString(),
+        mobileNo: row[3].toString(),
+        // panNumber: row[5].toString(),
         stateCode: row[6].toString(),
         invoiceNo: row[7].toString(),
         date: row[8].toString(),
@@ -34,10 +34,10 @@ if (file != null) {
         billTakerAddress: row[10].toString(),
         billTakerMobileNo: row[11].toString(),
         billTakerGSTPin: row[12].toString(),
-        deliveryFirm: row[13].toString(),
-        deliveryFirmAddress: row[14].toString(),
-        deliveryFirmMobileNo: row[15].toString(),
-        deliveryFirmGSTPin: row[16].toString(),
+        // deliveryFirm: row[13].toString(),
+        // deliveryFirmAddress: row[14].toString(),
+        // deliveryFirmMobileNo: row[15].toString(),
+        // deliveryFirmGSTPin: row[16].toString(),
         broker: row[17].toString(),
         bankName: row[18].toString(),
         bankBranch: row[19].toString(),
@@ -50,6 +50,7 @@ if (file != null) {
         iGst: row[26].toString(),
         sGst: row[27].toString(),
         cGst: row[28].toString(),
+        rawItemsJson: row[29].toString(),
       );
 
       // Attach items from string

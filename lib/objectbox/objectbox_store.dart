@@ -3,6 +3,8 @@ import 'package:billing/models/invoice.dart';
 import 'package:billing/models/invoice_item.dart';
 import 'package:billing/objectbox.g.dart';
 
+// import 'objectbox.g.dart';
+
 class ObjectBoxStore {
   late final Store store;
   late final Box<Invoice> invoiceBox;

@@ -1,3 +1,5 @@
+import 'dart:core';
+
 import 'package:billing/models/invoice.dart';
 import 'package:billing/resources/widgets/common_pdfs/pdf_conatiner.dart';
 import 'package:billing/resources/widgets/common_pdfs/pdf_text.dart';
@@ -8,112 +10,61 @@ pw.Widget billingAndDeliveryDetailsPdf(
   return pw.Column(
     crossAxisAlignment: pw.CrossAxisAlignment.start,
     children: [
-      _headerRow(baseFontSize),
-      _detailsRow(baseFontSize, invoice),
+      _headerRow("Billing Details", baseFontSize, rightBorder: 0.5),
+      _detailsRow(baseFontSize, [
+        [
+          _labelAndData("M/S.:", invoice.billTaker, baseFontSize * 1.2),
+          _labelAndData("Address:", invoice.billTakerAddress, baseFontSize),
+        ],
+        [
+          _labelAndData("Mobile no:", invoice.billTakerMobileNo, baseFontSize),
+          _labelAndData("GST PIN:", invoice.billTakerGSTPin, baseFontSize),
+        ]
+      ]),
       _brokerInfo(baseFontSize, pageWidth, invoice),
     ],
   );
 }
 
-pw.Widget _headerRow(double baseFontSize) {
-  return pw.Row(
-    children: [
-      _headerContainer("Billing Details", baseFontSize, rightBorder: 0.5),
-      _headerContainer("Delivery Address", baseFontSize, leftBorder: 0.5),
-    ],
-  );
-}
-
-pw.Widget _headerContainer(String title, double baseFontSize,
+pw.Widget _headerRow(String title, double baseFontSize,
     {double leftBorder = 0, double rightBorder = 0}) {
-  return pw.Expanded(
-    child: PDFContainer(
-      horizontalBorder: 1,
-      leftBorder: leftBorder,
-      rightBorder: rightBorder,
-      padding: const pw.EdgeInsets.symmetric(horizontal: 8),
-      child: PDFText(
-        data: title,
-        fontSize: baseFontSize * 1.2,
-      ),
+  return PDFContainer(
+    horizontalBorder: 1,
+    leftBorder: leftBorder,
+    alignment: pw.Alignment.center,
+    rightBorder: rightBorder,
+    padding: const pw.EdgeInsets.symmetric(horizontal: 8),
+    child: PDFText(
+      data: title,
+      fontSize: baseFontSize * 1.2,
     ),
   );
 }
 
-pw.Widget _detailsRow(double baseFontSize, Invoice invoice) {
+pw.Widget _detailsRow(double baseFontSize, dynamic children) =>
+    pw.Row(children: [
+      _detailBox(baseFontSize, children, 0),
+      _detailBox(baseFontSize, children, 1)
+    ]);
+
+pw.Widget _detailBox(double baseFontSize, dynamic children, int index) {
   final commonPadding = const pw.EdgeInsets.symmetric(horizontal: 8);
-  final boxHeight = baseFontSize * 8.5;
-
-  return pw.Row(
-    children: [
-      // Left Box - Bill Taker
-      pw.Expanded(
-        child: pw.Container(
-          height: boxHeight,
-          decoration: pw.BoxDecoration(
-            border: pw.Border(right: pw.BorderSide(width: 0.5)),
-          ),
-          padding: commonPadding,
-          child: pw.Column(
-            mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: pw.CrossAxisAlignment.start,
-            children: [
-              // Title and Address
-              pw.Column(
-                crossAxisAlignment: pw.CrossAxisAlignment.start,
-                children: [
-                  _labelAndData("M/S.:", invoice.billTaker, baseFontSize * 1.2),
-                  pw.SizedBox(height: 2),
-                  _labelAndData("Address:", invoice.billTakerAddress, baseFontSize - baseFontSize * 0.08),
-                ],
-              ),
-              // Mobile and GST
-              pw.Column(
-                crossAxisAlignment: pw.CrossAxisAlignment.start,
-                children: [
-                  _labelAndData("Mobile no:", invoice.billTakerMobileNo, baseFontSize),
-                  pw.SizedBox(height: 2),
-                  _labelAndData("GST PIN:", invoice.billTakerGSTPin, baseFontSize),
-                ],
-              )
-            ],
-          ),
-        ),
+  final boxHeight = baseFontSize * 5;
+  return pw.Expanded(
+    child: pw.Container(
+      height: boxHeight,
+      decoration: pw.BoxDecoration(
+        border: index == 0
+            ? pw.Border(right: pw.BorderSide(width: 0.5))
+            : pw.Border(left: pw.BorderSide(width: 0.5)),
       ),
-
-      // Right Box - Delivery Firm
-      pw.Expanded(
-        child: pw.Container(
-          height: boxHeight,
-          decoration: pw.BoxDecoration(
-            border: pw.Border(left: pw.BorderSide(width: 0.5)),
-          ),
-          padding: commonPadding,
-          child: pw.Column(
-            mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: pw.CrossAxisAlignment.start,
-            children: [
-              // Title and Address
-              pw.Column(
-                crossAxisAlignment: pw.CrossAxisAlignment.start,
-                children: [
-                  _labelAndData("Delivery Firm :", invoice.deliveryFirm, baseFontSize * 1.2),
-                  pw.SizedBox(height: 2),
-                  _labelAndData("Address:", invoice.deliveryFirmAddress, baseFontSize - baseFontSize * 0.08),
-                ],
-              ),
-              // Mobile
-              pw.Column(
-                crossAxisAlignment: pw.CrossAxisAlignment.start,
-                children: [
-                  _labelAndData("Mobile no:", invoice.deliveryFirmMobileNo, baseFontSize),
-                ],
-              )
-            ],
-          ),
-        ),
+      padding: commonPadding,
+      child: pw.Column(
+        crossAxisAlignment: pw.CrossAxisAlignment.start,
+        mainAxisAlignment: pw.MainAxisAlignment.spaceEvenly,
+        children: children[index],
       ),
-    ],
+    ),
   );
 }
 
@@ -123,18 +74,19 @@ pw.Widget _labelAndData(String label, String? data, double fontSize) {
       children: [
         pw.TextSpan(
           text: "$label ",
-          style: pw.TextStyle(fontSize: fontSize, fontWeight: pw.FontWeight.bold),
+          style:
+              pw.TextStyle(fontSize: fontSize, fontWeight: pw.FontWeight.bold),
         ),
         if (data != null && data.trim().isNotEmpty)
           pw.TextSpan(
             text: data,
-            style: pw.TextStyle(fontSize: fontSize, fontWeight: pw.FontWeight.normal),
+            style: pw.TextStyle(
+                fontSize: fontSize, fontWeight: pw.FontWeight.normal),
           ),
       ],
     ),
   );
 }
-
 
 pw.Widget _brokerInfo(double baseFontSize, double width, Invoice invoice) {
   return PDFContainer(

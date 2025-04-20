@@ -1,20 +1,18 @@
-import 'package:billing/controllers/config_controller.dart';
 import 'package:billing/controllers/table_controller.dart';
+import 'package:billing/models/invoice.dart';
 import 'package:billing/services/small_services.dart';
 import 'package:get/get.dart';
 import 'package:pdf/widgets.dart' as pw;
 
-pw.Widget paymentSummaryPdf(double fontSize) {
+pw.Widget paymentSummaryPdf(double fontSize, Invoice invoice) {
   final table = Get.find<TableController>();
-
-  final ConfigController config = Get.put(ConfigController());
   return pw.Column(
     children: [
       pw.Row(
         crossAxisAlignment: pw.CrossAxisAlignment.start,
         children: [
-          _bankDetailsSection(fontSize, config),
-          _summaryDetailsSection(fontSize, config, table),
+          _bankDetailsSection(fontSize, invoice),
+          _summaryDetailsSection(fontSize, invoice, table),
         ],
       ),
       _dueDetailsSection(fontSize, table),
@@ -23,7 +21,7 @@ pw.Widget paymentSummaryPdf(double fontSize) {
   );
 }
 
-pw.Widget _bankDetailsSection(double fontSize, ConfigController config) {
+pw.Widget _bankDetailsSection(double fontSize, Invoice invoice) {
   return pw.Expanded(
     flex: 3,
     child: pw.Column(
@@ -33,9 +31,15 @@ pw.Widget _bankDetailsSection(double fontSize, ConfigController config) {
           padding: const pw.EdgeInsets.all(8),
           child: pw.Column(
             crossAxisAlignment: pw.CrossAxisAlignment.start,
-            children: <Map>[{'lable':"Bank", 'data':config.bankNameController.text}, {'lable':"Branch",'data':config.branchNameController.text}, {'lable':"A/C","data":config.accountNoController.text}, {"lable":"IFSC","data":config.ifscCodeController.text}]
+            children: <Map>[
+              {'lable': "Bank", 'data': invoice.bankName},
+              {'lable': "Branch", 'data': invoice.bankBranch},
+              {'lable': "A/C", "data": invoice.bankAccountNo},
+              {"lable": "IFSC", "data": invoice.bankIFSCCode}
+            ]
                 .map((m) => pw.Row(children: [
-                      pw.Text(m['lable'], style: pw.TextStyle(fontSize: fontSize)),
+                      pw.Text(m['lable'],
+                          style: pw.TextStyle(fontSize: fontSize)),
                       pw.Text(" :\t${m['data']}")
                     ]))
                 .toList(),
@@ -55,7 +59,7 @@ pw.Widget _bankDetailsSection(double fontSize, ConfigController config) {
 }
 
 pw.Widget _summaryDetailsSection(
-    double fontSize, ConfigController config, TableController table) {
+    double fontSize, Invoice config, TableController table) {
   final rows = [
     ["Discount", "-", config.discount, table.discountAmount.toString()],
     ["Oth Less", "-", config.othLess, table.othLess.toString()],

@@ -15,21 +15,21 @@ class TableItem {
     required this.rate,
   });
 
-  Map<String, dynamic> toJson() => {
-        'chalanNo': chalanNo,
+  Map<String, String> toJson() => {
+        'chalanNo': chalanNo.toString(),
         'itemName': itemName,
         'taka': taka,
         'hsnCode': hsnCode, // ✅ Save it
-        'qty': qty,
-        'rate': rate,
+        'qty': qty.toString(),
+        'rate': rate.toString(),
       };
 
   factory TableItem.fromJson(Map<String, dynamic> json) => TableItem(
-        chalanNo: json['chalanNo'] ?? '',
+        chalanNo: int.parse(json['chalanNo']),
         itemName: json['itemName'],
         taka: json['taka'],
         hsnCode: json['hsnCode'], // ✅ Load it
-        qty: json['qty'],
-        rate: json['rate'],
+        qty: double.parse(json['qty'],),
+        rate: double.parse(json['rate']),
       );
 }

@@ -1,3 +1,4 @@
+import 'package:billing/controllers/storage_controller.dart';
 import 'package:billing/resources/commons/common_text.dart';
 import 'package:billing/controllers/table_controller.dart';
 import 'package:billing/models/table_item.dart';
@@ -61,6 +62,11 @@ class TableEditorPage extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         onPressed: () => showItemInputDialog().then((value) {
           if (value != null) tableController.addItem(value);
+          Get.find<StorageController>().updateUnsavedInvoice();
+          print(
+              "On Save In table editor = =id = = > ${Get.find<StorageController>().unsavedInvoice.items.length}");
+          print(
+              "On Save In table editor = =id = = > ${Get.find<TableController>().itemList.length}");
         }),
         child: const Icon(Icons.add),
       ),

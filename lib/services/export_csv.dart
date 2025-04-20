@@ -9,7 +9,7 @@ Future<void> exportInvoicesToCsv(List<Invoice> invoices) async {
   final List<List<dynamic>> rows = [];
 
   // Add version info at the top
-  rows.add(['version', '1.0.0']);
+  rows.add(['version', '2.0.0']);
 
   // Add headers (adjust according to your Invoice model)
   rows.add([
@@ -17,10 +17,10 @@ Future<void> exportInvoicesToCsv(List<Invoice> invoices) async {
     // Company
     'companyName',
     'address',
-    'mobileNo',
     // Invoice
     'gstNumber',
-    'panNumber',
+    'mobileNo',
+    // 'panNumber',
     'stateCode',
     'invoiceNo',
     'date',
@@ -29,10 +29,10 @@ Future<void> exportInvoicesToCsv(List<Invoice> invoices) async {
     'billTakerAddress',
     'billTakerMobileNo',
     'billTakerGSTPin',
-    'deliveryFirm',
-    'deliveryFirmAddress',
-    'deliveryFirmMobileNo',
-    'deliveryFirmGSTPin',
+    // 'deliveryFirm',
+    // 'deliveryFirmAddress',
+    // 'deliveryFirmMobileNo',
+    // 'deliveryFirmGSTPin',
     'broker',
     // Bank Details
     'bankName',
@@ -64,10 +64,10 @@ Future<void> exportInvoicesToCsv(List<Invoice> invoices) async {
       // Company
       invoice.companyName,
       invoice.address,
-      invoice.mobileNo,
       // Invoice
       invoice.gstNumber,
-      invoice.panNumber,
+      invoice.mobileNo,
+      // invoice.panNumber,
       invoice.stateCode,
       invoice.invoiceNo,
       invoice.date,
@@ -76,10 +76,10 @@ Future<void> exportInvoicesToCsv(List<Invoice> invoices) async {
       invoice.billTakerAddress,
       invoice.billTakerMobileNo,
       invoice.billTakerGSTPin,
-      invoice.deliveryFirm,
-      invoice.deliveryFirmAddress,
-      invoice.deliveryFirmMobileNo,
-      invoice.deliveryFirmGSTPin,
+      // invoice.deliveryFirm,
+      // invoice.deliveryFirmAddress,
+      // invoice.deliveryFirmMobileNo,
+      // invoice.deliveryFirmGSTPin,
       invoice.broker,
       // Bank Details
       invoice.bankName,

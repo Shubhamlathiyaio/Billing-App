@@ -34,7 +34,7 @@ class StoragePage extends StatelessWidget {
             itemBuilder: (context, index) {
               final invoice = invoices[index];
               return GestureDetector(
-                onTap: () => storage.openInvoiceById(invoice.id),
+                onTap: () => storage.openInvoice(invoice),
                 child: customTile(index, invoice),
               );
             },
@@ -47,7 +47,8 @@ class StoragePage extends StatelessWidget {
 
 Widget customTile(int index, Invoice invoice) {
   final StorageController storage = Get.find<StorageController>();
-
+  print("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+  print("${invoice.id} = ${invoice.items.length}");
   return Card(
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(10),
@@ -96,20 +97,28 @@ Widget customTile(int index, Invoice invoice) {
           itemBuilder: (context) => [
             PopupMenuItem(
               value: 'open',
-              onTap: () => storage.openInvoiceById(invoice.id),
+              onTap: () => storage.openInvoice(invoice),
               child: Text('Open'),
             ),
             PopupMenuItem(
               value: 'edit',
               child: Text('Edit'),
-              onTap: () => storage.openInvoiceById(invoice.id),
+              onTap: () => storage.openInvoice(invoice),
             ),
             PopupMenuItem(
-              value: 'share',
-              child: Text('Share'),
-              onTap: () => PdfServices.sharePdf(
-                  PdfServices.getPdfDoc(invoice), getFileName(invoice.id)),
-            ),
+                value: 'share',
+                child: Text('Share'),
+                onTap: () {
+                  Invoice unsavedInvoice =
+                      Get.find<StorageController>().unsavedInvoice;
+                  PdfServices.sharePdf(PdfServices.getPdfDoc(invoice),
+                          getFileName(invoice.id))
+                      .then(
+                    (value) {
+                      storage.openInvoice(unsavedInvoice);
+                    },
+                  );
+                }),
             PopupMenuItem(
               value: 'download',
               child: Text('Download'),

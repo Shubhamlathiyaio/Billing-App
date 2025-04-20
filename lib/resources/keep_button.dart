@@ -57,23 +57,15 @@ class _KeepStyleFABState extends State<KeepStyleFAB>
             label: "Share",
             icon: Icons.share,
             onTap: () async {
-              final storage = Get.find<StorageController>();
-              var unsavedInvoice = Get.find<StorageController>().unsavedInvoice;
               if (Get.find<TableController>().itemList.isEmpty) {
                 CommonSnackbar.noItemSnackbar();
               } else {
-                storage.saveInvoice(); //for save
+                var unsavedInvoice =
+                    Get.find<StorageController>().unsavedInvoice;
                 final pdf = PdfServices.getPdfDoc(unsavedInvoice);
-              print(">>>>>>>>>>>>>>>>>>>>>>>");
-              print(unsavedInvoice.companyName);
-              print(unsavedInvoice.items.length);
-              print(">>>>>>>>>>>>>>>>>>>>>>>");
-                PdfServices.sharePdf(pdf, getFileName(storage.currentId.value));
-              print("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<----------------------------------->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-              print(unsavedInvoice.companyName);
-              print(unsavedInvoice.items.length);
-              print("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<----------------------------------->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-                Get.find<TableController>().clearTable();
+                PdfServices.sharePdf(pdf, getFileName(unsavedInvoice.id));
+                Get.find<StorageController>().saveInvoice();
+                // Get.find<StorageController>().clearCurrentData();
               }
               _toggleFab();
             },
@@ -86,11 +78,9 @@ class _KeepStyleFABState extends State<KeepStyleFAB>
               if (Get.find<TableController>().itemList.isEmpty) {
                 CommonSnackbar.noItemSnackbar();
               } else {
-                final storage = Get.find<StorageController>();
-
-                storage.saveInvoice();
-                Get.find<TableController>().clearTable();
+                Get.find<StorageController>().saveInvoice();
                 Get.find<NavigationController>().changePage(3);
+                Get.find<StorageController>().clearCurrentData();
                 CommonSnackbar.customSuccessSnackbar("Saved");
               }
               _toggleFab();
@@ -104,11 +94,11 @@ class _KeepStyleFABState extends State<KeepStyleFAB>
               if (Get.find<TableController>().itemList.isEmpty) {
                 CommonSnackbar.noItemSnackbar();
               } else {
-                final storage = Get.find<StorageController>();
+                final unsavedInvoice =
+                    Get.find<StorageController>().unsavedInvoice;
 
-                int id = storage.currentId.value;
-                PdfServices.downloadPdf(
-                    PdfServices.getPdfDoc(storage.unsavedInvoice), getFileName(id));
+                PdfServices.downloadPdf(PdfServices.getPdfDoc(unsavedInvoice),
+                    getFileName(unsavedInvoice.id));
                 CommonSnackbar.customSuccessSnackbar("Download");
               }
               _toggleFab();
@@ -119,8 +109,7 @@ class _KeepStyleFABState extends State<KeepStyleFAB>
             label: "New Invoice",
             icon: Icons.add,
             onTap: () {
-              Get.find<StorageController>().currentId.value = 0;
-              Get.find<TableController>().clearTable();
+              Get.find<StorageController>().clearUnsavedInvoice();
               Get.find<NavigationController>().changePage(0);
               _toggleFab();
             },

@@ -5,7 +5,7 @@
   "entities": [
     {
       "id": "1:1672983046465597673",
-      "lastPropertyId": "29:2508087491037836745",
+      "lastPropertyId": "30:6041125877116891193",
       "name": "Invoice",
       "properties": [
         {
@@ -40,11 +40,6 @@
           "type": 9
         },
         {
-          "id": "7:5882257973261177415",
-          "name": "panNumber",
-          "type": 9
-        },
-        {
           "id": "8:7518775087771973313",
           "name": "stateCode",
           "type": 9
@@ -62,21 +57,6 @@
         {
           "id": "11:3839464879353333506",
           "name": "billTakerGSTPin",
-          "type": 9
-        },
-        {
-          "id": "12:4600010460398069013",
-          "name": "deliveryFirm",
-          "type": 9
-        },
-        {
-          "id": "13:3012722547490749159",
-          "name": "deliveryFirmAddress",
-          "type": 9
-        },
-        {
-          "id": "14:4429756325963036195",
-          "name": "deliveryFirmGSTPin",
           "type": 9
         },
         {
@@ -150,8 +130,8 @@
           "type": 9
         },
         {
-          "id": "29:2508087491037836745",
-          "name": "deliveryFirmMobileNo",
+          "id": "30:6041125877116891193",
+          "name": "rawItemsJson",
           "type": 9
         }
       ],
@@ -218,7 +198,13 @@
   "modelVersionParserMinimum": 5,
   "retiredEntityUids": [],
   "retiredIndexUids": [],
-  "retiredPropertyUids": [],
+  "retiredPropertyUids": [
+    5882257973261177415,
+    4600010460398069013,
+    3012722547490749159,
+    4429756325963036195,
+    2508087491037836745
+  ],
   "retiredRelationUids": [],
   "version": 1
 }

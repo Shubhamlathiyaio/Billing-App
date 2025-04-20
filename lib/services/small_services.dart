@@ -19,9 +19,7 @@ String generateNextInvoiceNo(String? lastInvoiceNo) {
   final number = int.tryParse(lastInvoiceNo.replaceAll(RegExp(r'\D'), '')) ?? 0;
   return (number + 1).toString().padLeft(3, '0');
 }
-
-String perOf(double per, double amount) =>
-    ((per / 100) * amount).toStringAsFixed(2);
+double perOf(double percent, double amount) => (percent * amount) / 100;
 
 double rxStringToDouble(RxString value) {
   return double.tryParse(value.value) ?? 0.0;

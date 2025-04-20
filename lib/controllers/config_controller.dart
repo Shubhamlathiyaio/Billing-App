@@ -1,6 +1,6 @@
-import 'package:billing/controllers/table_controller.dart';
 import 'package:billing/models/invoice.dart';
-import 'package:billing/models/table_item.dart';
+import 'package:billing/resources/commons/common_get_snackbar.dart';
+import 'package:billing/services/small_services.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -13,13 +13,13 @@ class ConfigController extends GetxController {
   // Company
   final companyNameController = TextEditingController();
   final addressController = TextEditingController();
-  final mobileNoController = TextEditingController();
 
   // Invoice
   final gstNumberController = TextEditingController();
-  final panNumberController = TextEditingController();
-  final stateCodeController = TextEditingController();
-  final dateController = TextEditingController();
+  final mobileNoController = TextEditingController();
+  // final panNumberController = TextEditingController();
+  final stateCodeController = TextEditingController(text: '24');
+  final dateController = TextEditingController(text: getDate(DateTime.now()));
   final invoiceNoController = TextEditingController();
 
   // Billing
@@ -27,10 +27,10 @@ class ConfigController extends GetxController {
   final billTakerAddressController = TextEditingController();
   final billTakerMobileNoController = TextEditingController();
   final billTakerGSTPinController = TextEditingController();
-  final deliveryFirmController = TextEditingController();
-  final deliveryFirmAddressController = TextEditingController();
-  final deliveryFirmMobileNoController = TextEditingController();
-  final deliveryFirmGSTPinController = TextEditingController();
+  // final deliveryFirmController = TextEditingController();
+  // final deliveryFirmAddressController = TextEditingController();
+  // final deliveryFirmMobileNoController = TextEditingController();
+  // final deliveryFirmGSTPinController = TextEditingController();
   final brokerController = TextEditingController();
 
   // Bank Details
@@ -59,28 +59,27 @@ class ConfigController extends GetxController {
     loadConfig();
   }
 
-
   void loadConfig() {
     final config = box.read('config') ?? {};
 
     companyNameController.text = config['companyName'] ?? '';
     addressController.text = config['address'] ?? '';
-    mobileNoController.text = config['mobileNo'] ?? '';
 
     gstNumberController.text = config['gstNumber'] ?? '';
-    panNumberController.text = config['panNumber'] ?? '';
-    stateCodeController.text = config['stateCode'] ?? '';
+    mobileNoController.text = config['mobileNo'] ?? '';
+    // panNumberController.text = config['panNumber'] ?? '';
+    stateCodeController.text = config['stateCode'] ?? '24';
     invoiceNoController.text = generateNextInvoiceNo(config['invoiceNo']);
-    dateController.text = config['date'] ?? getTodayDate();
+    dateController.text = config['date'] ?? getDate(DateTime.now());
 
     billTakerController.text = config['billTaker'] ?? '';
     billTakerAddressController.text = config['billTakerAddress'] ?? '';
     billTakerMobileNoController.text = config['billTakerMobileNo'] ?? '';
     billTakerGSTPinController.text = config['billTakerGSTPin'] ?? '';
-    deliveryFirmController.text = config['deliveryFirm'] ?? '';
-    deliveryFirmAddressController.text = config['deliveryFirmAddress'] ?? '';
-    deliveryFirmMobileNoController.text = config['deliveryFirmMobileNo'] ?? '';
-    deliveryFirmGSTPinController.text = config['deliveryFirmGSTPin'] ?? '';
+    // deliveryFirmController.text = config['deliveryFirm'] ?? '';
+    // deliveryFirmAddressController.text = config['deliveryFirmAddress'] ?? '';
+    // deliveryFirmMobileNoController.text = config['deliveryFirmMobileNo'] ?? '';
+    // deliveryFirmGSTPinController.text = config['deliveryFirmGSTPin'] ?? '';
     brokerController.text = config['broker'] ?? '';
 
     bankNameController.text = config['bankName'] ?? '';
@@ -98,13 +97,12 @@ class ConfigController extends GetxController {
   }
 
   void saveConfig() {
-    final table = Get.find<TableController>();
     box.write('config', {
       'companyName': companyName,
       'address': address,
-      'mobileNo': mobileNo,
       'gstNumber': gstNumber,
-      'panNumber': panNumber,
+      'mobileNo': mobileNo,
+      // 'panNumber': panNumber,
       'stateCode': stateCode,
       'invoiceNo': invoiceNo,
       'date': date,
@@ -112,10 +110,10 @@ class ConfigController extends GetxController {
       'billTakerAddress': billTakerAddress,
       'billTakerMobileNo': billTakerMobileNo,
       'billTakerGSTPin': billTakerGSTPin,
-      'deliveryFirm': deliveryFirm,
-      'deliveryFirmAddress': deliveryFirmAddress,
-      'deliveryFirmMobileNo': deliveryFirmMobileNo,
-      'deliveryFirmGSTPin': deliveryFirmGSTPin,
+      // 'deliveryFirm': deliveryFirm,
+      // 'deliveryFirmAddress': deliveryFirmAddress,
+      // 'deliveryFirmMobileNo': deliveryFirmMobileNo,
+      // 'deliveryFirmGSTPin': deliveryFirmGSTPin,
       'broker': broker,
       'bankName': bankName,
       'branchName': branchName,
@@ -128,18 +126,17 @@ class ConfigController extends GetxController {
       'iGst': iGst,
       'sGst': sGst,
       'cGst': cGst,
-      'itemList': table.itemList.map((e) => e.toJson()).toList(),
     });
+    print("In Config save => ${companyName}");
   }
-
 
   void invoiceToConfig(Invoice invoice) {
     companyNameController.text = invoice.companyName;
     addressController.text = invoice.address;
-    mobileNoController.text = invoice.mobileNo;
 
     gstNumberController.text = invoice.gstNumber;
-    panNumberController.text = invoice.panNumber;
+    mobileNoController.text = invoice.mobileNo;
+    // panNumberController.text = invoice.panNumber;
     stateCodeController.text = invoice.stateCode;
     invoiceNoController.text = invoice.invoiceNo;
     dateController.text = invoice.date;
@@ -148,10 +145,10 @@ class ConfigController extends GetxController {
     billTakerAddressController.text = invoice.billTakerAddress;
     billTakerMobileNoController.text = invoice.billTakerMobileNo;
     billTakerGSTPinController.text = invoice.billTakerGSTPin;
-    deliveryFirmController.text = invoice.deliveryFirm;
-    deliveryFirmAddressController.text = invoice.deliveryFirmAddress;
-    deliveryFirmMobileNoController.text = invoice.deliveryFirmMobileNo;
-    deliveryFirmGSTPinController.text = invoice.deliveryFirmGSTPin;
+    // deliveryFirmController.text = invoice.deliveryFirm;
+    // deliveryFirmAddressController.text = invoice.deliveryFirmAddress;
+    // deliveryFirmMobileNoController.text = invoice.deliveryFirmMobileNo;
+    // deliveryFirmGSTPinController.text = invoice.deliveryFirmGSTPin;
     brokerController.text = invoice.broker;
 
     bankNameController.text = invoice.bankName;
@@ -166,28 +163,15 @@ class ConfigController extends GetxController {
     iGstController.text = invoice.iGst;
     sGstController.text = invoice.sGst;
     cGstController.text = invoice.cGst;
-
-    Get.find<TableController>().itemList.addAll(
-      invoice.items.map(
-        (e) => TableItem(
-          chalanNo: int.tryParse(e.chalan) ?? 0,
-          itemName: e.itemName,
-          taka: e.taka,
-          hsnCode: e.hsnCode,
-          qty: double.tryParse(e.qty) ?? 0,
-          rate: double.tryParse(e.rate) ?? 0,
-        ),
-      ),
-    );
   }
 
   Map<String, dynamic> toJson() {
     return {
       'companyName': companyName,
       'address': address,
-      'mobileNo': mobileNo,
       'gstNumber': gstNumber,
-      'panNumber': panNumber,
+      'mobileNo': mobileNo,
+      // 'panNumber': panNumber,
       'stateCode': stateCode,
       'invoiceNo': invoiceNo,
       'date': date,
@@ -195,10 +179,10 @@ class ConfigController extends GetxController {
       'billTakerAddress': billTakerAddress,
       'billTakerMobileNo': billTakerMobileNo,
       'billTakerGSTPin': billTakerGSTPin,
-      'deliveryFirm': deliveryFirm,
-      'deliveryFirmAddress': deliveryFirmAddress,
-      'deliveryFirmMobileNo': deliveryFirmMobileNo,
-      'deliveryFirmGSTPin': deliveryFirmGSTPin,
+      // 'deliveryFirm': deliveryFirm,
+      // 'deliveryFirmAddress': deliveryFirmAddress,
+      // 'deliveryFirmMobileNo': deliveryFirmMobileNo,
+      // 'deliveryFirmGSTPin': deliveryFirmGSTPin,
       'broker': broker,
       'discount': discount,
       'othLess': othLess,
@@ -212,10 +196,10 @@ class ConfigController extends GetxController {
   // Getters
   String get companyName => companyNameController.text;
   String get address => addressController.text;
-  String get mobileNo => mobileNoController.text;
 
   String get gstNumber => gstNumberController.text;
-  String get panNumber => panNumberController.text;
+  String get mobileNo => mobileNoController.text;
+  // String get panNumber => panNumberController.text;
   String get stateCode => stateCodeController.text;
   String get invoiceNo => invoiceNoController.text;
   String get date => dateController.text;
@@ -225,10 +209,10 @@ class ConfigController extends GetxController {
   String get billTakerMobileNo => billTakerMobileNoController.text;
   String get billTakerGSTPin => billTakerGSTPinController.text;
 
-  String get deliveryFirm => deliveryFirmController.text;
-  String get deliveryFirmAddress => deliveryFirmAddressController.text;
-  String get deliveryFirmMobileNo => deliveryFirmMobileNoController.text;
-  String get deliveryFirmGSTPin => deliveryFirmGSTPinController.text;
+  // String get deliveryFirm => deliveryFirmController.text;
+  // String get deliveryFirmAddress => deliveryFirmAddressController.text;
+  // String get deliveryFirmMobileNo => deliveryFirmMobileNoController.text;
+  // String get deliveryFirmGSTPin => deliveryFirmGSTPinController.text;
 
   String get broker => brokerController.text;
 
@@ -245,13 +229,19 @@ class ConfigController extends GetxController {
   String get sGst => sGstController.text;
   String get cGst => cGstController.text;
 
-  String getTodayDate() {
-    return DateTime.now().toString().substring(0, 10);
-  }
-
   String generateNextInvoiceNo(String? lastInvoiceNo) {
     if (lastInvoiceNo == null) return '1';
     int currentInvoiceNo = int.tryParse(lastInvoiceNo) ?? 0;
     return (currentInvoiceNo + 1).toString();
+  }
+
+  void clearOtherConfigDataOnly() {
+    final config = Get.find<ConfigController>();
+    config.dateController.text = getDate(DateTime.now());
+    config.billTakerController.clear();
+    config.billTakerAddressController.clear();
+    config.billTakerMobileNoController.clear();
+    config.billTakerGSTPinController.clear();
+    CommonSnackbar.successSnackbar("Remove", "Remove buyer data successfully.");
   }
 }

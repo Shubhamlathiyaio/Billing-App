@@ -1,6 +1,7 @@
 import 'package:billing/models/invoice.dart';
 import 'package:billing/resources/constens.dart';
 import 'package:billing/resources/widgets/common_pdfs/pdf_text.dart';
+import 'package:billing/services/appStorage.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 
@@ -25,7 +26,7 @@ pw.Widget invoiceDetailsPdf(
           children: [
             _detailTextPdf("GST No", invoice.gstNumber, baseFontSize * 1.2, invoiRed),
             pw.SizedBox(height: 4),
-            _detailTextPdf("Mobile No", invoice.mobileNo, baseFontSize, invoiRed),
+            _detailTextPdf("Mobile No", invoice.mobileNo, baseFontSize* 1.2, invoiRed),
             pw.SizedBox(height: 4),
             _detailTextPdf("State Code", invoice.stateCode, baseFontSize, invoiRed),
           ],
@@ -46,7 +47,7 @@ pw.Widget invoiceDetailsPdf(
         child: pw.Column(
           crossAxisAlignment: pw.CrossAxisAlignment.start,
           children: [
-            _detailTextPdf("Bill No", invoice.invoiceNo, baseFontSize),
+            _detailTextPdf("Bill No", invoice.id.toString(), baseFontSize),
             pw.SizedBox(height: 4),
             _detailTextPdf("Date", invoice.date, baseFontSize),
             pw.SizedBox(height: 4),

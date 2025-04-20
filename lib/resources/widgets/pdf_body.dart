@@ -9,9 +9,8 @@ import 'package:pdf/widgets.dart';
 import 'package:billing/models/invoice.dart';
 
 Widget invoiceBodyPdf(
-  Invoice unsavedInvoice,
+  Invoice invoice,
   double screenWidth,
-  int id,
 ) {
   final double x = (screenWidth - 20) / 47;
   final double baseFontSize = screenWidth * 0.016;
@@ -27,12 +26,11 @@ Widget invoiceBodyPdf(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          companyHeaderPdf(baseFontSize, screenWidth, unsavedInvoice),
-          invoiceDetailsPdf(baseFontSize, screenWidth, height, unsavedInvoice),
-          billingAndDeliveryDetailsPdf(
-              baseFontSize, screenWidth, unsavedInvoice),
-          invoiceItemsTablePdf(baseFontSize, x),
-          paymentSummaryPdf(baseFontSize),
+          companyHeaderPdf(baseFontSize, screenWidth, invoice),
+          invoiceDetailsPdf(baseFontSize, screenWidth, height, invoice),
+          billingAndDeliveryDetailsPdf(baseFontSize, screenWidth, invoice),
+          invoiceItemsTablePdf(baseFontSize, x, invoice),
+          paymentSummaryPdf(baseFontSize,invoice),
           termsAndConditionsSectionPdf(baseFontSize),
         ],
       ),

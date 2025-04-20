@@ -1,6 +1,6 @@
+import 'dart:convert';
 import 'dart:math';
 import 'package:billing/controllers/config_controller.dart';
-import 'package:billing/controllers/storage_controller.dart';
 import 'package:billing/models/invoice.dart';
 import 'package:billing/models/invoice_item.dart';
 import 'package:billing/models/table_item.dart';
@@ -70,6 +70,7 @@ class TableController extends GetxController {
   void saveItemsToStorage() {
     final data = itemList.map((e) => e.toJson()).toList();
     GetStorage().write('items', data);
+    rawItemsJsonFromItemList();
   }
 
   // ✅ Load from local storage
@@ -84,33 +85,19 @@ class TableController extends GetxController {
     saveItemsToStorage();
   }
 
-  void setTableById(int id) {
-    final invoice = Get.find<StorageController>().getInvoiceById(id);
-    if (invoice.items.isEmpty) return; // ❌ Don’t reset if invoice has no data
-    final tableItems =
-        Get.find<TableController>().getTableItemsFromInvoice(invoice);
-    Get.find<TableController>().itemList.value = tableItems;
+  String rawItemsJsonFromItemList() {
+    final rawItems = itemList.map((item) => item.toJson()).toList();
+    return jsonEncode(rawItems);
   }
 
- // TableController.dart
-Iterable<InvoiceItem> getInvoiceItemsFor(Invoice invoice) {
-  return itemList.map((item) {
-    final invoiceItem = InvoiceItem(
-      chalan: item.chalanNo.toString(),
-      itemName: item.itemName,
-      taka: item.taka.toString(),
-      hsnCode: item.hsnCode.toString(),
-      qty: item.qty.toString(),
-      rate: item.rate.toString(),
-    );
-    invoiceItem.invoice.target = invoice;
-    return invoiceItem;
-  });
-}
+  void setItemListFromRawItemsJson(String rawItemsJson) {
+    final List<dynamic> raw = jsonDecode(rawItemsJson);
+    itemList.value = raw
+        .map((e) => TableItem.fromJson(Map<String, String>.from(e)))
+        .toList();
+  }
 
-  RxList<TableItem> getTableItemsFromInvoice(Invoice invoice) {
-    RxList<TableItem> tableItems = RxList<TableItem>();
-
+  void getTableItemsFromInvoice(Invoice invoice) {
     for (InvoiceItem item in invoice.items) {
       TableItem tableItem = TableItem(
         chalanNo: int.tryParse(item.chalan) ?? 0,
@@ -120,9 +107,7 @@ Iterable<InvoiceItem> getInvoiceItemsFor(Invoice invoice) {
         qty: double.tryParse(item.qty) ?? 0,
         rate: double.tryParse(item.rate) ?? 0,
       );
-      tableItems.add(tableItem);
+      itemList.add(tableItem);
     }
-
-    return tableItems;
   }
 }

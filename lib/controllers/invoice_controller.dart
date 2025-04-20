@@ -1,4 +1,4 @@
-import 'package:billing/models/invoice_item.dart';
+import 'package:billing/services/small_services.dart';
 import 'package:get/get.dart';
 import 'package:billing/models/invoice.dart'; // Import Invoice model
 
@@ -6,20 +6,20 @@ class InvoiceController extends GetxController {
   final invoice = Invoice(
     companyName: '',
     address: '',
-    mobileNo: '',
     gstNumber: '',
-    panNumber: '',
-    stateCode: '',
+    mobileNo: '',
+    // panNumber: '',
+    stateCode: '24',
     invoiceNo: '',
-    date: '',
+    date: getDate(DateTime.now()),
     billTaker: '',
     billTakerAddress: '',
     billTakerMobileNo: '',
     billTakerGSTPin: '',
-    deliveryFirm: '',
-    deliveryFirmAddress: '',
-    deliveryFirmMobileNo: '',
-    deliveryFirmGSTPin: '',
+    // deliveryFirm: '',
+    // deliveryFirmAddress: '',
+    // deliveryFirmMobileNo: '',
+    // deliveryFirmGSTPin: '',
     broker: '',
     bankName: '',
     bankBranch: '',
@@ -32,33 +32,9 @@ class InvoiceController extends GetxController {
     iGst: '',
     sGst: '',
     cGst: '',
+    rawItemsJson: '',
   ).obs;
 
-  // Function to add InvoiceItem to the Invoice's ToMany relation
-  void addItem(InvoiceItem item) {
-    invoice.value.items.add(item); // Add the InvoiceItem to the ToMany relation
-    update(); // Refresh the UI
-  }
-
-  // Function to get the InvoiceItems as TableItems
-  RxList<TableItem> getTableItems() {
-    RxList<TableItem> tableItems = RxList<TableItem>();
-
-    // Iterating through the ToMany<InvoiceItem> and converting each to TableItem
-    for (var item in invoice.value.items) {
-      TableItem tableItem = TableItem(
-        chalan: item.chalan,
-        itemName: item.itemName,
-        taka: item.taka,
-        hsnCode: item.hsnCode,
-        qty: item.qty,
-        rate: item.rate,
-      );
-      tableItems.add(tableItem); // Add TableItem to list
-    }
-
-    return tableItems; // Return the RxList of TableItems for UI
-  }
 }
 
 class TableItem {

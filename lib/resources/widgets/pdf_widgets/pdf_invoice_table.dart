@@ -1,11 +1,14 @@
 import 'package:billing/controllers/table_controller.dart';
+import 'package:billing/models/invoice.dart';
 import 'package:billing/models/table_item.dart';
 import 'package:billing/resources/widgets/common_pdfs/pdf_text.dart';
 import 'package:get/get.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 
-pw.Widget invoiceItemsTablePdf(double baseFontSize, double pageWidth) {
+pw.Widget invoiceItemsTablePdf(
+    double baseFontSize, double pageWidth, Invoice invoice) {
+      Get.find<TableController>().setItemListFromRawItemsJson(invoice.rawItemsJson);
   final items = Get.find<TableController>().itemList;
   final TableController table = Get.find<TableController>();
 

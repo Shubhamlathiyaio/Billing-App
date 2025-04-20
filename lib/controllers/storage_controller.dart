@@ -2,56 +2,91 @@ import 'package:billing/controllers/config_controller.dart';
 import 'package:billing/controllers/table_controller.dart';
 import 'package:billing/models/invoice.dart';
 import 'package:billing/models/invoice_item.dart';
-import 'package:billing/objectbox.g.dart';
-import 'package:billing/resources/commons/common_get_snackbar.dart';
+import 'package:billing/services/appStorage.dart';
 import 'package:billing/views/home_page.dart';
 import 'package:get/get.dart';
+import 'package:objectbox/objectbox.dart';
 
 class StorageController extends GetxController {
   final invoiceList = <Invoice>[].obs;
-  final currentId = RxInt(0);
-
   late final Box<Invoice> _invoiceBox;
-
-  /// This is the live invoice used for preview, form, editing
-  late Invoice unsavedInvoice;
+  Invoice unsavedInvoice = Invoice.emptyInvoice();
 
   void init(Box<Invoice> invoiceBox) {
     _invoiceBox = invoiceBox;
     loadInvoices();
-    unsavedInvoice = _buildUnsavedInvoice(); // initial value
+    updateUnsavedInvoice();
+    print("init of storage is called");
   }
 
-  void loadInvoices() => invoiceList.value = _invoiceBox.getAll();
-
-  Invoice getInvoiceById(int id) {
-    if (id <= 0) return unsavedInvoice;
-    return _invoiceBox.get(id) ?? unsavedInvoice;
+  void loadInvoices() {
+    invoiceList.value = _invoiceBox.getAll();
   }
 
   /// Use when opening existing invoice for edit
-  void loadInvoiceToUnsaved(Invoice selectedInvoice) {
-    unsavedInvoice = selectedInvoice.copy(); // copy base fields
+  // void loadInvoiceToUnsaved(Invoice selectedInvoice) {
+  //   final tableCtrl = Get.find<TableController>();
 
-    unsavedInvoice.items.clear();
-    for (final item in selectedInvoice.items) {
-      final copiedItem = item.copyWith(); // or create new instance
-      copiedItem.invoice.target = unsavedInvoice;
-      unsavedInvoice.items.add(copiedItem);
-    }
+  //   // Clear previous data
+  //   unsavedInvoice.items.clear();
+  //   tableCtrl.itemList.clear();
+
+  //   // Copy fields manually (not whole object)
+  //   unsavedInvoice
+  //     ..id = selectedInvoice.id
+  //     ..companyName = selectedInvoice.companyName
+  //     ..address = selectedInvoice.address
+  //     ..gstNumber = selectedInvoice.gstNumber
+  //     ..mobileNo = selectedInvoice.mobileNo
+  //     ..stateCode = selectedInvoice.stateCode
+  //     ..invoiceNo = selectedInvoice.invoiceNo
+  //     ..date = selectedInvoice.date
+  //     ..billTaker = selectedInvoice.billTaker
+  //     ..billTakerAddress = selectedInvoice.billTakerAddress
+  //     ..billTakerMobileNo = selectedInvoice.billTakerMobileNo
+  //     ..billTakerGSTPin = selectedInvoice.billTakerGSTPin
+  //     ..broker = selectedInvoice.broker
+  //     ..bankName = selectedInvoice.bankName
+  //     ..bankBranch = selectedInvoice.bankBranch
+  //     ..bankAccountNo = selectedInvoice.bankAccountNo
+  //     ..bankIFSCCode = selectedInvoice.bankIFSCCode
+  //     ..remark = selectedInvoice.remark
+  //     ..discount = selectedInvoice.discount
+  //     ..othLess = selectedInvoice.othLess
+  //     ..freight = selectedInvoice.freight
+  //     ..iGst = selectedInvoice.iGst
+  //     ..sGst = selectedInvoice.sGst
+  //     ..cGst = selectedInvoice.cGst;
+
+  //   AppStorage.saveLastInvoiceId(unsavedInvoice.id);
+
+  //   for (final item in selectedInvoice.items) {
+  //     final copiedItem = item.copyWith();
+  //     copiedItem.invoice.target = unsavedInvoice;
+  //     unsavedInvoice.items.add(copiedItem);
+  //   }
+
+  //   print("Items count: ${unsavedInvoice.items.length}");
+  //   print("Invoice ID: ${unsavedInvoice.id}");
+  // }
+
+  void updateUnsavedInvoice() {
+    unsavedInvoice = _getInvoice();
+    // unsavedInvoice.items.applyToDb();
   }
 
-  Invoice getInvoice() {
+  Invoice _getInvoice() {
     final config = Get.find<ConfigController>();
-    final invoice = Invoice(
+    Invoice invoice = Invoice(
+      id: AppStorage.getLastInvoiceId(),
       // Company
       companyName: config.companyName,
       address: config.address,
-      mobileNo: config.mobileNo,
 
       // Invoice
       gstNumber: config.gstNumber,
-      panNumber: config.panNumber,
+      mobileNo: config.mobileNo,
+      // panNumber: config.panNumber,
       stateCode: config.stateCode,
       invoiceNo: config.invoiceNo,
       date: config.date,
@@ -61,10 +96,10 @@ class StorageController extends GetxController {
       billTakerAddress: config.billTakerAddress,
       billTakerMobileNo: config.billTakerMobileNo,
       billTakerGSTPin: config.billTakerGSTPin,
-      deliveryFirm: config.deliveryFirm,
-      deliveryFirmAddress: config.deliveryFirmAddress,
-      deliveryFirmMobileNo: config.deliveryFirmMobileNo,
-      deliveryFirmGSTPin: config.deliveryFirmGSTPin,
+      // deliveryFirm: config.deliveryFirm,
+      // deliveryFirmAddress: config.deliveryFirmAddress,
+      // deliveryFirmMobileNo: config.deliveryFirmMobileNo,
+      // deliveryFirmGSTPin: config.deliveryFirmGSTPin,
       broker: config.broker,
 
       // Bank details
@@ -81,12 +116,17 @@ class StorageController extends GetxController {
       iGst: config.iGst,
       sGst: config.sGst,
       cGst: config.cGst,
+      rawItemsJson: Get.find<TableController>().rawItemsJsonFromItemList(),
     );
 
-    // Add table data (items)
-    final tableItems = Get.find<TableController>().itemList;
+    invoice = addItemsIntoInvoice(invoice);
+    return invoice;
+  }
 
-    invoice.items.addAll(tableItems.map((item) {
+  Invoice addItemsIntoInvoice(Invoice invoice) {
+    RxList tableItems = Get.find<TableController>().itemList;
+    invoice.items.clear(); // This keeps the same ToMany object
+    for (final item in tableItems) {
       final invoiceItem = InvoiceItem(
         chalan: item.chalanNo.toString(),
         itemName: item.itemName,
@@ -96,50 +136,30 @@ class StorageController extends GetxController {
         rate: item.rate.toString(),
       );
       invoiceItem.invoice.target = invoice;
-      return invoiceItem;
-    }));
+      invoice.items.add(invoiceItem);
+    }
 
     return invoice;
-  }
-
-  /// Build live invoice from config + table
-  Invoice _buildUnsavedInvoice() {
-    print("🧩 Building unsavedInvoice...");
-    final invoice = getInvoice(); // get base invoice from config
-    print(invoice.companyName);
-    final tableItems = Get.find<TableController>().getInvoiceItemsFor(invoice);
-    invoice.items.addAll(tableItems); // add items from table
-    print("✅ Table items added");
-    print(invoice.companyName);
-    print(invoice.items.length);
-    return invoice;
-  }
-
-  void updateUnsavedInvoice() {
-    unsavedInvoice = _buildUnsavedInvoice();
-    print("----------------------------------");
-    print(unsavedInvoice.companyName);
-    print(unsavedInvoice.items.length);
-    print("----------------------------------");
   }
 
   void clearUnsavedInvoice() {
-    unsavedInvoice = Invoice.emptyInvoice(); // resets
     Get.find<TableController>().itemList.clear();
+    Get.find<ConfigController>().clearOtherConfigDataOnly();
+    updateUnsavedInvoice();
+    AppStorage.saveLastInvoiceId(0);
   }
 
   void saveInvoice() {
-    final invoice = unsavedInvoice;
-
-    if (invoice.id != 0) _invoiceBox.remove(invoice.id);
-
-    _invoiceBox.put(invoice);
-
+    _invoiceBox.put(unsavedInvoice);
     loadInvoices();
-    clearUnsavedInvoice();
-    currentId.value = 0;
-    Get.find<NavigationController>().changePage(3);
-    CommonSnackbar.customSuccessSnackbar("Saved");
+
+    AppStorage.saveLastInvoiceId(0);
+  }
+
+  void clearCurrentData() {
+    Get.find<TableController>().clearTable();
+    Get.find<ConfigController>().clearOtherConfigDataOnly();
+    updateUnsavedInvoice();
   }
 
   bool deleteInvoiceById(int id) {
@@ -148,14 +168,19 @@ class StorageController extends GetxController {
     return deleted;
   }
 
-  void openInvoiceById(int id) {
-    final invoice = _invoiceBox.get(id);
-    if (invoice != null) {
-      Get.find<TableController>().itemList.clear();
-      currentId.value = id;
-      Get.find<ConfigController>().invoiceToConfig(invoice);
-      loadInvoiceToUnsaved(invoice);
-      Get.find<NavigationController>().changePage(1);
-    }
+  void openInvoice(Invoice invoice) {
+    //cleaning
+    Get.find<TableController>().itemList.clear();
+    Get.find<ConfigController>().clearOtherConfigDataOnly();
+
+    //geting
+    AppStorage.saveLastInvoiceId(invoice.id);
+    Get.find<ConfigController>().invoiceToConfig(invoice);
+    Get.find<TableController>()
+        .setItemListFromRawItemsJson(invoice.rawItemsJson);
+    // Get.find<TableController>().getTableItemsFromInvoice(invoice);
+
+    updateUnsavedInvoice();
+    Get.find<NavigationController>().changePage(1);
   }
 }

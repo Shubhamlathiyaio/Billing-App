@@ -13,8 +13,8 @@ class ConfigPage extends StatelessWidget {
     _initializeGroups();
   }
 
-  final config = Get.put(ConfigController());
-  final expansionController = Get.put(ConfigExpansionController());
+  final config = Get.find<ConfigController>();
+  final expansionController = Get.find<ConfigExpansionController>();
 
   bool hasChanges(Map<String, dynamic> current, Map<String, dynamic> original) {
     return current.toString() != original.toString();
@@ -67,16 +67,9 @@ class ConfigPage extends StatelessWidget {
             label: "Bill Taker GST Pin",
             controller: config.billTakerGSTPinController,
             type: ConfigFieldType.numCap),
-        ConfigField(
-            label: "Delivery Firm", controller: config.deliveryFirmController),
-        ConfigField(
-            label: "Delivery Firm Address",
-            controller: config.deliveryFirmAddressController,
-            type: ConfigFieldType.address),
-        ConfigField(
-            label: "Delivery Firm Mobile No.",
-            controller: config.deliveryFirmMobileNoController,
-            type: ConfigFieldType.mobile),
+        // ConfigField(label: "Delivery Firm", controller: config.deliveryFirmController),
+        // ConfigField(label: "Delivery Firm Address", controller: config.deliveryFirmAddressController, type: ConfigFieldType.address),
+        // ConfigField(label: "Delivery Firm Mobile No.", controller: config.deliveryFirmMobileNoController, type: ConfigFieldType.mobile),
         ConfigField(label: "Broker", controller: config.brokerController),
       ]),
       ConfigGroup(title: "Bank Details", fields: [
@@ -135,11 +128,13 @@ class ConfigPage extends StatelessWidget {
               backgroundColor: onDarkBg,
               onPressed: () {
                 FocusScope.of(context).unfocus();
-                if (config.deliveryFirmController.text.isEmpty) config.deliveryFirmController.text = config.billTakerController.text;
-                if (config.deliveryFirmAddressController.text.isEmpty) config.deliveryFirmAddressController.text = config.billTakerAddressController.text;
-                if (config.deliveryFirmMobileNoController.text.isEmpty) config.deliveryFirmMobileNoController.text = config.billTakerMobileNoController.text;
-                config.saveConfig();
+                // if (config.deliveryFirmController.text.isEmpty) config.deliveryFirmController.text = config.billTakerController.text;
+                // if (config.deliveryFirmAddressController.text.isEmpty) config.deliveryFirmAddressController.text = config.billTakerAddressController.text;
+                // if (config.deliveryFirmMobileNoController.text.isEmpty) config.deliveryFirmMobileNoController.text = config.billTakerMobileNoController.text;
+                Get.find<ConfigController>().saveConfig();
                 Get.find<StorageController>().updateUnsavedInvoice();
+                print(
+                    " In On Save in Config page${Get.find<StorageController>().unsavedInvoice.companyName}");
                 Get.find<NavigationController>().changePage(1);
               },
             ),
@@ -158,6 +153,9 @@ class ConfigPage extends StatelessWidget {
           },
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+          onPressed: Get.find<ConfigController>().clearOtherConfigDataOnly,
+          child: const Icon(Icons.delete)),
     );
   }
 }

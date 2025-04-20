@@ -1,18 +1,18 @@
-import 'package:billing/controllers/storage_controller.dart';
-import 'package:get/get.dart';
+import 'package:billing/services/small_services.dart';
 import 'package:objectbox/objectbox.dart';
 import 'package:billing/models/invoice_item.dart'; // Import the InvoiceItem model
+import 'package:billing/objectbox.g.dart';
 
 @Entity()
 class Invoice {
-  int id = Get.find<StorageController>().currentId.value; // Unique ID (auto-incremented)
-
+  @Id()
+  int id = 0;
   // All fields are stored as String
   String companyName;
   String address;
-  String mobileNo;
   String gstNumber;
-  String panNumber;
+  String mobileNo;
+  // String panNumber;
   String stateCode;
   String invoiceNo;
   String date;
@@ -20,10 +20,10 @@ class Invoice {
   String billTakerAddress;
   String billTakerMobileNo;
   String billTakerGSTPin;
-  String deliveryFirm;
-  String deliveryFirmAddress;
-  String deliveryFirmMobileNo;
-  String deliveryFirmGSTPin;
+  // String deliveryFirm;
+  // String deliveryFirmAddress;
+  // String deliveryFirmMobileNo;
+  // String deliveryFirmGSTPin;
   String broker;
   String bankName;
   String bankBranch;
@@ -37,6 +37,9 @@ class Invoice {
   String sGst;
   String cGst;
 
+  @Property()
+  String rawItemsJson;
+
   @Backlink()
   final items = ToMany<InvoiceItem>(); // ToMany relation to InvoiceItem
 
@@ -44,9 +47,9 @@ class Invoice {
     this.id = 0,
     required this.companyName,
     required this.address,
-    required this.mobileNo,
     required this.gstNumber,
-    required this.panNumber,
+    required this.mobileNo,
+    // required this.panNumber,
     required this.stateCode,
     required this.invoiceNo,
     required this.date,
@@ -54,10 +57,10 @@ class Invoice {
     required this.billTakerAddress,
     required this.billTakerMobileNo,
     required this.billTakerGSTPin,
-    required this.deliveryFirm,
-    required this.deliveryFirmAddress,
-    required this.deliveryFirmMobileNo,
-    required this.deliveryFirmGSTPin,
+    // required this.deliveryFirm,
+    // required this.deliveryFirmAddress,
+    // required this.deliveryFirmMobileNo,
+    // required this.deliveryFirmGSTPin,
     required this.broker,
     required this.bankName,
     required this.bankBranch,
@@ -70,28 +73,29 @@ class Invoice {
     required this.iGst,
     required this.sGst,
     required this.cGst,
+    required this.rawItemsJson,
   });
 
   // Method to copy the current Invoice instance (useful if needed)
   Invoice copy() {
     return Invoice(
-      id: this.id,
+      id: id,
       companyName: companyName,
       address: address,
-      mobileNo: mobileNo,
       gstNumber: gstNumber,
-      panNumber: panNumber,
+      mobileNo: mobileNo,
+      // panNumber: panNumber,
       stateCode: stateCode,
       invoiceNo: invoiceNo,
       date: date,
       billTaker: billTaker,
       billTakerAddress: billTakerAddress,
-      billTakerMobileNo: billTakerMobileNo,    
+      billTakerMobileNo: billTakerMobileNo,
       billTakerGSTPin: billTakerGSTPin,
-      deliveryFirm: deliveryFirm,
-      deliveryFirmAddress: deliveryFirmAddress,
-      deliveryFirmMobileNo: deliveryFirmMobileNo,
-      deliveryFirmGSTPin: deliveryFirmGSTPin,
+      // deliveryFirm: deliveryFirm,
+      // deliveryFirmAddress: deliveryFirmAddress,
+      // deliveryFirmMobileNo: deliveryFirmMobileNo,
+      // deliveryFirmGSTPin: deliveryFirmGSTPin,
       broker: broker,
       bankName: bankName,
       bankBranch: bankBranch,
@@ -104,7 +108,7 @@ class Invoice {
       iGst: iGst,
       sGst: sGst,
       cGst: cGst,
-      
+      rawItemsJson: rawItemsJson,
     );
   }
 
@@ -114,9 +118,9 @@ class Invoice {
       'id': id,
       'companyName': companyName,
       'address': address,
-      'mobileNo': mobileNo,
       'gstNumber': gstNumber,
-      'panNumber': panNumber,
+      'mobileNo': mobileNo,
+      // 'panNumber': panNumber,
       'stateCode': stateCode,
       'invoiceNo': invoiceNo,
       'date': date,
@@ -124,10 +128,10 @@ class Invoice {
       'billTakerAddress': billTakerAddress,
       'billTakerMobileNo': billTakerMobileNo,
       'billTakerGSTPin': billTakerGSTPin,
-      'deliveryFirm': deliveryFirm,
-      'deliveryFirmAddress': deliveryFirmAddress,
-      'deliveryFirmMobileNo': deliveryFirmMobileNo,
-      'deliveryFirmGSTPin': deliveryFirmGSTPin,
+      // 'deliveryFirm': deliveryFirm,
+      // 'deliveryFirmAddress': deliveryFirmAddress,
+      // 'deliveryFirmMobileNo': deliveryFirmMobileNo,
+      // 'deliveryFirmGSTPin': deliveryFirmGSTPin,
       'broker': broker,
       'bankName': bankName,
       'bankBranch': bankBranch,
@@ -140,28 +144,29 @@ class Invoice {
       'iGst': iGst,
       'sGst': sGst,
       'cGst': cGst,
+      'rawItemsJson': rawItemsJson,
     };
   }
 
   // Static method to create an empty Invoice instance
   static Invoice emptyInvoice() {
     return Invoice(
-      companyName: '',
+      id: 0, companyName: '',
       address: '',
-      mobileNo: '',
       gstNumber: '',
-      panNumber: '',
-      stateCode: '',
+      mobileNo: '',
+      // panNumber: '',
+      stateCode: '24',
       invoiceNo: '',
-      date: '',
+      date: getDate(DateTime.now()),
       billTaker: '',
       billTakerAddress: '',
       billTakerMobileNo: '',
       billTakerGSTPin: '',
-      deliveryFirm: '',
-      deliveryFirmAddress: '',
-      deliveryFirmMobileNo: '',
-      deliveryFirmGSTPin: '',
+      // deliveryFirm: '',
+      // deliveryFirmAddress: '',
+      // deliveryFirmMobileNo: '',
+      // deliveryFirmGSTPin: '',
       broker: '',
       bankName: '',
       bankBranch: '',
@@ -174,6 +179,7 @@ class Invoice {
       iGst: '',
       sGst: '',
       cGst: '',
+      rawItemsJson: "",
     );
   }
 }
