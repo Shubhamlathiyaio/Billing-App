@@ -82,7 +82,9 @@ Drawer buildAppDrawer(BuildContext context) {
           title: Text('Import from CSV'),
           onTap: () async {
             await importInvoicesFromCsv();
-
+Get.back(); 
+CommonSnackbar.successSnackbar(
+                "CSV Import", "CSV Import file successfully");
           },
         ),
         ListTile(

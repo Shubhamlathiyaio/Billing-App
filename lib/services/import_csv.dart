@@ -6,61 +6,60 @@ import 'package:csv/csv.dart';
 import 'package:file_selector/file_selector.dart';
 import 'package:get/get.dart';
 import 'package:objectbox/objectbox.dart';
+
 Future<void> importInvoicesFromCsv() async {
   // 👇 This opens the file explorer
   final XFile? file = await openFile(
-  acceptedTypeGroups: [XTypeGroup(label: 'CSV', extensions: ['csv'])],
-);
+    acceptedTypeGroups: [
+      XTypeGroup(label: 'CSV', extensions: ['csv'])
+    ],
+  );
 
-if (file != null) {
-  final csvContent = await file.readAsString();
-  final rows = const CsvToListConverter().convert(csvContent);
-
+  if (file != null) {
+    final csvContent = await file.readAsString();
+    final rows = const CsvToListConverter().convert(csvContent);
 
     // Skip header (index 0)
     for (int i = 2; i < rows.length; i++) {
+      print("7777777777777777777777777");
       final row = rows[i];
 
       final invoice = Invoice(
         companyName: row[1].toString(),
         address: row[2].toString(),
-        gstNumber: row[4].toString(),
-        mobileNo: row[3].toString(),
-        // panNumber: row[5].toString(),
-        stateCode: row[6].toString(),
-        invoiceNo: row[7].toString(),
-        date: row[8].toString(),
-        billTaker: row[9].toString(),
-        billTakerAddress: row[10].toString(),
-        billTakerMobileNo: row[11].toString(),
-        billTakerGSTPin: row[12].toString(),
-        // deliveryFirm: row[13].toString(),
-        // deliveryFirmAddress: row[14].toString(),
-        // deliveryFirmMobileNo: row[15].toString(),
-        // deliveryFirmGSTPin: row[16].toString(),
-        broker: row[17].toString(),
-        bankName: row[18].toString(),
-        bankBranch: row[19].toString(),
-        bankAccountNo: row[20].toString(),
-        bankIFSCCode: row[21].toString(),
-        remark: row[22].toString(),
-        discount: row[23].toString(),
-        othLess: row[24].toString(),
-        freight: row[25].toString(),
-        iGst: row[26].toString(),
-        sGst: row[27].toString(),
-        cGst: row[28].toString(),
-        rawItemsJson: row[29].toString(),
+        gstNumber: row[3].toString(),
+        mobileNo: row[4].toString(),
+        stateCode: row[5].toString(),
+        invoiceNo: row[6].toString(),
+        date: row[7].toString(),
+        billTaker: row[8].toString(),
+        billTakerAddress: row[9].toString(),
+        billTakerMobileNo: row[10].toString(),
+        billTakerGSTPin: row[11].toString(),
+        broker: row[12].toString(),
+        bankName: row[13].toString(),
+        bankBranch: row[14].toString(),
+        bankAccountNo: row[15].toString(),
+        bankIFSCCode: row[16].toString(),
+        remark: row[17].toString(),
+        discount: row[18].toString(),
+        othLess: row[19].toString(),
+        freight: row[20].toString(),
+        iGst: row[21].toString(),
+        sGst: row[22].toString(),
+        cGst: row[23].toString(),
+        rawItemsJson: row[24].toString(),
       );
 
       // Attach items from string
-      invoice.items.addAll(parseItemsFromString(row[29].toString()));
+      invoice.items.addAll(parseItemsFromString(row[24].toString()));
 
       // Save in ObjectBox
-      Get.find<StorageController>().saveInvoice();
+      Get.find<StorageController>().saveFromFile(invoice);
     }
 
-    CommonSnackbar.successSnackbar("CSV Imported", "Invoices imported successfully.");
+    CommonSnackbar.successSnackbar(
+        "CSV Imported", "Invoices imported successfully.");
   } else {
     CommonSnackbar.errorSnackbar("No file selected.");
   }

@@ -94,8 +94,7 @@ Future<void> exportInvoicesToCsv(List<Invoice> invoices) async {
       invoice.iGst,
       invoice.sGst,
       invoice.cGst,
-
-      getItemsAsString(invoice),
+      invoice.rawItemsJson
     ]);
   }
 
@@ -111,11 +110,4 @@ if (!(await directory.exists())) {
 final file = File('${directory.path}/invo_v1${DateTime.now().millisecond}.csv');
 await file.writeAsString(csv, encoding: const Utf8Codec());
 
-}
-
-String getItemsAsString(Invoice invoice) {
-  String itemsAsString = invoice.items.map((item) {
-    return '${item.chalan}:${item.itemName}:${item.taka}:${item.hsnCode}:${item.qty}:${item.rate}';
-  }).join('|'); // separate items with |
-  return itemsAsString;
 }

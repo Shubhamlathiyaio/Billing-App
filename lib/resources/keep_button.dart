@@ -18,8 +18,6 @@ class KeepStyleFAB extends StatefulWidget {
 class _KeepStyleFABState extends State<KeepStyleFAB>
     with SingleTickerProviderStateMixin {
   bool isOpen = false;
-  // final storage = Get.find<StorageController>();
-  // final config = Get.find<ConfigController>();
   late AnimationController _controller;
   late Animation<double> _opacityAnimation;
 
@@ -65,7 +63,6 @@ class _KeepStyleFABState extends State<KeepStyleFAB>
                 final pdf = PdfServices.getPdfDoc(unsavedInvoice);
                 PdfServices.sharePdf(pdf, getFileName(unsavedInvoice.id));
                 Get.find<StorageController>().saveInvoice();
-                // Get.find<StorageController>().clearCurrentData();
               }
               _toggleFab();
             },
@@ -94,9 +91,9 @@ class _KeepStyleFABState extends State<KeepStyleFAB>
               if (Get.find<TableController>().itemList.isEmpty) {
                 CommonSnackbar.noItemSnackbar();
               } else {
-                final unsavedInvoice =
-                    Get.find<StorageController>().unsavedInvoice;
+                final unsavedInvoice = Get.find<StorageController>().unsavedInvoice;
 
+                Get.find<StorageController>().saveInvoice();
                 PdfServices.downloadPdf(PdfServices.getPdfDoc(unsavedInvoice),
                     getFileName(unsavedInvoice.id));
                 CommonSnackbar.customSuccessSnackbar("Download");

@@ -15,7 +15,12 @@ class PdfPreviewPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    pdfController.generatePdfForView();
+    // Call PDF generation only after the first frame is built
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (pdfController.pdfFile.value == null) {
+        pdfController.generatePdfForView();
+      }
+    });
 
     return Scaffold(
       drawer: Drawer(
@@ -27,7 +32,7 @@ class PdfPreviewPage extends StatelessWidget {
           return const Center(child: CircularProgressIndicator());
         } else if (pdfController.pdfFile.value != null) {
           File pdfFile = pdfController.pdfFile.value!;
-          return SfPdfViewer.file(pdfFile);
+          return SfPdfViewer.file(pdfFile); // 🎯 this line was wrongly placed before
         } else {
           return const Center(child: Text("Failed to load PDF."));
         }

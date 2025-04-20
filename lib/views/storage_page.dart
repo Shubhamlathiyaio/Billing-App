@@ -57,7 +57,7 @@ Widget customTile(int index, Invoice invoice) {
       children: [
         w16,
         CommonText(
-          data: "${invoice.id}".padLeft(3, "0"),
+          data: invoice.invoiceNo.padLeft(3, "0"),
           fontSize: 20,
         ),
         w10,
@@ -122,8 +122,11 @@ Widget customTile(int index, Invoice invoice) {
             PopupMenuItem(
               value: 'download',
               child: Text('Download'),
-              onTap: () => PdfServices.downloadPdf(
-                  PdfServices.getPdfDoc(invoice), getFileName(invoice.id)),
+              onTap: () {
+                Get.find<StorageController>().saveInvoice();
+                PdfServices.downloadPdf(
+                    PdfServices.getPdfDoc(invoice), getFileName(invoice.id));
+              },
             ),
             PopupMenuItem(
               value: 'delete',

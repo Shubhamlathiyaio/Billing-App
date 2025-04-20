@@ -38,7 +38,7 @@ Future<pw.Font> loadGujaratiFont() async {
   return pw.Font.ttf(fontData);
 }
 
-String getFileName(int id) => "Invo_${id}_${getDate(DateTime.now())}";
+String getFileName(int id) => "Invo_${id}_${getDate(DateTime.now()).replaceAll("/", "_")}";
 String getDate(DateTime date) => "${date.day}/${date.month}/${date.year}";
 
 List<int> chalanNos = [];

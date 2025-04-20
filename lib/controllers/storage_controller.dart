@@ -1,4 +1,5 @@
 import 'package:billing/controllers/config_controller.dart';
+import 'package:billing/controllers/pdf_preview_controller.dart';
 import 'package:billing/controllers/table_controller.dart';
 import 'package:billing/models/invoice.dart';
 import 'package:billing/models/invoice_item.dart';
@@ -72,6 +73,7 @@ class StorageController extends GetxController {
 
   void updateUnsavedInvoice() {
     unsavedInvoice = _getInvoice();
+    Get.find<PdfPreviewController>().pdfFile.value = null;
     // unsavedInvoice.items.applyToDb();
   }
 
@@ -152,8 +154,13 @@ class StorageController extends GetxController {
   void saveInvoice() {
     _invoiceBox.put(unsavedInvoice);
     loadInvoices();
-
     AppStorage.saveLastInvoiceId(0);
+  }
+
+  void saveFromFile(Invoice invoice) {
+    print("i9999999999999999999  ${invoice.items.length}");
+    _invoiceBox.put(invoice);
+    loadInvoices();
   }
 
   void clearCurrentData() {

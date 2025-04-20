@@ -63,10 +63,6 @@ class TableEditorPage extends StatelessWidget {
         onPressed: () => showItemInputDialog().then((value) {
           if (value != null) tableController.addItem(value);
           Get.find<StorageController>().updateUnsavedInvoice();
-          print(
-              "On Save In table editor = =id = = > ${Get.find<StorageController>().unsavedInvoice.items.length}");
-          print(
-              "On Save In table editor = =id = = > ${Get.find<TableController>().itemList.length}");
         }),
         child: const Icon(Icons.add),
       ),

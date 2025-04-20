@@ -182,4 +182,35 @@ class Invoice {
       rawItemsJson: "",
     );
   }
+  // Static method to create an Invoice instance from a map
+static Invoice fromJson(Map<String, dynamic> map) {
+  return Invoice(
+    id: map['id'] ?? 0,
+    companyName: map['companyName'] ?? '',
+    address: map['address'] ?? '',
+    gstNumber: map['gstNumber'] ?? '',
+    mobileNo: map['mobileNo'] ?? '',
+    stateCode: map['stateCode'] ?? '24', // Default state code '24'
+    invoiceNo: map['invoiceNo'] ?? '',
+    date: map['date'] ?? getDate(DateTime.now()),
+    billTaker: map['billTaker'] ?? '',
+    billTakerAddress: map['billTakerAddress'] ?? '',
+    billTakerMobileNo: map['billTakerMobileNo'] ?? '',
+    billTakerGSTPin: map['billTakerGSTPin'] ?? '',
+    broker: map['broker'] ?? '',
+    bankName: map['bankName'] ?? '',
+    bankBranch: map['bankBranch'] ?? '',
+    bankAccountNo: map['bankAccountNo'] ?? '',
+    bankIFSCCode: map['bankIFSCCode'] ?? '',
+    remark: map['remark'] ?? '',
+    discount: map['discount'] ?? '',
+    othLess: map['othLess'] ?? '',
+    freight: map['freight'] ?? '',
+    iGst: map['iGst'] ?? '',
+    sGst: map['sGst'] ?? '',
+    cGst: map['cGst'] ?? '',
+    rawItemsJson: map['rawItemsJson'] ?? '',
+  );
+}
+
 }
