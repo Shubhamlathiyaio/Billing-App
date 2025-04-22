@@ -1,4 +1,5 @@
 import 'package:billing/controllers/storage_controller.dart';
+import 'package:billing/resources/commons/common_get_snackbar.dart';
 import 'package:billing/resources/constens.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -154,7 +155,11 @@ class ConfigPage extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-          onPressed: Get.find<ConfigController>().clearOtherConfigDataOnly,
+          onPressed: () {
+            Get.find<ConfigController>().clearOtherConfigDataOnly();
+    CommonSnackbar.successSnackbar("Remove", "Remove buyer data successfully.");
+
+          },
           child: const Icon(Icons.delete)),
     );
   }

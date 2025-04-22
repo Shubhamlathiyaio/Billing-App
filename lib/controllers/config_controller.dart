@@ -242,6 +242,5 @@ class ConfigController extends GetxController {
     config.billTakerAddressController.clear();
     config.billTakerMobileNoController.clear();
     config.billTakerGSTPinController.clear();
-    CommonSnackbar.successSnackbar("Remove", "Remove buyer data successfully.");
   }
 }

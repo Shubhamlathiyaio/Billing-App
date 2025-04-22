@@ -158,7 +158,6 @@ class StorageController extends GetxController {
   }
 
   void saveFromFile(Invoice invoice) {
-    print("i9999999999999999999  ${invoice.items.length}");
     _invoiceBox.put(invoice);
     loadInvoices();
   }
