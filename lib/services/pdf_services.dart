@@ -15,7 +15,9 @@ class PdfServices {
     final pdf = pw.Document();
 
     pdf.addPage(
-      pw.Page(
+      pw.Page(margin: const pw.EdgeInsets.symmetric(horizontal: 20,vertical: 15), 
+      clip: true,
+      
         build: (context) => invoiceBodyPdf(
           invoice, // Pass unsavedInvoice instead of config
           context.page.pageFormat.width,
@@ -26,7 +28,6 @@ class PdfServices {
   }
 
   static Future<File> generatePdfInMemory(Invoice invoice) async {
-    print("objec888888888888888888ts: ${invoice.companyName}");
     try {
       final pdf = getPdfDoc(invoice);
       final data = await pdf.save();

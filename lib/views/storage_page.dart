@@ -21,7 +21,32 @@ class StoragePage extends StatelessWidget {
         title: const Text("Storage"),
       ),
       body: Obx(() {
-        final invoices = storage.invoiceList;
+        // List<Invoice> temp = [for(var e in storage.invoiceList)e];
+        // final List<String> t = [for (Invoice e in temp) e.invoiceNo];
+        // t.sort();
+        // print(t);
+
+        List<Invoice> invos = [for (Invoice e in storage.invoiceList) e];
+        // for (String i in t) {
+        //   print("Times");
+        //   invos.add(temp.removeAt(temp.indexWhere((e) {
+        //     print(e.invoiceNo);
+        //     print(i);
+        //     return e.invoiceNo == i;
+        //   })));
+        // }
+        // print(invos.first.invoiceNo);
+        // print(invos.last.invoiceNo);
+
+        invos.sort((a, b) {
+          final aNum = int.tryParse(a.invoiceNo) ?? 0;
+          final bNum = int.tryParse(b.invoiceNo) ?? 0;
+          return aNum.compareTo(bNum);
+        });
+        print("strat");
+        for (Invoice e in invos) print("INvoi = ${e.invoiceNo}");
+
+        final invoices = invos;
 
         if (invoices.isEmpty) {
           return const Center(child: Text("📦 No Invoices Yet!"));
@@ -35,7 +60,7 @@ class StoragePage extends StatelessWidget {
               final invoice = invoices[index];
               return GestureDetector(
                 onTap: () => storage.openInvoice(invoice),
-                child: customTile(index, invoice),
+                child: customTile(invoice),
               );
             },
           ),
@@ -45,7 +70,7 @@ class StoragePage extends StatelessWidget {
   }
 }
 
-Widget customTile(int index, Invoice invoice) {
+Widget customTile(Invoice invoice) {
   final StorageController storage = Get.find<StorageController>();
   print("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
   print("${invoice.id} = ${invoice.items.length}");

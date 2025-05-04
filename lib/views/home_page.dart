@@ -11,8 +11,8 @@ import 'package:get/get.dart';
 
 class HomePage extends StatelessWidget {
   final NavigationController navController = Get.put(NavigationController());
-
-  HomePage({super.key});
+  final VoidCallback? onThemeChanged;
+  HomePage({this.onThemeChanged, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -82,8 +82,8 @@ Drawer buildAppDrawer(BuildContext context) {
           title: Text('Import from CSV'),
           onTap: () async {
             await importInvoicesFromCsv();
-Get.back(); 
-CommonSnackbar.successSnackbar(
+            Get.back();
+            CommonSnackbar.successSnackbar(
                 "CSV Import", "CSV Import file successfully");
           },
         ),

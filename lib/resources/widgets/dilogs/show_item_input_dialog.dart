@@ -12,7 +12,7 @@ Future<TableItem?> showItemInputDialog({TableItem? item}) {
   final chalNo = TextEditingController(text: item?.chalanNo.toString());
   final itemNameCtrl = TextEditingController(text: item?.itemName ?? '');
   final takaCtrl = TextEditingController(text: item?.taka.toString());
-  final hsnCodeCtrl = TextEditingController(text: item?.hsnCode.toString());
+  final hsnCodeCtrl = TextEditingController(text: item?.hsnCode.toString()?? "5407");
   final qtyCtrl = TextEditingController(text: item?.qty.toString() ?? '');
   final rateCtrl = TextEditingController(text: item?.rate.toString() ?? '');
 

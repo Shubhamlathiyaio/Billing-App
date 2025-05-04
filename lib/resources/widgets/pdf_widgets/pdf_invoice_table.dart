@@ -12,7 +12,7 @@ pw.Widget invoiceItemsTablePdf(
   final items = Get.find<TableController>().itemList;
   final TableController table = Get.find<TableController>();
 
-  final int minRows = 15;
+  final int minRows = 18;
   final int emptyRowsNeeded = (minRows - items.length - 2).clamp(0, 100);
 
   return pw.Container(

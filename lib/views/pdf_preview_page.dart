@@ -27,16 +27,19 @@ class PdfPreviewPage extends StatelessWidget {
         child: buildAppDrawer(context),
       ),
       appBar: AppBar(title: const Text('PDF Preview')),
-      body: Obx(() {
-        if (pdfController.isLoading.value) {
-          return const Center(child: CircularProgressIndicator());
-        } else if (pdfController.pdfFile.value != null) {
-          File pdfFile = pdfController.pdfFile.value!;
-          return SfPdfViewer.file(pdfFile); // 🎯 this line was wrongly placed before
-        } else {
-          return const Center(child: Text("Failed to load PDF."));
-        }
-      }),
+      body: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Obx(() {
+          if (pdfController.isLoading.value) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (pdfController.pdfFile.value != null) {
+            File pdfFile = pdfController.pdfFile.value!;
+            return SfPdfViewer.file(pdfFile); // 🎯 this line was wrongly placed before
+          } else {
+            return const Center(child: Text("Failed to load PDF."));
+          }
+        }),
+      ),
       floatingActionButton: KeepStyleFAB(),
     );
   }

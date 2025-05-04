@@ -1,27 +1,35 @@
-import 'package:billing/controllers/storage_controller.dart';
-import 'package:billing/resources/commons/common_get_snackbar.dart';
-import 'package:billing/resources/constens.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:billing/controllers/bill_taker_contrller.dart';
 import 'package:billing/controllers/config_controller.dart';
+import 'package:billing/controllers/storage_controller.dart';
+import 'package:billing/models/bill_taker.dart';
 import 'package:billing/models/config.dart';
 import 'package:billing/resources/commons/common_button.dart';
+import 'package:billing/resources/commons/common_get_snackbar.dart';
+import 'package:billing/resources/constens.dart';
+import 'package:billing/resources/widgets/dilogs/show_bill_taker_input_dilog.dart';
+import 'package:billing/views/config/bill_taker_tile.dart';
 import 'package:billing/views/config/config_group.dart';
 import 'package:billing/views/home_page.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-class ConfigPage extends StatelessWidget {
-  ConfigPage({super.key}) {
-    _initializeGroups();
-  }
+class ConfigPage extends StatefulWidget {
+  const ConfigPage({super.key});
 
+  @override
+  State<ConfigPage> createState() => _ConfigPageState();
+}
+
+class _ConfigPageState extends State<ConfigPage> {
   final config = Get.find<ConfigController>();
   final expansionController = Get.find<ConfigExpansionController>();
-
-  bool hasChanges(Map<String, dynamic> current, Map<String, dynamic> original) {
-    return current.toString() != original.toString();
-  }
-
   late final List<ConfigGroup> configGroups;
+
+  @override
+  void initState() {
+    super.initState();
+    _initializeGroups();
+  }
 
   void _initializeGroups() {
     configGroups = <ConfigGroup>[
@@ -68,9 +76,6 @@ class ConfigPage extends StatelessWidget {
             label: "Bill Taker GST Pin",
             controller: config.billTakerGSTPinController,
             type: ConfigFieldType.numCap),
-        // ConfigField(label: "Delivery Firm", controller: config.deliveryFirmController),
-        // ConfigField(label: "Delivery Firm Address", controller: config.deliveryFirmAddressController, type: ConfigFieldType.address),
-        // ConfigField(label: "Delivery Firm Mobile No.", controller: config.deliveryFirmMobileNoController, type: ConfigFieldType.mobile),
         ConfigField(label: "Broker", controller: config.brokerController),
       ]),
       ConfigGroup(title: "Bank Details", fields: [
@@ -116,6 +121,7 @@ class ConfigPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final tabController = Get.find<ConfigTabController>();
     return Scaffold(
       appBar: AppBar(
         title: const Text("Configurator"),
@@ -129,22 +135,79 @@ class ConfigPage extends StatelessWidget {
               backgroundColor: onDarkBg,
               onPressed: () {
                 FocusScope.of(context).unfocus();
-                // if (config.deliveryFirmController.text.isEmpty) config.deliveryFirmController.text = config.billTakerController.text;
-                // if (config.deliveryFirmAddressController.text.isEmpty) config.deliveryFirmAddressController.text = config.billTakerAddressController.text;
-                // if (config.deliveryFirmMobileNoController.text.isEmpty) config.deliveryFirmMobileNoController.text = config.billTakerMobileNoController.text;
-                Get.find<ConfigController>().saveConfig();
+                config.saveConfig();
                 Get.find<StorageController>().updateUnsavedInvoice();
-                print(
-                    " In On Save in Config page${Get.find<StorageController>().unsavedInvoice.companyName}");
                 Get.find<NavigationController>().changePage(1);
               },
             ),
           ),
         ],
       ),
-      body: Padding(
+      body: Column(
+        children: [
+          SizedBox(
+            height: 50,
+            child: Obx(
+              () => ToggleButtons(
+                isSelected: [
+                  tabController.showConfig.value,
+                  !tabController.showConfig.value
+                ],
+                onPressed: tabController.toggleTab,
+                children: const [
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Text("Config"),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Text("Bill Taker"),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Expanded(
+            child: Obx(() => tabController.showConfig.value
+                ? _buildConfigBody()
+                : _buildBillTakerBody()),
+          )
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          if (tabController.showConfig.value) {
+            config.clearOtherConfigDataOnly();
+            CommonSnackbar.successSnackbar(
+                "Remove", "Removed buyer data successfully.");
+          } else {
+            showBillTakerInputDialog().then((value) {
+              if (value != null &&
+                  value.name.isNotEmpty &&
+                  value.address.isNotEmpty &&
+                  value.gstNo.isNotEmpty &&
+                  value.mobileNo.isNotEmpty) {
+                Get.find<BillTakerController>().addBillTaker(value);
+                Get.find<StorageController>().updateUnsavedInvoice();
+              } else {
+                CommonSnackbar.errorSnackbar();
+              }
+            });
+          }
+        },
+        child: Obx(() =>
+            Icon(tabController.showConfig.value ? Icons.delete : Icons.add)),
+      ),
+    );
+  }
+
+  Widget _buildConfigBody() {
+    return SingleChildScrollView(
+      child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: ListView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
           itemCount: configGroups.length,
           itemBuilder: (_, index) {
             return ConfigGroupCard(
@@ -154,13 +217,45 @@ class ConfigPage extends StatelessWidget {
           },
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Get.find<ConfigController>().clearOtherConfigDataOnly();
-    CommonSnackbar.successSnackbar("Remove", "Remove buyer data successfully.");
-
-          },
-          child: const Icon(Icons.delete)),
     );
+  }
+
+  Widget _buildBillTakerBody() {
+    final controller = Get.find<BillTakerController>();
+
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Obx(() {
+        List<BillTaker> billTakers = controller.billTakers;
+        return billTakers.isEmpty
+            ? const Center(child: Text("No Bill Takers available"))
+            : ListView.builder(
+                itemCount: billTakers.length,
+                itemBuilder: (_, index) {
+                  BillTaker billTaker = billTakers[index];
+                  return BillTakerTile(
+                    billTaker: billTaker,
+                    onDelete: () => controller.deleteBillTaker(billTaker.id),
+                    onTap: () {
+                      controller.setData(billTaker);
+                      Get.find<ConfigTabController>().toggleTab(0);
+                      
+                      final expandTile = Get.find<ConfigExpansionController>();
+                      if(expandTile.openTileIndex.value!=2)expandTile.toggleTile(2);
+                    },
+                  );
+                },
+              );
+      }),
+    );
+  }
+}
+
+class ConfigTabController extends GetxController {
+  // true = Config, false = Bill Taker
+  RxBool showConfig = true.obs;
+
+  void toggleTab(int index) {
+    showConfig.value = index == 0;
   }
 }

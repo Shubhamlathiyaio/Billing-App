@@ -35,7 +35,7 @@ pw.Widget invoiceDetailsPdf(
       // Divider
       pw.Container(
         width: 1,
-        height: height * 0.05,
+        height: height * 0.06,
         color: PdfColors.black,
       ),
 

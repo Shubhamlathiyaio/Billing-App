@@ -19,6 +19,7 @@ pw.Widget billingAndDeliveryDetailsPdf(
         [
           _labelAndData("Mobile no:", invoice.billTakerMobileNo, baseFontSize),
           _labelAndData("GST PIN:", invoice.billTakerGSTPin, baseFontSize),
+          pw.SizedBox(),
         ]
       ]),
       _brokerInfo(baseFontSize, pageWidth, invoice),
@@ -49,7 +50,7 @@ pw.Widget _detailsRow(double baseFontSize, dynamic children) =>
 
 pw.Widget _detailBox(double baseFontSize, dynamic children, int index) {
   final commonPadding = const pw.EdgeInsets.symmetric(horizontal: 8);
-  final boxHeight = baseFontSize * 5;
+  final boxHeight = baseFontSize * 7;
   return pw.Expanded(
     child: pw.Container(
       height: boxHeight,
@@ -69,24 +70,23 @@ pw.Widget _detailBox(double baseFontSize, dynamic children, int index) {
 }
 
 pw.Widget _labelAndData(String label, String? data, double fontSize) {
-  return pw.RichText(
-    text: pw.TextSpan(
-      children: [
-        pw.TextSpan(
-          text: "$label ",
-          style:
-              pw.TextStyle(fontSize: fontSize, fontWeight: pw.FontWeight.bold),
+  return pw.Row(
+    crossAxisAlignment: pw.CrossAxisAlignment.start,
+    children: [
+      pw.Text(
+        label,
+        style: pw.TextStyle(fontSize: fontSize, fontWeight: pw.FontWeight.bold),
+      ),
+      pw.Flexible(
+        child: pw.Text(
+          data ?? '',
+          style: pw.TextStyle(fontSize: fontSize),
         ),
-        if (data != null && data.trim().isNotEmpty)
-          pw.TextSpan(
-            text: data,
-            style: pw.TextStyle(
-                fontSize: fontSize, fontWeight: pw.FontWeight.normal),
-          ),
-      ],
-    ),
+      ),
+    ],
   );
 }
+
 
 pw.Widget _brokerInfo(double baseFontSize, double width, Invoice invoice) {
   return PDFContainer(

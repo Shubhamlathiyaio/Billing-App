@@ -1,3 +1,5 @@
+import 'package:billing/resources/constens.dart';
+import 'package:flutter/material.dart';
 import 'package:pdf/widgets.dart' as pw;
 
 
@@ -16,7 +18,7 @@ pw.Widget termsAndConditionsSectionPdf(double fontSize) {
       // Terms Section
       pw.Expanded(
         flex: 5,
-        child: pw.Column(
+        child: pw.Padding(padding: pw.EdgeInsets.all(PADDING),child:pw.Column(
           crossAxisAlignment: pw.CrossAxisAlignment.start,
           children: [
             pw.Text(
@@ -36,7 +38,7 @@ pw.Widget termsAndConditionsSectionPdf(double fontSize) {
                 ),
               ),
           ],
-        ),
+        ),),
       ),
 
       // Signature Box

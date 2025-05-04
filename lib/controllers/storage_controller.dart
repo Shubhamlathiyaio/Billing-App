@@ -24,57 +24,9 @@ class StorageController extends GetxController {
     invoiceList.value = _invoiceBox.getAll();
   }
 
-  /// Use when opening existing invoice for edit
-  // void loadInvoiceToUnsaved(Invoice selectedInvoice) {
-  //   final tableCtrl = Get.find<TableController>();
-
-  //   // Clear previous data
-  //   unsavedInvoice.items.clear();
-  //   tableCtrl.itemList.clear();
-
-  //   // Copy fields manually (not whole object)
-  //   unsavedInvoice
-  //     ..id = selectedInvoice.id
-  //     ..companyName = selectedInvoice.companyName
-  //     ..address = selectedInvoice.address
-  //     ..gstNumber = selectedInvoice.gstNumber
-  //     ..mobileNo = selectedInvoice.mobileNo
-  //     ..stateCode = selectedInvoice.stateCode
-  //     ..invoiceNo = selectedInvoice.invoiceNo
-  //     ..date = selectedInvoice.date
-  //     ..billTaker = selectedInvoice.billTaker
-  //     ..billTakerAddress = selectedInvoice.billTakerAddress
-  //     ..billTakerMobileNo = selectedInvoice.billTakerMobileNo
-  //     ..billTakerGSTPin = selectedInvoice.billTakerGSTPin
-  //     ..broker = selectedInvoice.broker
-  //     ..bankName = selectedInvoice.bankName
-  //     ..bankBranch = selectedInvoice.bankBranch
-  //     ..bankAccountNo = selectedInvoice.bankAccountNo
-  //     ..bankIFSCCode = selectedInvoice.bankIFSCCode
-  //     ..remark = selectedInvoice.remark
-  //     ..discount = selectedInvoice.discount
-  //     ..othLess = selectedInvoice.othLess
-  //     ..freight = selectedInvoice.freight
-  //     ..iGst = selectedInvoice.iGst
-  //     ..sGst = selectedInvoice.sGst
-  //     ..cGst = selectedInvoice.cGst;
-
-  //   AppStorage.saveLastInvoiceId(unsavedInvoice.id);
-
-  //   for (final item in selectedInvoice.items) {
-  //     final copiedItem = item.copyWith();
-  //     copiedItem.invoice.target = unsavedInvoice;
-  //     unsavedInvoice.items.add(copiedItem);
-  //   }
-
-  //   print("Items count: ${unsavedInvoice.items.length}");
-  //   print("Invoice ID: ${unsavedInvoice.id}");
-  // }
-
   void updateUnsavedInvoice() {
     unsavedInvoice = _getInvoice();
     Get.find<PdfPreviewController>().pdfFile.value = null;
-    // unsavedInvoice.items.applyToDb();
   }
 
   Invoice _getInvoice() {
@@ -88,7 +40,6 @@ class StorageController extends GetxController {
       // Invoice
       gstNumber: config.gstNumber,
       mobileNo: config.mobileNo,
-      // panNumber: config.panNumber,
       stateCode: config.stateCode,
       invoiceNo: config.invoiceNo,
       date: config.date,
@@ -98,10 +49,6 @@ class StorageController extends GetxController {
       billTakerAddress: config.billTakerAddress,
       billTakerMobileNo: config.billTakerMobileNo,
       billTakerGSTPin: config.billTakerGSTPin,
-      // deliveryFirm: config.deliveryFirm,
-      // deliveryFirmAddress: config.deliveryFirmAddress,
-      // deliveryFirmMobileNo: config.deliveryFirmMobileNo,
-      // deliveryFirmGSTPin: config.deliveryFirmGSTPin,
       broker: config.broker,
 
       // Bank details

@@ -1,3 +1,4 @@
+import 'package:billing/controllers/bill_taker_contrller.dart';
 import 'package:billing/controllers/config_controller.dart';
 import 'package:billing/controllers/pdf_preview_controller.dart';
 import 'package:billing/controllers/storage_controller.dart';
@@ -20,7 +21,7 @@ Future<void> main() async {
   final objectBox = await ObjectBoxStore.init(); // ✅ Then ObjectBox
 
   _initControllers(objectBox); // 🔥 Clean setup
-   await requestStoragePermission();
+  await requestStoragePermission();
 
   runApp(const MainApp());
 }
@@ -30,13 +31,14 @@ void _initControllers(ObjectBoxStore objectBox) {
   Get.put(ConfigExpansionController());
   Get.put(NavigationController());
   Get.put(PdfPreviewController());
+  Get.put(BillTakerController());
+  Get.put(ConfigTabController());
   Get.put(TableController()).loadItemsFromStorage();
   final storage = Get.put(StorageController());
   storage.init(objectBox.invoiceBox);
 }
 
-
-  Future<bool> requestPermission() async {
+Future<bool> requestPermission() async {
   if (await Permission.manageExternalStorage.request().isGranted ||
       await Permission.storage.request().isGranted) {
     return true;
@@ -49,7 +51,6 @@ Future<void> requestStoragePermission() async {
     await Permission.manageExternalStorage.request();
   }
 }
-
 
 class MainApp extends StatelessWidget {
   const MainApp({super.key});

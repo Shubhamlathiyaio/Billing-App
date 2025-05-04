@@ -21,7 +21,7 @@ Future<void> importInvoicesFromCsv() async {
     for (int i = 2; i < rows.length; i++) {
       final row = rows[i];
       final invoice = Invoice(
-        id: row[0],
+        id: 0,
         companyName: row[1].toString(),
         address: row[2].toString(),
         gstNumber: row[3].toString(),

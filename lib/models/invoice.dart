@@ -12,7 +12,6 @@ class Invoice {
   String address;
   String gstNumber;
   String mobileNo;
-  // String panNumber;
   String stateCode;
   String invoiceNo;
   String date;
@@ -20,11 +19,8 @@ class Invoice {
   String billTakerAddress;
   String billTakerMobileNo;
   String billTakerGSTPin;
-  // String deliveryFirm;
-  // String deliveryFirmAddress;
-  // String deliveryFirmMobileNo;
-  // String deliveryFirmGSTPin;
   String broker;
+  // Bank details
   String bankName;
   String bankBranch;
   String bankAccountNo;
@@ -41,7 +37,7 @@ class Invoice {
   String rawItemsJson;
 
   @Backlink()
-  final items = ToMany<InvoiceItem>(); // ToMany relation to InvoiceItem
+  final items = ToMany<InvoiceItem>();
 
   Invoice({
     this.id = 0,
@@ -49,7 +45,6 @@ class Invoice {
     required this.address,
     required this.gstNumber,
     required this.mobileNo,
-    // required this.panNumber,
     required this.stateCode,
     required this.invoiceNo,
     required this.date,
@@ -57,10 +52,6 @@ class Invoice {
     required this.billTakerAddress,
     required this.billTakerMobileNo,
     required this.billTakerGSTPin,
-    // required this.deliveryFirm,
-    // required this.deliveryFirmAddress,
-    // required this.deliveryFirmMobileNo,
-    // required this.deliveryFirmGSTPin,
     required this.broker,
     required this.bankName,
     required this.bankBranch,
@@ -84,7 +75,6 @@ class Invoice {
       address: address,
       gstNumber: gstNumber,
       mobileNo: mobileNo,
-      // panNumber: panNumber,
       stateCode: stateCode,
       invoiceNo: invoiceNo,
       date: date,
@@ -92,10 +82,6 @@ class Invoice {
       billTakerAddress: billTakerAddress,
       billTakerMobileNo: billTakerMobileNo,
       billTakerGSTPin: billTakerGSTPin,
-      // deliveryFirm: deliveryFirm,
-      // deliveryFirmAddress: deliveryFirmAddress,
-      // deliveryFirmMobileNo: deliveryFirmMobileNo,
-      // deliveryFirmGSTPin: deliveryFirmGSTPin,
       broker: broker,
       bankName: bankName,
       bankBranch: bankBranch,
@@ -120,7 +106,6 @@ class Invoice {
       'address': address,
       'gstNumber': gstNumber,
       'mobileNo': mobileNo,
-      // 'panNumber': panNumber,
       'stateCode': stateCode,
       'invoiceNo': invoiceNo,
       'date': date,
@@ -128,10 +113,6 @@ class Invoice {
       'billTakerAddress': billTakerAddress,
       'billTakerMobileNo': billTakerMobileNo,
       'billTakerGSTPin': billTakerGSTPin,
-      // 'deliveryFirm': deliveryFirm,
-      // 'deliveryFirmAddress': deliveryFirmAddress,
-      // 'deliveryFirmMobileNo': deliveryFirmMobileNo,
-      // 'deliveryFirmGSTPin': deliveryFirmGSTPin,
       'broker': broker,
       'bankName': bankName,
       'bankBranch': bankBranch,
@@ -151,11 +132,11 @@ class Invoice {
   // Static method to create an empty Invoice instance
   static Invoice emptyInvoice() {
     return Invoice(
-      id: 0, companyName: '',
+      id: 0,
+      companyName: '',
       address: '',
       gstNumber: '',
       mobileNo: '',
-      // panNumber: '',
       stateCode: '24',
       invoiceNo: '',
       date: getDate(DateTime.now()),
@@ -163,10 +144,6 @@ class Invoice {
       billTakerAddress: '',
       billTakerMobileNo: '',
       billTakerGSTPin: '',
-      // deliveryFirm: '',
-      // deliveryFirmAddress: '',
-      // deliveryFirmMobileNo: '',
-      // deliveryFirmGSTPin: '',
       broker: '',
       bankName: '',
       bankBranch: '',
@@ -182,35 +159,35 @@ class Invoice {
       rawItemsJson: "",
     );
   }
-  // Static method to create an Invoice instance from a map
-static Invoice fromJson(Map<String, dynamic> map) {
-  return Invoice(
-    id: map['id'] ?? 0,
-    companyName: map['companyName'] ?? '',
-    address: map['address'] ?? '',
-    gstNumber: map['gstNumber'] ?? '',
-    mobileNo: map['mobileNo'] ?? '',
-    stateCode: map['stateCode'] ?? '24', // Default state code '24'
-    invoiceNo: map['invoiceNo'] ?? '',
-    date: map['date'] ?? getDate(DateTime.now()),
-    billTaker: map['billTaker'] ?? '',
-    billTakerAddress: map['billTakerAddress'] ?? '',
-    billTakerMobileNo: map['billTakerMobileNo'] ?? '',
-    billTakerGSTPin: map['billTakerGSTPin'] ?? '',
-    broker: map['broker'] ?? '',
-    bankName: map['bankName'] ?? '',
-    bankBranch: map['bankBranch'] ?? '',
-    bankAccountNo: map['bankAccountNo'] ?? '',
-    bankIFSCCode: map['bankIFSCCode'] ?? '',
-    remark: map['remark'] ?? '',
-    discount: map['discount'] ?? '',
-    othLess: map['othLess'] ?? '',
-    freight: map['freight'] ?? '',
-    iGst: map['iGst'] ?? '',
-    sGst: map['sGst'] ?? '',
-    cGst: map['cGst'] ?? '',
-    rawItemsJson: map['rawItemsJson'] ?? '',
-  );
-}
 
+  // Static method to create an Invoice instance from a map
+  static Invoice fromJson(Map<String, dynamic> map) {
+    return Invoice(
+      id: map['id'] ?? 0,
+      companyName: map['companyName'] ?? '',
+      address: map['address'] ?? '',
+      gstNumber: map['gstNumber'] ?? '',
+      mobileNo: map['mobileNo'] ?? '',
+      stateCode: map['stateCode'] ?? '24', // Default state code '24'
+      invoiceNo: map['invoiceNo'] ?? '',
+      date: map['date'] ?? getDate(DateTime.now()),
+      billTaker: map['billTaker'] ?? '',
+      billTakerAddress: map['billTakerAddress'] ?? '',
+      billTakerMobileNo: map['billTakerMobileNo'] ?? '',
+      billTakerGSTPin: map['billTakerGSTPin'] ?? '',
+      broker: map['broker'] ?? '',
+      bankName: map['bankName'] ?? '',
+      bankBranch: map['bankBranch'] ?? '',
+      bankAccountNo: map['bankAccountNo'] ?? '',
+      bankIFSCCode: map['bankIFSCCode'] ?? '',
+      remark: map['remark'] ?? '',
+      discount: map['discount'] ?? '',
+      othLess: map['othLess'] ?? '',
+      freight: map['freight'] ?? '',
+      iGst: map['iGst'] ?? '',
+      sGst: map['sGst'] ?? '',
+      cGst: map['cGst'] ?? '',
+      rawItemsJson: map['rawItemsJson'] ?? '',
+    );
+  }
 }

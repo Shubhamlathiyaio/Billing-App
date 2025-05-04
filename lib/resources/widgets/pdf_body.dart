@@ -30,7 +30,7 @@ Widget invoiceBodyPdf(
           invoiceDetailsPdf(baseFontSize, screenWidth, height, invoice),
           billingAndDeliveryDetailsPdf(baseFontSize, screenWidth, invoice),
           invoiceItemsTablePdf(baseFontSize, x, invoice),
-          paymentSummaryPdf(baseFontSize,invoice),
+          paymentSummaryPdf(baseFontSize, invoice),
           termsAndConditionsSectionPdf(baseFontSize),
         ],
       ),
